@@ -39,7 +39,7 @@ export function useLinearIssues(
           setIssues(result.data);
           onIssuesChangeRef.current?.();
         } else {
-          setError(result.error || 'Failed to load issues');
+          setError(result.error || '加载问题失败');
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');

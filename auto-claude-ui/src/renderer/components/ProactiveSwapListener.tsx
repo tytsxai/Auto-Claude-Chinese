@@ -61,13 +61,13 @@ export function ProactiveSwapListener() {
             </div>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-foreground">Account Switched</p>
+            <p className="text-sm font-semibold text-foreground">账号已切换</p>
             <p className="text-xs text-muted-foreground mt-1">
-              Switched from <strong>{notification.fromProfile}</strong> to{' '}
+              已从 <strong>{notification.fromProfile}</strong> 切换至{' '}
               <strong>{notification.toProfile}</strong>
               <br />
               <span className="text-[10px]">
-                ({notification.reason} swap)
+                （{notification.reason} 触发切换）
               </span>
             </p>
           </div>

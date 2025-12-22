@@ -79,7 +79,7 @@ export function GitSetupModal({
           需要 Git 仓库
         </DialogTitle>
         <DialogDescription>
-          Auto Claude 使用 git 在隔离工作区中安全构建功能
+          Auto-Claude 使用 git 在隔离工作区中安全构建功能
         </DialogDescription>
       </DialogHeader>
 
@@ -96,8 +96,8 @@ export function GitSetupModal({
               </p>
               <p className="text-sm text-muted-foreground">
                 {needsGitInit
-                  ? '在 Auto Claude 管理代码前需要初始化 git。'
-                  : 'Auto Claude 创建工作区需要至少一次提交。'}
+                  ? '在 Auto-Claude 管理代码前需要初始化 git。'
+                  : 'Auto-Claude 创建工作区需要至少一次提交。'}
               </p>
             </div>
           </div>
@@ -187,7 +187,7 @@ export function GitSetupModal({
             <CheckCircle2 className="h-8 w-8 text-success" />
           </div>
           <p className="text-sm text-muted-foreground">
-            项目已可在 Auto Claude 中使用！
+            项目已可在 Auto-Claude 中使用！
           </p>
         </div>
       </div>

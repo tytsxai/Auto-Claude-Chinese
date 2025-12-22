@@ -180,7 +180,7 @@ export async function loadTasks(projectId: string): Promise<void> {
     if (result.success && result.data) {
       store.setTasks(result.data);
     } else {
-      store.setError(result.error || 'Failed to load tasks');
+      store.setError(result.error || '加载任务失败');
     }
   } catch (error) {
     store.setError(error instanceof Error ? error.message : 'Unknown error');
@@ -206,7 +206,7 @@ export async function createTask(
       store.addTask(result.data);
       return result.data;
     } else {
-      store.setError(result.error || 'Failed to create task');
+      store.setError(result.error || '创建任务失败');
       return null;
     }
   } catch (error) {
@@ -267,7 +267,7 @@ export async function persistTaskStatus(
     // 持久化到文件
     const result = await window.electronAPI.updateTaskStatus(taskId, status);
     if (!result.success) {
-      console.error('Failed to persist task status:', result.error);
+      console.error('持久化任务状态失败：', result.error);
       return false;
     }
     return true;
@@ -301,7 +301,7 @@ export async function persistUpdateTask(
       return true;
     }
 
-    console.error('Failed to persist task update:', result.error);
+    console.error('持久化任务更新失败：', result.error);
     return false;
   } catch (error) {
     console.error('Error persisting task update:', error);
@@ -348,7 +348,7 @@ export async function recoverStuckTask(
 
     return {
       success: false,
-      message: result.error || 'Failed to recover task'
+      message: result.error || '恢复任务失败'
     };
   } catch (error) {
     console.error('Error recovering stuck task:', error);
@@ -382,7 +382,7 @@ export async function deleteTask(
 
     return {
       success: false,
-      error: result.error || 'Failed to delete task'
+      error: result.error || '删除任务失败'
     };
   } catch (error) {
     console.error('Error deleting task:', error);
@@ -413,7 +413,7 @@ export async function archiveTasks(
 
     return {
       success: false,
-      error: result.error || 'Failed to archive tasks'
+      error: result.error || '归档任务失败'
     };
   } catch (error) {
     console.error('Error archiving tasks:', error);
@@ -455,7 +455,7 @@ export function saveDraft(draft: TaskDraft): void {
     };
     localStorage.setItem(key, JSON.stringify(draftToStore));
   } catch (error) {
-    console.error('Failed to save draft:', error);
+    console.error('保存草稿失败：', error);
   }
 }
 
@@ -473,7 +473,7 @@ export function loadDraft(projectId: string): TaskDraft | null {
     draft.savedAt = new Date(draft.savedAt);
     return draft as TaskDraft;
   } catch (error) {
-    console.error('Failed to load draft:', error);
+    console.error('加载草稿失败：', error);
     return null;
   }
 }
@@ -486,7 +486,7 @@ export function clearDraft(projectId: string): void {
     const key = getDraftKey(projectId);
     localStorage.removeItem(key);
   } catch (error) {
-    console.error('Failed to clear draft:', error);
+    console.error('清除草稿失败：', error);
   }
 }
 

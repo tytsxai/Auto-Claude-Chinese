@@ -102,7 +102,7 @@ export function IntegrationSettings({
         }
       }
     } catch (error) {
-      console.error('Failed to load branches:', error);
+      console.error('加载分支失败：', error);
     } finally {
       setIsLoadingBranches(false);
     }
@@ -219,7 +219,7 @@ export function IntegrationSettings({
                       <div className="flex-1">
                         <p className="text-sm font-medium text-foreground">导入现有任务</p>
                         <p className="text-xs text-muted-foreground mt-1">
-                          选择要导入到 AutoBuild 作为任务的 Linear 问题。
+                          选择要导入到 Auto-Claude 作为任务的 Linear 问题。
                         </p>
                         <Button
                           size="sm"
@@ -257,7 +257,7 @@ export function IntegrationSettings({
                 {envConfig.linearRealtimeSync && (
                   <div className="rounded-lg border border-warning/30 bg-warning/5 p-3 ml-6">
                     <p className="text-xs text-warning">
-                      启用后，新的 Linear 问题会自动导入到 AutoBuild。
+                      启用后，新的 Linear 问题会自动导入到 Auto-Claude。
                       请在下方配置团队/项目筛选条件，以控制导入哪些问题。
                     </p>
                   </div>
@@ -335,7 +335,7 @@ export function IntegrationSettings({
                   <p className="text-xs text-muted-foreground">
                     在{' '}
                     <a
-                      href="https://github.com/settings/tokens/new?scopes=repo&description=Auto-Build-UI"
+                      href="https://github.com/settings/tokens/new?scopes=repo&description=Auto-Claude-UI"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-info hover:underline"

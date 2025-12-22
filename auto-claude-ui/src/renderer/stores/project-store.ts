@@ -101,7 +101,7 @@ export async function loadProjects(): Promise<void> {
         }
       }
     } else {
-      store.setError(result.error || 'Failed to load projects');
+      store.setError(result.error || '加载项目失败');
     }
   } catch (error) {
     store.setError(error instanceof Error ? error.message : 'Unknown error');
@@ -123,7 +123,7 @@ export async function addProject(projectPath: string): Promise<Project | null> {
       store.selectProject(result.data.id);
       return result.data;
     } else {
-      store.setError(result.error || 'Failed to add project');
+      store.setError(result.error || '添加项目失败');
       return null;
     }
   } catch (error) {
@@ -221,7 +221,7 @@ export async function initializeProject(
       return result.data;
     }
     console.log('[ProjectStore] IPC failed or no data, setting error');
-    store.setError(result.error || 'Failed to initialize project');
+    store.setError(result.error || '初始化失败 project');
     return null;
   } catch (error) {
     console.error('[ProjectStore] Exception during initializeProject:', error);
@@ -243,7 +243,7 @@ export async function updateProjectAutoBuild(
     if (result.success && result.data) {
       return result.data;
     }
-    store.setError(result.error || 'Failed to update auto-claude');
+    store.setError(result.error || '更新失败 auto-claude');
     return null;
   } catch (error) {
     store.setError(error instanceof Error ? error.message : 'Unknown error');

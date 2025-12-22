@@ -11,7 +11,7 @@ interface LoadingMessageProps {
 /**
  * Displays a loading indicator while workspace info is being fetched
  */
-export function LoadingMessage({ message = 'Loading workspace info...' }: LoadingMessageProps) {
+export function LoadingMessage({ message = '正在加载工作区信息...' }: LoadingMessageProps) {
   return (
     <div className="rounded-xl border border-border bg-secondary/30 p-4">
       <div className="flex items-center gap-2 text-muted-foreground">
@@ -52,10 +52,10 @@ export function NoWorkspaceMessage({ task, onClose }: NoWorkspaceMessageProps) {
     <div className="rounded-xl border border-border bg-secondary/30 p-4">
       <h3 className="font-medium text-sm text-foreground mb-2 flex items-center gap-2">
         <AlertCircle className="h-4 w-4 text-muted-foreground" />
-        No Workspace Found
+        未找到工作区
       </h3>
       <p className="text-sm text-muted-foreground mb-3">
-        No isolated workspace was found for this task. The changes may have been made directly in your project.
+        未找到该任务的隔离工作区。改动可能已直接在项目中完成。
       </p>
 
       {/* Allow marking as done */}
@@ -70,12 +70,12 @@ export function NoWorkspaceMessage({ task, onClose }: NoWorkspaceMessageProps) {
           {isMarkingDone ? (
             <>
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              Updating...
+              更新中...
             </>
           ) : (
             <>
               <Check className="h-4 w-4 mr-2" />
-              Mark as Done
+              标记为完成
             </>
           )}
         </Button>
@@ -107,7 +107,7 @@ export function StagedInProjectMessage({ task, projectPath, hasWorktree = false,
       const result = await window.electronAPI.discardWorktree(task.id);
 
       if (!result.success) {
-        setError(result.error || 'Failed to delete worktree');
+        setError(result.error || '删除工作树失败');
         return;
       }
 
@@ -118,7 +118,7 @@ export function StagedInProjectMessage({ task, projectPath, hasWorktree = false,
       onClose?.();
     } catch (err) {
       console.error('Error deleting worktree:', err);
-      setError(err instanceof Error ? err.message : 'Failed to delete worktree');
+      setError(err instanceof Error ? err.message : '删除工作树失败');
     } finally {
       setIsDeleting(false);
     }
@@ -128,17 +128,17 @@ export function StagedInProjectMessage({ task, projectPath, hasWorktree = false,
     <div className="rounded-xl border border-success/30 bg-success/10 p-4">
       <h3 className="font-medium text-sm text-foreground mb-2 flex items-center gap-2">
         <GitMerge className="h-4 w-4 text-success" />
-        Changes Staged in Project
+        更改已在项目中暂存
       </h3>
       <p className="text-sm text-muted-foreground mb-3">
-        This task's changes have been staged in your main project{task.stagedAt ? ` on ${new Date(task.stagedAt).toLocaleDateString()}` : ''}.
+        该任务的更改已在主项目中暂存{task.stagedAt ? `（${new Date(task.stagedAt).toLocaleDateString()}）` : ''}。
       </p>
       <div className="bg-background/50 rounded-lg p-3 mb-3">
-        <p className="text-xs text-muted-foreground mb-2">Next steps:</p>
+        <p className="text-xs text-muted-foreground mb-2">下一步：</p>
         <ol className="text-xs text-muted-foreground space-y-1 list-decimal list-inside">
-          <li>Review staged changes with <code className="bg-background px-1 rounded">git status</code> and <code className="bg-background px-1 rounded">git diff --staged</code></li>
-          <li>Commit when ready: <code className="bg-background px-1 rounded">git commit -m "your message"</code></li>
-          <li>Push to remote when satisfied</li>
+          <li>使用 <code className="bg-background px-1 rounded">git status</code> 和 <code className="bg-background px-1 rounded">git diff --staged</code> 查看暂存更改</li>
+          <li>确认无误后提交：<code className="bg-background px-1 rounded">git commit -m "your message"</code></li>
+          <li>满意后推送到远端</li>
         </ol>
       </div>
 
@@ -156,12 +156,12 @@ export function StagedInProjectMessage({ task, projectPath, hasWorktree = false,
               {isDeleting ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Cleaning up...
+                  清理中...
                 </>
               ) : (
                 <>
                   <Check className="h-4 w-4 mr-2" />
-                  Delete Worktree & Mark Done
+                  删除工作树并标记完成
                 </>
               )}
             </Button>
@@ -170,7 +170,7 @@ export function StagedInProjectMessage({ task, projectPath, hasWorktree = false,
             <p className="text-xs text-destructive">{error}</p>
           )}
           <p className="text-xs text-muted-foreground">
-            This will delete the isolated workspace and mark the task as complete.
+            这将删除隔离工作区并将任务标记为完成。
           </p>
         </div>
       )}

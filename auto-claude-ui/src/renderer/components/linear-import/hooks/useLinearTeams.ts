@@ -22,7 +22,7 @@ export function useLinearTeams(projectId: string, open: boolean) {
         if (result.success && result.data) {
           setTeams(result.data);
         } else {
-          setError(result.error || 'Failed to load teams');
+          setError(result.error || '加载团队失败');
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');

@@ -37,25 +37,25 @@ export function DiscardDialog({
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
             <FolderX className="h-5 w-5 text-destructive" />
-            Discard Build
+            丢弃构建
           </AlertDialogTitle>
           <AlertDialogDescription asChild>
             <div className="text-sm text-muted-foreground space-y-3">
               <p>
-                Are you sure you want to discard all changes for <strong className="text-foreground">"{task.title}"</strong>?
+                确定要丢弃 <strong className="text-foreground">"{task.title}"</strong> 的所有改动吗？
               </p>
               <p className="text-destructive">
-                This will permanently delete the isolated workspace and all uncommitted changes.
-                The task will be moved back to Planning status.
+                这将永久删除隔离工作区及所有未提交的改动。
+                任务将回到“规划”状态。
               </p>
               {worktreeStatus?.exists && (
                 <div className="bg-muted/50 rounded-lg p-3 text-sm">
                   <div className="flex justify-between mb-1">
-                    <span className="text-muted-foreground">Files changed:</span>
+                    <span className="text-muted-foreground">变更文件数：</span>
                     <span>{worktreeStatus.filesChanged || 0}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Lines:</span>
+                    <span className="text-muted-foreground">行数：</span>
                     <span className="text-success">+{worktreeStatus.additions || 0}</span>
                     <span className="text-destructive">-{worktreeStatus.deletions || 0}</span>
                   </div>
@@ -65,7 +65,7 @@ export function DiscardDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isDiscarding}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isDiscarding}>取消</AlertDialogCancel>
           <AlertDialogAction
             onClick={(e) => {
               e.preventDefault();
@@ -77,12 +77,12 @@ export function DiscardDialog({
             {isDiscarding ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Discarding...
+                正在丢弃...
               </>
             ) : (
               <>
                 <FolderX className="mr-2 h-4 w-4" />
-                Discard Build
+                丢弃构建
               </>
             )}
           </AlertDialogAction>

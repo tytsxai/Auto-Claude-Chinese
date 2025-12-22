@@ -54,7 +54,7 @@ export function ClaudeOAuthFlow({ onSuccess, onCancel }: ClaudeOAuthFlowProps) {
           onSuccess();
         }, 1500);
       } else {
-        setError(info.message || 'Failed to save OAuth token');
+        setError(info.message || '保存 OAuth 令牌失败');
         setStatus('error');
       }
     });
@@ -85,7 +85,7 @@ export function ClaudeOAuthFlow({ onSuccess, onCancel }: ClaudeOAuthFlowProps) {
       const profilesResult = await window.electronAPI.getClaudeProfiles();
 
       if (!profilesResult.success || !profilesResult.data) {
-        throw new Error('Failed to get Claude profiles');
+        throw new Error('获取 Claude 配置文件失败');
       }
 
       const activeProfileId = profilesResult.data.activeProfileId;
@@ -95,7 +95,7 @@ export function ClaudeOAuthFlow({ onSuccess, onCancel }: ClaudeOAuthFlowProps) {
       const result = await window.electronAPI.initializeClaudeProfile(activeProfileId);
 
       if (!result.success) {
-        throw new Error(result.error || 'Failed to start authentication');
+        throw new Error(result.error || '启动认证失败');
       }
 
       console.warn('[ClaudeOAuth] Authentication started, waiting for token...');
@@ -125,15 +125,13 @@ export function ClaudeOAuthFlow({ onSuccess, onCancel }: ClaudeOAuthFlowProps) {
                 <Key className="h-6 w-6 text-info shrink-0 mt-0.5" />
                 <div className="flex-1 space-y-3">
                   <h3 className="text-lg font-medium text-foreground">
-                    Authenticate with Claude
+                    Claude 账号认证
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    Auto Claude requires Claude AI authentication for AI-powered features like
-                    Roadmap generation, Task automation, and Ideation.
+                    Auto-Claude 的 AI 功能需要 Claude 认证，例如路线图生成、任务自动化与创意生成。
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    This will open a browser window to authenticate with your Claude account.
-                    Your credentials are stored securely and are valid for 1 year.
+                    将打开浏览器完成 Claude 账号认证。凭据将安全保存，有效期 1 年。
                   </p>
                 </div>
               </div>
@@ -143,7 +141,7 @@ export function ClaudeOAuthFlow({ onSuccess, onCancel }: ClaudeOAuthFlowProps) {
           <div className="flex justify-center">
             <Button onClick={handleStartAuth} size="lg" className="gap-2">
               <Key className="h-5 w-5" />
-              Authenticate with Claude
+              Claude 账号认证
             </Button>
           </div>
         </div>
@@ -158,10 +156,10 @@ export function ClaudeOAuthFlow({ onSuccess, onCancel }: ClaudeOAuthFlowProps) {
                 <Loader2 className="h-6 w-6 animate-spin text-info shrink-0" />
                 <div className="flex-1">
                   <h3 className="text-lg font-medium text-foreground">
-                    Authenticating...
+                    正在认证...
                   </h3>
                   <p className="text-sm text-muted-foreground mt-1">
-                    A terminal window has opened. Please complete the authentication in your browser.
+                    已打开终端窗口，请在浏览器完成认证。
                   </p>
                 </div>
               </div>
@@ -170,13 +168,13 @@ export function ClaudeOAuthFlow({ onSuccess, onCancel }: ClaudeOAuthFlowProps) {
                 <div className="flex items-start gap-2">
                   <Info className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
                   <div className="text-xs text-muted-foreground space-y-1">
-                    <p className="font-medium">What's happening:</p>
+                    <p className="font-medium">正在进行：</p>
                     <ol className="list-decimal list-inside space-y-1 ml-2">
-                      <li>A terminal opened and ran <code className="px-1 bg-muted rounded">claude setup-token</code></li>
-                      <li>Your browser should open to authenticate with Claude</li>
-                      <li>Complete the OAuth flow in your browser</li>
-                      <li>The terminal will display your token (starts with sk-ant-oat01-...)</li>
-                      <li>Auto Claude will automatically detect and save it</li>
+                      <li>终端已打开并运行 <code className="px-1 bg-muted rounded">claude setup-token</code></li>
+                      <li>浏览器会打开并引导你登录 Claude</li>
+                      <li>在浏览器完成 OAuth 流程</li>
+                      <li>终端会显示你的令牌（以 sk-ant-oat01-... 开头）</li>
+                      <li>Auto-Claude 会自动检测并保存</li>
                     </ol>
                   </div>
                 </div>
@@ -194,14 +192,14 @@ export function ClaudeOAuthFlow({ onSuccess, onCancel }: ClaudeOAuthFlowProps) {
               <CheckCircle2 className="h-6 w-6 text-success shrink-0 mt-0.5" />
               <div className="flex-1">
                 <h3 className="text-lg font-medium text-success">
-                  Successfully Authenticated!
+                  认证成功！
                 </h3>
                 <p className="text-sm text-success/80 mt-1">
-                  {email ? `Connected as ${email}` : 'Your Claude credentials have been saved'}
+                  {email ? `已连接账号 ${email}` : 'Claude 凭据已保存'}
                 </p>
                 <div className="flex items-center gap-2 mt-3 text-xs text-success/70">
                   <Sparkles className="h-3 w-3" />
-                  <span>You can now use all Auto Claude AI features</span>
+                  <span>现在可以使用 Auto-Claude 的全部 AI 功能</span>
                 </div>
               </div>
             </div>
@@ -218,7 +216,7 @@ export function ClaudeOAuthFlow({ onSuccess, onCancel }: ClaudeOAuthFlowProps) {
                 <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
                 <div className="flex-1">
                   <h3 className="text-lg font-medium text-destructive">
-                    Authentication Failed
+                    认证失败
                   </h3>
                   <p className="text-sm text-destructive/80 mt-1">{error}</p>
                 </div>
@@ -228,11 +226,11 @@ export function ClaudeOAuthFlow({ onSuccess, onCancel }: ClaudeOAuthFlowProps) {
 
           <div className="flex justify-center gap-3">
             <Button onClick={handleRetry} variant="outline">
-              Retry
+              重试
             </Button>
             {onCancel && (
               <Button onClick={onCancel} variant="ghost">
-                Cancel
+                取消
               </Button>
             )}
           </div>
@@ -243,7 +241,7 @@ export function ClaudeOAuthFlow({ onSuccess, onCancel }: ClaudeOAuthFlowProps) {
       {(status === 'ready' || status === 'authenticating') && onCancel && (
         <div className="flex justify-center pt-2">
           <Button onClick={onCancel} variant="ghost" size="sm">
-            Skip for now
+            暂时跳过
           </Button>
         </div>
       )}

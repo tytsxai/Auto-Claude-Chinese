@@ -70,7 +70,7 @@ export function InsightsModelSelector({
       const modelLabel = AVAILABLE_MODELS.find(m => m.value === currentConfig.model)?.label || currentConfig.model;
       return `${modelLabel} + ${currentConfig.thinkingLevel}`;
     }
-    return profile?.name || 'Balanced';
+    return profile?.name || '均衡';
   };
 
   return (
@@ -82,7 +82,7 @@ export function InsightsModelSelector({
             size="sm"
             className="h-8 gap-2 px-2"
             disabled={disabled}
-            title={`Model: ${getDisplayText()}`}
+            title={`模型：${getDisplayText()}`}
           >
             <Icon className="h-4 w-4" />
             <span className="hidden text-xs text-muted-foreground sm:inline">
@@ -91,7 +91,7 @@ export function InsightsModelSelector({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-64">
-          <DropdownMenuLabel>Agent Profile</DropdownMenuLabel>
+          <DropdownMenuLabel>代理配置</DropdownMenuLabel>
           {DEFAULT_AGENT_PROFILES.filter(p => !p.isAutoProfile).map((p) => {
             const ProfileIcon = iconMap[p.icon || 'Brain'];
             const isSelected = selectedProfileId === p.id;
@@ -122,9 +122,9 @@ export function InsightsModelSelector({
           >
             <Sliders className="h-4 w-4 shrink-0" />
             <div className="flex-1">
-              <div className="font-medium">Custom...</div>
+              <div className="font-medium">自定义...</div>
               <div className="text-xs text-muted-foreground">
-                Choose model & thinking level
+                选择模型与思考级别
               </div>
             </div>
             {selectedProfileId === 'custom' && (

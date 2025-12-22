@@ -38,6 +38,12 @@ export function ThemeSelector({ settings, onSettingsChange }: ThemeSelectorProps
     updateStoreSettings({ theme: mode });
   };
 
+  const MODE_LABELS: Record<'system' | 'light' | 'dark', string> = {
+    system: '跟随系统',
+    light: '浅色',
+    dark: '深色'
+  };
+
   const getModeIcon = (mode: string) => {
     switch (mode) {
       case 'light':
@@ -69,7 +75,7 @@ export function ThemeSelector({ settings, onSettingsChange }: ThemeSelectorProps
               )}
             >
               {getModeIcon(mode)}
-              <span className="text-sm font-medium capitalize">{mode}</span>
+              <span className="text-sm font-medium">{MODE_LABELS[mode]}</span>
             </button>
           ))}
         </div>

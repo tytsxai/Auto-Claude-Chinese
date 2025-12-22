@@ -24,7 +24,7 @@ export function useGitHubConnection(
           setGitHubConnectionStatus(result.data);
         }
       } catch {
-        setGitHubConnectionStatus({ connected: false, error: 'Failed to check connection' });
+        setGitHubConnectionStatus({ connected: false, error: '检查连接失败' });
       } finally {
         setIsCheckingGitHub(false);
       }

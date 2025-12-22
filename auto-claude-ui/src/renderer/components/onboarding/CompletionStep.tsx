@@ -66,7 +66,7 @@ export function CompletionStep({
     {
       icon: <FileText className="h-5 w-5" />,
       title: '创建任务',
-      description: '从创建你的第一个任务开始，体验 Auto Claude 的能力。',
+      description: '从创建你的第一个任务开始，体验 Auto-Claude 的能力。',
       action: onOpenTaskCreator,
       actionLabel: '打开任务创建器'
     },
@@ -103,7 +103,7 @@ export function CompletionStep({
             全部就绪！
           </h1>
           <p className="mt-3 text-muted-foreground text-lg">
-            Auto Claude 已准备好帮助你构建出色的软件
+            Auto-Claude 已准备好帮助你构建出色的软件
           </p>
         </div>
 

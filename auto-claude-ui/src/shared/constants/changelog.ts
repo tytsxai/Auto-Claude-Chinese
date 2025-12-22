@@ -14,9 +14,9 @@ export const CHANGELOG_FORMAT_LABELS: Record<string, string> = {
 };
 
 export const CHANGELOG_FORMAT_DESCRIPTIONS: Record<string, string> = {
-  'keep-a-changelog': 'Structured format with Added/Changed/Fixed/Removed sections',
-  'simple-list': 'Clean bulleted list with categories',
-  'github-release': 'GitHub-style release notes'
+  'keep-a-changelog': '包含 Added/Changed/Fixed/Removed 等结构化章节',
+  'simple-list': '按分类组织的简洁列表',
+  'github-release': 'GitHub 风格的发布说明'
 };
 
 // ============================================
@@ -30,9 +30,9 @@ export const CHANGELOG_AUDIENCE_LABELS: Record<string, string> = {
 };
 
 export const CHANGELOG_AUDIENCE_DESCRIPTIONS: Record<string, string> = {
-  'technical': 'Detailed technical changes for developers',
-  'user-facing': 'Clear, non-technical descriptions for end users',
-  'marketing': 'Value-focused copy emphasizing benefits'
+  'technical': '面向开发者的详细技术变更',
+  'user-facing': '面向用户的清晰非技术说明',
+  'marketing': '强调价值与收益的营销文案'
 };
 
 // ============================================
@@ -47,10 +47,10 @@ export const CHANGELOG_EMOJI_LEVEL_LABELS: Record<string, string> = {
 };
 
 export const CHANGELOG_EMOJI_LEVEL_DESCRIPTIONS: Record<string, string> = {
-  'none': 'No emojis',
-  'little': 'Emojis on section headings only',
-  'medium': 'Emojis on headings and key items',
-  'high': 'Emojis on headings and every line'
+  'none': '不使用表情',
+  'little': '仅章节标题使用表情',
+  'medium': '标题与重点条目使用表情',
+  'high': '标题与每一行都使用表情'
 };
 
 // ============================================
@@ -64,9 +64,9 @@ export const CHANGELOG_SOURCE_MODE_LABELS: Record<string, string> = {
 };
 
 export const CHANGELOG_SOURCE_MODE_DESCRIPTIONS: Record<string, string> = {
-  'tasks': 'Generate from completed spec tasks',
-  'git-history': 'Generate from recent commits or tag range',
-  'branch-diff': 'Generate from commits between two branches'
+  'tasks': '从已完成的规范任务生成',
+  'git-history': '从近期提交或标签范围生成',
+  'branch-diff': '从两个分支之间的提交生成'
 };
 
 // ============================================
@@ -80,9 +80,9 @@ export const GIT_HISTORY_TYPE_LABELS: Record<string, string> = {
 };
 
 export const GIT_HISTORY_TYPE_DESCRIPTIONS: Record<string, string> = {
-  'recent': 'Last N commits from HEAD',
-  'since-date': 'All commits since a specific date',
-  'tag-range': 'Commits between two tags'
+  'recent': '从 HEAD 往前 N 个提交',
+  'since-date': '自指定日期以来的所有提交',
+  'tag-range': '两个标签之间的提交'
 };
 
 // ============================================

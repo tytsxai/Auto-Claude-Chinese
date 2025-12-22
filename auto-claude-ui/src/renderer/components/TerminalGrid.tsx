@@ -71,7 +71,7 @@ export function TerminalGrid({ projectPath, onNewTaskClick }: TerminalGridProps)
           setSessionDates(result.data);
         }
       } catch (error) {
-        console.error('Failed to fetch session dates:', error);
+        console.error('获取会话日期失败：', error);
       } finally {
         setIsLoadingDates(false);
       }
@@ -140,7 +140,7 @@ export function TerminalGrid({ projectPath, onNewTaskClick }: TerminalGridProps)
         }
       }
     } catch (error) {
-      console.error('Failed to restore sessions:', error);
+      console.error('恢复会话失败：', error);
     } finally {
       setIsRestoring(false);
     }

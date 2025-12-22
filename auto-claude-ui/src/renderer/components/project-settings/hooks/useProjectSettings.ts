@@ -150,7 +150,7 @@ export function useProjectSettings(
           if (result.success && result.data) {
             setEnvConfig(result.data);
           } else {
-            setEnvError(result.error || 'Failed to load environment config');
+            setEnvError(result.error || '加载环境配置失败');
           }
         } catch (err) {
           setEnvError(err instanceof Error ? err.message : 'Unknown error');
@@ -199,7 +199,7 @@ export function useProjectSettings(
           setLinearConnectionStatus(result.data);
         }
       } catch {
-        setLinearConnectionStatus({ connected: false, error: 'Failed to check connection' });
+        setLinearConnectionStatus({ connected: false, error: '检查连接失败' });
       } finally {
         setIsCheckingLinear(false);
       }
@@ -228,7 +228,7 @@ export function useProjectSettings(
           setGitHubConnectionStatus(status);
         }
       } catch {
-        setGitHubConnectionStatus({ connected: false, error: 'Failed to check connection' });
+        setGitHubConnectionStatus({ connected: false, error: '检查连接失败' });
       } finally {
         setIsCheckingGitHub(false);
       }
@@ -256,7 +256,7 @@ export function useProjectSettings(
           setEnvConfig(envResult.data);
         }
       } else {
-        setError(result?.error || 'Failed to initialize');
+        setError(result?.error || '初始化失败');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
@@ -274,7 +274,7 @@ export function useProjectSettings(
         const info = await checkProjectVersion(project.id);
         setVersionInfo(info);
       } else {
-        setError(result?.error || 'Failed to update');
+        setError(result?.error || '更新失败');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
@@ -291,7 +291,7 @@ export function useProjectSettings(
     try {
       const result = await window.electronAPI.updateProjectEnv(project.id, envConfig);
       if (!result.success) {
-        setEnvError(result.error || 'Failed to save environment config');
+        setEnvError(result.error || '保存环境配置失败');
       }
     } catch (err) {
       setEnvError(err instanceof Error ? err.message : 'Unknown error');
@@ -325,14 +325,14 @@ export function useProjectSettings(
     try {
       const success = await updateProjectSettings(project.id, settings);
       if (!success) {
-        setError('Failed to save settings');
+        setError('保存设置失败');
         return;
       }
 
       if (envConfig) {
         const envResult = await window.electronAPI.updateProjectEnv(project.id, envConfig);
         if (!envResult.success) {
-          setError(envResult.error || 'Failed to save environment config');
+          setError(envResult.error || '保存环境配置失败');
           return;
         }
       }
@@ -353,7 +353,7 @@ export function useProjectSettings(
       try {
         const result = await window.electronAPI.updateProjectEnv(project.id, newConfig);
         if (!result.success) {
-          console.error('[useProjectSettings] Failed to auto-save env config:', result.error);
+          console.error('[useProjectSettings] 自动保存环境配置失败：', result.error);
         }
       } catch (err) {
         console.error('[useProjectSettings] Error auto-saving env config:', err);

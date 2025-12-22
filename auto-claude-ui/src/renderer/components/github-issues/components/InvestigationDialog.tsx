@@ -58,7 +58,7 @@ export function InvestigationDialog({
         })
         .catch((err: unknown) => {
           if (!isMounted) return;
-          console.error('Failed to fetch comments:', err);
+          console.error('获取评论失败：', err);
           setFetchCommentsError(
             err instanceof Error ? err.message : '评论加载失败'
           );

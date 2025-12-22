@@ -122,7 +122,7 @@ class BufferPersistence {
         `[BufferPersistence] Saved buffer for ${terminalId} (${currentSize} bytes)`
       );
     } catch (error) {
-      console.error(`[BufferPersistence] Failed to save ${terminalId}:`, error);
+      console.error(`[BufferPersistence] 保存 ${terminalId} 失败：`, error);
       throw error;
     } finally {
       this.isSaving.set(terminalId, false);
@@ -142,7 +142,7 @@ class BufferPersistence {
       managed.lastSavedSize = serialized.length;
       console.warn(`[BufferPersistence] Immediate save for ${terminalId} complete`);
     } catch (error) {
-      console.error(`[BufferPersistence] Failed to immediately save ${terminalId}:`, error);
+      console.error(`[BufferPersistence] 立即保存 ${terminalId} 失败：`, error);
       throw error;
     }
   }
@@ -155,7 +155,7 @@ class BufferPersistence {
 
     const saves = Array.from(this.terminals.keys()).map((id) =>
       this.saveNow(id).catch((error) => {
-        console.error(`[BufferPersistence] Failed to save ${id}:`, error);
+        console.error(`[BufferPersistence] 保存 ${id} 失败：`, error);
       })
     );
 
@@ -209,7 +209,7 @@ window.addEventListener('beforeunload', () => {
   console.warn('[BufferPersistence] Page unloading, saving all buffers...');
   // Use synchronous save via IPC if available, otherwise fire and forget
   bufferPersistence.saveAll().catch((error) => {
-    console.error('[BufferPersistence] Failed to save all buffers on unload:', error);
+    console.error('[BufferPersistence] 卸载时保存所有缓冲区失败：', error);
   });
 });
 

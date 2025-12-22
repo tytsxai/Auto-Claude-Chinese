@@ -97,7 +97,7 @@ export function FirstSpecStep({ onNext, onBack, onSkip, onOpenTaskCreator }: Fir
             创建你的第一个任务
           </h1>
           <p className="mt-2 text-muted-foreground">
-            描述你想构建的内容，其余交给 Auto Claude
+            描述你想构建的内容，其余交给 Auto-Claude
           </p>
         </div>
 

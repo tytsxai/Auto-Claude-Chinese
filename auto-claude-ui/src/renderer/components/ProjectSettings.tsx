@@ -109,7 +109,7 @@ export function ProjectSettings({ project, open, onOpenChange }: ProjectSettings
           setEnvConfig(envResult.data);
         }
       } else {
-        setError(result?.error || 'Failed to initialize');
+        setError(result?.error || '初始化失败');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
@@ -128,7 +128,7 @@ export function ProjectSettings({ project, open, onOpenChange }: ProjectSettings
         const info = await checkProjectVersion(project.id);
         setVersionInfo(info);
       } else {
-        setError(result?.error || 'Failed to update');
+        setError(result?.error || '更新失败');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
@@ -145,7 +145,7 @@ export function ProjectSettings({ project, open, onOpenChange }: ProjectSettings
       // Save project settings
       const success = await updateProjectSettings(project.id, settings);
       if (!success) {
-        setError('Failed to save settings');
+        setError('保存设置失败');
         return;
       }
 
@@ -153,7 +153,7 @@ export function ProjectSettings({ project, open, onOpenChange }: ProjectSettings
       if (envConfig) {
         const envResult = await window.electronAPI.updateProjectEnv(project.id, envConfig);
         if (!envResult.success) {
-          setError(envResult.error || 'Failed to save environment config');
+          setError(envResult.error || '保存环境配置失败');
           return;
         }
       }
@@ -187,7 +187,7 @@ export function ProjectSettings({ project, open, onOpenChange }: ProjectSettings
 
         <div className="flex-1 min-h-0 -mx-6 overflow-y-auto">
           <div className="px-6 py-4 space-y-6">
-            {/* Auto-Build Integration */}
+            {/* Auto-Claude Integration */}
             <AutoBuildIntegration
               autoBuildPath={project.autoBuildPath}
               versionInfo={versionInfo}

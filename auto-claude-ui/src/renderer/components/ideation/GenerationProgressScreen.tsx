@@ -63,7 +63,7 @@ export function GenerationProgressScreen({
     try {
       await onStop();
     } catch (err) {
-      console.error('Failed to stop generation:', err);
+      console.error('停止生成失败：', err);
     } finally {
       setIsStopping(false);
     }
@@ -94,9 +94,9 @@ export function GenerationProgressScreen({
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Sparkles className="h-5 w-5 text-primary animate-pulse" />
-              <h2 className="text-lg font-semibold">Generating Ideas</h2>
+              <h2 className="text-lg font-semibold">正在生成创意</h2>
               <Badge variant="outline">
-                {completedCount}/{enabledTypes.length} complete
+                已完成 {completedCount}/{enabledTypes.length}
               </Badge>
             </div>
             <p className="text-sm text-muted-foreground">{generationStatus.message}</p>
@@ -108,7 +108,7 @@ export function GenerationProgressScreen({
               onClick={() => setShowLogs(!showLogs)}
             >
               <FileCode className="h-4 w-4 mr-1" />
-              {showLogs ? 'Hide' : 'Show'} Logs
+              {showLogs ? '隐藏' : '显示'} 日志
             </Button>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -119,10 +119,10 @@ export function GenerationProgressScreen({
                   disabled={isStopping}
                 >
                   <Square className="h-4 w-4 mr-1" />
-                  {isStopping ? 'Stopping...' : 'Stop'}
+                  {isStopping ? '正在停止...' : '停止'}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>Stop generation</TooltipContent>
+              <TooltipContent>停止生成</TooltipContent>
             </Tooltip>
           </div>
         </div>
@@ -198,7 +198,7 @@ export function GenerationProgressScreen({
                   <TypeStateIcon state={state} />
                   {ideas.length > 0 && (
                     <Badge variant="outline" className="ml-auto">
-                      {ideas.length} ideas
+                      {ideas.length} 个创意
                     </Badge>
                   )}
                 </div>
@@ -229,21 +229,21 @@ export function GenerationProgressScreen({
                   {/* Show pending message */}
                   {state === 'pending' && (
                     <div className="text-sm text-muted-foreground py-2">
-                      Waiting to start...
+                      等待开始...
                     </div>
                   )}
 
                   {/* Show failed message */}
                   {state === 'failed' && ideas.length === 0 && (
                     <div className="text-sm text-destructive py-2">
-                      Failed to generate ideas for this category
+                      此类别创意生成失败
                     </div>
                   )}
 
                   {/* Show empty message if completed with no ideas */}
                   {state === 'completed' && ideas.length === 0 && (
                     <div className="text-sm text-muted-foreground py-2">
-                      No ideas generated for this category
+                      此类别未生成创意
                     </div>
                   )}
                 </div>

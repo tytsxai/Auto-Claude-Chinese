@@ -18,6 +18,13 @@ interface DiffViewDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
+const FILE_STATUS_LABELS_ZH: Record<string, string> = {
+  added: '新增',
+  deleted: '删除',
+  modified: '修改',
+  renamed: '重命名'
+};
+
 /**
  * Dialog displaying the list of changed files with their status and line changes
  */
@@ -32,10 +39,10 @@ export function DiffViewDialog({
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
             <Eye className="h-5 w-5 text-purple-400" />
-            Changed Files
+            变更文件
           </AlertDialogTitle>
           <AlertDialogDescription>
-            {worktreeDiff?.summary || 'No changes found'}
+            {worktreeDiff?.summary || '未发现改动'}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="flex-1 overflow-auto min-h-0 -mx-6 px-6">
@@ -67,7 +74,7 @@ export function DiffViewDialog({
                         file.status === 'renamed' && 'bg-warning/10 text-warning'
                       )}
                     >
-                      {file.status}
+                      {FILE_STATUS_LABELS_ZH[file.status] ?? file.status}
                     </Badge>
                     <span className="text-xs text-success">+{file.additions}</span>
                     <span className="text-xs text-destructive">-{file.deletions}</span>
@@ -77,12 +84,12 @@ export function DiffViewDialog({
             </div>
           ) : (
             <div className="text-center py-8 text-muted-foreground">
-              No changed files found
+              未找到变更文件
             </div>
           )}
         </div>
         <AlertDialogFooter className="mt-4">
-          <AlertDialogCancel>Close</AlertDialogCancel>
+          <AlertDialogCancel>关闭</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -145,14 +145,14 @@ export function ImageUpload({
       // Check how many more images we can add
       const remainingSlots = MAX_IMAGES_PER_TASK - images.length;
       if (remainingSlots <= 0) {
-        setError(`Maximum of ${MAX_IMAGES_PER_TASK} images allowed`);
+        setError(`最多允许 ${MAX_IMAGES_PER_TASK} 张图片`);
         return;
       }
 
       // Limit files to remaining slots
       const filesToProcess = fileArray.slice(0, remainingSlots);
       if (fileArray.length > remainingSlots) {
-        setError(`Only ${remainingSlots} more image(s) can be added. Some files were skipped.`);
+        setError(`最多还能添加 ${remainingSlots} 张图片，部分文件已跳过。`);
       }
 
       const newImages: ImageAttachment[] = [];
@@ -162,13 +162,13 @@ export function ImageUpload({
       for (const file of filesToProcess) {
         // Validate file type
         if (!isValidImageType(file)) {
-          errors.push(`"${file.name}" is not a valid image type. Allowed: ${ALLOWED_IMAGE_TYPES_DISPLAY}`);
+          errors.push(`"${file.name}" 不是有效的图片类型。允许类型：${ALLOWED_IMAGE_TYPES_DISPLAY}`);
           continue;
         }
 
         // Warn about large files
         if (file.size > MAX_IMAGE_SIZE) {
-          errors.push(`"${file.name}" is larger than 10MB. Consider compressing it for better performance.`);
+          errors.push(`"${file.name}" 大于 10MB，建议压缩以获得更好性能。`);
           // Still allow the upload, just warn
         }
 
@@ -189,7 +189,7 @@ export function ImageUpload({
             thumbnail
           });
         } catch {
-          errors.push(`Failed to process "${file.name}"`);
+          errors.push(`处理 "${file.name}" 失败`);
         }
       }
 
@@ -311,12 +311,12 @@ export function ImageUpload({
 
         <div className="space-y-1">
           <p className="text-sm font-medium text-foreground">
-            {canAddMore ? 'Drop images here or click to browse' : 'Maximum images reached'}
+            {canAddMore ? '拖拽图片到此处或点击选择' : '已达到最大图片数量'}
           </p>
           <p className="text-xs text-muted-foreground">
             {canAddMore
-              ? `${ALLOWED_IMAGE_TYPES_DISPLAY} up to 10MB each (${images.length}/${MAX_IMAGES_PER_TASK})`
-              : `${MAX_IMAGES_PER_TASK} images maximum`}
+              ? `${ALLOWED_IMAGE_TYPES_DISPLAY}，单张最大 10MB（${images.length}/${MAX_IMAGES_PER_TASK}）`
+              : `最多 ${MAX_IMAGES_PER_TASK} 张图片`}
           </p>
         </div>
       </div>
@@ -378,7 +378,7 @@ export function ImageUpload({
               {image.size > MAX_IMAGE_SIZE && (
                 <div
                   className="absolute top-1 left-1 p-1 rounded-full bg-warning/90"
-                  title="Large file - consider compressing"
+                  title="文件较大，建议压缩"
                 >
                   <AlertCircle className="h-3 w-3 text-warning-foreground" />
                 </div>

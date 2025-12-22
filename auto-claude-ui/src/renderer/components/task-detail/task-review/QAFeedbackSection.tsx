@@ -22,13 +22,13 @@ export function QAFeedbackSection({
     <div className="rounded-xl border border-warning/30 bg-warning/10 p-4">
       <h3 className="font-medium text-sm text-foreground mb-2 flex items-center gap-2">
         <AlertCircle className="h-4 w-4 text-warning" />
-        Request Changes
+        请求修改
       </h3>
       <p className="text-sm text-muted-foreground mb-3">
-        Found issues? Describe what needs to be fixed and the AI will continue working on it.
+        发现问题？请描述需要修复的内容，AI 会继续处理。
       </p>
       <Textarea
-        placeholder="Describe the issues or changes needed..."
+        placeholder="请描述问题或需要的修改..."
         value={feedback}
         onChange={(e) => onFeedbackChange(e.target.value)}
         className="mb-3"
@@ -43,12 +43,12 @@ export function QAFeedbackSection({
         {isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Submitting...
+            提交中...
           </>
         ) : (
           <>
             <RotateCcw className="mr-2 h-4 w-4" />
-            Request Changes
+            请求修改
           </>
         )}
       </Button>

@@ -81,7 +81,7 @@ export async function loadSettings(): Promise<void> {
       }
     }
   } catch (error) {
-    store.setError(error instanceof Error ? error.message : 'Failed to load settings');
+    store.setError(error instanceof Error ? error.message : '加载设置失败');
   } finally {
     store.setLoading(false);
   }

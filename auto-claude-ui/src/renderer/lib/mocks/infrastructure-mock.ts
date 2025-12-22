@@ -117,7 +117,7 @@ export const infrastructureMock = {
   onIdeationTypeComplete: () => () => {},
   onIdeationTypeFailed: () => () => {},
 
-  // Auto-Build Source Update Operations
+  // Auto-Claude Source Update Operations
   checkAutoBuildSourceUpdate: async () => ({
     success: true,
     data: {

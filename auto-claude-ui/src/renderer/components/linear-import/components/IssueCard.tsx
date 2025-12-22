@@ -74,7 +74,7 @@ export function IssueCard({ issue, isSelected, onToggle }: IssueCardProps) {
             ))}
             {issue.labels.length > 2 && (
               <span className="text-xs text-muted-foreground">
-                +{issue.labels.length - 2} more
+                +{issue.labels.length - 2} 个
               </span>
             )}
           </div>
@@ -95,12 +95,12 @@ export function IssueCard({ issue, isSelected, onToggle }: IssueCardProps) {
               {isExpanded ? (
                 <>
                   <ChevronUp className="h-3 w-3" />
-                  Hide description
+                  收起描述
                 </>
               ) : (
                 <>
                   <ChevronDown className="h-3 w-3" />
-                  Show description
+                  展开描述
                 </>
               )}
             </button>
@@ -115,10 +115,10 @@ export function IssueCard({ issue, isSelected, onToggle }: IssueCardProps) {
           {/* Meta info */}
           <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
             {issue.assignee && (
-              <span>Assigned to {issue.assignee.name}</span>
+              <span>负责人：{issue.assignee.name}</span>
             )}
             {issue.project && (
-              <span>Project: {issue.project.name}</span>
+              <span>项目：{issue.project.name}</span>
             )}
             <a
               href={issue.url}
@@ -128,7 +128,7 @@ export function IssueCard({ issue, isSelected, onToggle }: IssueCardProps) {
               className="flex items-center gap-1 hover:text-primary"
             >
               <ExternalLink className="h-3 w-3" />
-              View in Linear
+              在 Linear 中查看
             </a>
           </div>
         </div>

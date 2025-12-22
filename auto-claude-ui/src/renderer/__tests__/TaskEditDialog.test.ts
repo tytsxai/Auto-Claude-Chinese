@@ -339,7 +339,7 @@ describe('TaskEditDialog Logic', () => {
       // Mock error response
       mockUpdateTask.mockResolvedValueOnce({
         success: false,
-        error: 'Failed to update'
+        error: '更新失败'
       });
 
       const result = await persistUpdateTask('task-1', {

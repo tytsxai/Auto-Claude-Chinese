@@ -116,7 +116,7 @@ export function useTaskDetail({ task }: UseTaskDetailOptions) {
           setWorktreeDiff(diffResult.data);
         }
       }).catch((err) => {
-        console.error('Failed to load worktree info:', err);
+        console.error('加载工作树信息失败：', err);
       }).finally(() => {
         setIsLoadingWorktree(false);
       });
@@ -145,7 +145,7 @@ export function useTaskDetail({ task }: UseTaskDetailOptions) {
           }
         }
       } catch (err) {
-        console.error('Failed to load task logs:', err);
+        console.error('加载任务日志失败：', err);
       } finally {
         setIsLoadingLogs(false);
       }
@@ -204,7 +204,7 @@ export function useTaskDetail({ task }: UseTaskDetailOptions) {
         setMergePreview(previewData);
         // Don't auto-popup - restored data stays silent
       } catch {
-        console.warn('[useTaskDetail] Failed to parse stored merge preview');
+        console.warn('[useTaskDetail] 解析已保存的合并预览失败');
         sessionStorage.removeItem(storageKey);
       }
     }
@@ -235,7 +235,7 @@ export function useTaskDetail({ task }: UseTaskDetailOptions) {
         console.warn('  - error:', result.error);
       }
     } catch (err) {
-      console.error('%c[useTaskDetail] Failed to load merge preview:', 'color: red; font-weight: bold;', err);
+      console.error('%c[useTaskDetail] 加载合并预览失败：', 'color: red; font-weight: bold;', err);
     } finally {
       console.warn('[useTaskDetail] Setting isLoadingPreview to false');
       setIsLoadingPreview(false);

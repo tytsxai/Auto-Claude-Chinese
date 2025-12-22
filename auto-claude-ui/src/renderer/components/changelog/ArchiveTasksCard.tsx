@@ -29,10 +29,10 @@ export function ArchiveTasksCard({
       if (result.success) {
         setArchiveSuccess(true);
       } else {
-        setArchiveError(result.error || 'Failed to archive tasks');
+        setArchiveError(result.error || '归档任务失败');
       }
     } catch (err) {
-      setArchiveError(err instanceof Error ? err.message : 'Failed to archive tasks');
+      setArchiveError(err instanceof Error ? err.message : '归档任务失败');
     } finally {
       setIsArchiving(false);
     }
@@ -43,7 +43,7 @@ export function ArchiveTasksCard({
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
           <Archive className="h-5 w-5" />
-          <CardTitle className="text-base">Archive Completed Tasks</CardTitle>
+          <CardTitle className="text-base">归档已完成任务</CardTitle>
         </div>
       </CardHeader>
       <CardContent>
@@ -51,15 +51,13 @@ export function ArchiveTasksCard({
           <div className="flex items-center gap-2 text-success">
             <CheckCircle className="h-4 w-4" />
             <span className="text-sm">
-              {selectedTasks.length} task{selectedTasks.length !== 1 ? 's' : ''} archived!
+              已归档 {selectedTasks.length} 个任务！
             </span>
           </div>
         ) : (
           <div className="space-y-3">
             <p className="text-sm text-muted-foreground">
-              Archive {selectedTasks.length} task{selectedTasks.length !== 1 ? 's' : ''} to
-              clean up your Kanban board. Archived tasks can be viewed using the "Show
-              Archived" toggle.
+              归档 {selectedTasks.length} 个任务以清理看板。已归档任务可通过“显示已归档”开关查看。
             </p>
             {archiveError && (
               <div className="flex items-start gap-2 text-destructive text-sm">
@@ -76,12 +74,12 @@ export function ArchiveTasksCard({
               {isArchiving ? (
                 <>
                   <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                  Archiving...
+                  正在归档...
                 </>
               ) : (
                 <>
                   <Archive className="mr-2 h-4 w-4" />
-                  Archive {selectedTasks.length} Task{selectedTasks.length !== 1 ? 's' : ''}
+                  归档 {selectedTasks.length} 个任务
                 </>
               )}
             </Button>

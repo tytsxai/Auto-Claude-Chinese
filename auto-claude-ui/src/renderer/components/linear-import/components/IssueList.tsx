@@ -40,7 +40,7 @@ export function IssueList({
     return (
       <ScrollArea className="flex-1 -mx-6 px-6 min-h-0">
         <div className="text-center py-12 text-muted-foreground">
-          <p className="text-sm">Select a team to view issues</p>
+          <p className="text-sm">请选择团队以查看事项</p>
         </div>
       </ScrollArea>
     );
@@ -52,8 +52,8 @@ export function IssueList({
         <div className="text-center py-12 text-muted-foreground">
           <p className="text-sm">
             {searchQuery || filterState !== 'all'
-              ? 'No issues match your filters'
-              : 'No issues found'}
+              ? '没有事项符合当前筛选'
+              : '未找到事项'}
           </p>
         </div>
       </ScrollArea>

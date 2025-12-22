@@ -84,7 +84,7 @@ export function SectionRouter({
       return (
         <SettingsSection
           title="通用"
-          description={`配置 ${project.name} 的 Auto-Build、智能体模型和通知`}
+          description={`配置 ${project.name} 的 Auto-Claude、智能体模型和通知`}
         >
           <GeneralSettings
             project={project}

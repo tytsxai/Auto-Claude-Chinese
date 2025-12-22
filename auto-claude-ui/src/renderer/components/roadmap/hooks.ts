@@ -83,7 +83,7 @@ export function useRoadmapSave(projectId: string) {
     try {
       await window.electronAPI.saveRoadmap(projectId, roadmap);
     } catch (error) {
-      console.error('Failed to save roadmap:', error);
+      console.error('保存路线图失败:', error);
     }
   };
 
@@ -106,7 +106,7 @@ export function useFeatureDelete(projectId: string) {
       try {
         await window.electronAPI.saveRoadmap(projectId, roadmap);
       } catch (error) {
-        console.error('Failed to save roadmap after delete:', error);
+        console.error('保存路线图失败 after delete:', error);
       }
     }
   };

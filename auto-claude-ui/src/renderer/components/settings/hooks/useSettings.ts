@@ -49,7 +49,7 @@ export function useSettings() {
         applyTheme(settings.theme);
         return true;
       } else {
-        setError('Failed to save settings');
+        setError('保存设置失败');
         return false;
       }
     } catch (err) {

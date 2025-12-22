@@ -120,7 +120,7 @@ export async function loadGitHubIssues(projectId: string, state?: 'open' | 'clos
     if (result.success && result.data) {
       store.setIssues(result.data);
     } else {
-      store.setError(result.error || 'Failed to load GitHub issues');
+      store.setError(result.error || '加载 GitHub 问题失败');
     }
   } catch (error) {
     store.setError(error instanceof Error ? error.message : 'Unknown error');
@@ -138,7 +138,7 @@ export async function checkGitHubConnection(projectId: string): Promise<GitHubSy
       store.setSyncStatus(result.data);
       return result.data;
     } else {
-      store.setError(result.error || 'Failed to check GitHub connection');
+      store.setError(result.error || '检查 GitHub 连接失败');
       return null;
     }
   } catch (error) {
@@ -172,7 +172,7 @@ export async function importGitHubIssues(
     if (result.success) {
       return true;
     } else {
-      store.setError(result.error || 'Failed to import GitHub issues');
+      store.setError(result.error || '导入 GitHub 问题失败');
       return false;
     }
   } catch (error) {

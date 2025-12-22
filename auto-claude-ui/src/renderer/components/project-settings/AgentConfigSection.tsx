@@ -11,9 +11,9 @@ interface AgentConfigSectionProps {
 export function AgentConfigSection({ settings, onUpdateSettings }: AgentConfigSectionProps) {
   return (
     <section className="space-y-4">
-      <h3 className="text-sm font-semibold text-foreground">Agent Configuration</h3>
+      <h3 className="text-sm font-semibold text-foreground">智能体配置</h3>
       <div className="space-y-2">
-        <Label htmlFor="model" className="text-sm font-medium text-foreground">Model</Label>
+        <Label htmlFor="model" className="text-sm font-medium text-foreground">模型</Label>
         <Select
           value={settings.model}
           onValueChange={(value) => onUpdateSettings({ model: value })}

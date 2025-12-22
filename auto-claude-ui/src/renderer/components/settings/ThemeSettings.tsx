@@ -15,7 +15,7 @@ export function ThemeSettings({ settings, onSettingsChange }: ThemeSettingsProps
   return (
     <SettingsSection
       title="外观"
-      description="自定义 Auto Claude 外观"
+      description="自定义 Auto-Claude 外观"
     >
       <ThemeSelector settings={settings} onSettingsChange={onSettingsChange} />
     </SettingsSection>

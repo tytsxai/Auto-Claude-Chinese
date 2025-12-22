@@ -46,9 +46,9 @@ export function GeneralSettings({
 }: GeneralSettingsProps) {
   return (
     <>
-      {/* Auto-Build 集成 */}
+      {/* Auto-Claude 集成 */}
       <section className="space-y-4">
-        <h3 className="text-sm font-semibold text-foreground">Auto-Build 集成</h3>
+        <h3 className="text-sm font-semibold text-foreground">Auto-Claude 集成</h3>
         {!project.autoBuildPath ? (
           <div className="rounded-lg border border-border bg-muted/50 p-4">
             <div className="flex items-start gap-3">
@@ -56,7 +56,7 @@ export function GeneralSettings({
               <div className="flex-1">
                 <p className="text-sm font-medium text-foreground">未初始化</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  初始化 Auto-Build 以启用任务创建和智能体工作流。
+                  初始化 Auto-Claude 以启用任务创建和智能体工作流。
                 </p>
                 <Button
                   size="sm"
@@ -72,7 +72,7 @@ export function GeneralSettings({
                   ) : (
                     <>
                       <Download className="mr-2 h-4 w-4" />
-                      初始化 Auto-Build
+                      初始化 Auto-Claude
                     </>
                   )}
                 </Button>

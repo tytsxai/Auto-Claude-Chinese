@@ -113,7 +113,7 @@ export function AppUpdateNotification() {
         setIsDownloading(false);
       }
     } catch (error) {
-      console.error('Failed to download app update:', error);
+      console.error('下载应用更新失败：', error);
       setDownloadError('下载更新失败');
       setIsDownloading(false);
     }
@@ -140,7 +140,7 @@ export function AppUpdateNotification() {
             有可用更新
           </DialogTitle>
           <DialogDescription>
-            Auto Claude 有新版本可供下载
+            Auto-Claude 有新版本可供下载
           </DialogDescription>
         </DialogHeader>
 

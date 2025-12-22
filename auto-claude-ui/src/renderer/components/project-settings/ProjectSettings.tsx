@@ -80,7 +80,7 @@ export function ProjectSettings({ project, open, onOpenChange }: ProjectSettings
 
         <div className="flex-1 min-h-0 -mx-6 overflow-y-auto">
           <div className="px-6 py-4 space-y-6">
-            {/* 通用设置（Auto-Build、智能体配置、通知） */}
+            {/* 通用设置（Auto-Claude、智能体配置、通知） */}
             <GeneralSettings
               project={project}
               settings={settings}

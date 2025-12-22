@@ -18,7 +18,7 @@ export function useEnvironmentConfig(projectId: string, autoBuildPath: string | 
           if (result.success && result.data) {
             setEnvConfig(result.data);
           } else {
-            setEnvError(result.error || 'Failed to load environment config');
+            setEnvError(result.error || '加载环境配置失败');
           }
         } catch (err) {
           setEnvError(err instanceof Error ? err.message : 'Unknown error');
@@ -44,7 +44,7 @@ export function useEnvironmentConfig(projectId: string, autoBuildPath: string | 
     try {
       const result = await window.electronAPI.updateProjectEnv(projectId, envConfig);
       if (!result.success) {
-        setEnvError(result.error || 'Failed to save environment config');
+        setEnvError(result.error || '保存环境配置失败');
         return { success: false, error: result.error };
       }
       return { success: true };

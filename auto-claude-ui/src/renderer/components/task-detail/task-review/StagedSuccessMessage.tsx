@@ -30,7 +30,7 @@ export function StagedSuccessMessage({
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      console.error('复制失败：', err);
     }
   };
 
@@ -38,7 +38,7 @@ export function StagedSuccessMessage({
     <div className="rounded-xl border border-success/30 bg-success/10 p-4">
       <h3 className="font-medium text-sm text-foreground mb-2 flex items-center gap-2">
         <GitMerge className="h-4 w-4 text-success" />
-        Changes Staged Successfully
+        更改已成功暂存
       </h3>
       <p className="text-sm text-muted-foreground mb-3">
         {stagedSuccess}
@@ -50,7 +50,7 @@ export function StagedSuccessMessage({
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs text-muted-foreground flex items-center gap-1.5">
               <Sparkles className="h-3 w-3 text-purple-400" />
-              AI-generated commit message
+              AI 生成的提交信息
             </p>
             <Button
               variant="ghost"
@@ -62,12 +62,12 @@ export function StagedSuccessMessage({
               {copied ? (
                 <>
                   <Check className="h-3 w-3 mr-1 text-success" />
-                  Copied!
+                  已复制！
                 </>
               ) : (
                 <>
                   <Copy className="h-3 w-3 mr-1" />
-                  Copy
+                  复制
                 </>
               )}
             </Button>
@@ -76,20 +76,20 @@ export function StagedSuccessMessage({
             value={commitMessage}
             onChange={(e) => setCommitMessage(e.target.value)}
             className="font-mono text-xs min-h-[100px] bg-background/80 resize-y"
-            placeholder="Commit message..."
+            placeholder="提交信息..."
           />
           <p className="text-[10px] text-muted-foreground mt-1.5">
-            Edit as needed, then copy and use with <code className="bg-background px-1 rounded">git commit -m "..."</code>
+            按需修改后复制，并用于 <code className="bg-background px-1 rounded">git commit -m "..."</code>
           </p>
         </div>
       )}
 
       <div className="bg-background/50 rounded-lg p-3 mb-3">
-        <p className="text-xs text-muted-foreground mb-2">Next steps:</p>
+        <p className="text-xs text-muted-foreground mb-2">下一步：</p>
         <ol className="text-xs text-muted-foreground space-y-1 list-decimal list-inside">
-          <li>Open your project in your IDE or terminal</li>
-          <li>Review the staged changes with <code className="bg-background px-1 rounded">git status</code> and <code className="bg-background px-1 rounded">git diff --staged</code></li>
-          <li>Commit when ready: <code className="bg-background px-1 rounded">git commit -m "your message"</code></li>
+          <li>在 IDE 或终端打开项目</li>
+          <li>使用 <code className="bg-background px-1 rounded">git status</code> 和 <code className="bg-background px-1 rounded">git diff --staged</code> 查看暂存更改</li>
+          <li>确认无误后提交：<code className="bg-background px-1 rounded">git commit -m "your message"</code></li>
         </ol>
       </div>
       {stagedProjectPath && (
@@ -105,7 +105,7 @@ export function StagedSuccessMessage({
           className="w-full"
         >
           <ExternalLink className="mr-2 h-4 w-4" />
-          Open Project in Terminal
+          在终端打开项目
         </Button>
       )}
     </div>

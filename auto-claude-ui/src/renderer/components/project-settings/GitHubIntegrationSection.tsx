@@ -115,7 +115,7 @@ export function GitHubIntegrationSection({
               <p className="text-xs text-muted-foreground">
                 在{' '}
                 <a
-                  href="https://github.com/settings/tokens/new?scopes=repo&description=Auto-Build-UI"
+                  href="https://github.com/settings/tokens/new?scopes=repo&description=Auto-Claude-UI"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-info hover:underline"

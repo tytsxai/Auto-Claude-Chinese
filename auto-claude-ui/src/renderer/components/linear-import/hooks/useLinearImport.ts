@@ -33,7 +33,7 @@ export function useLinearImport(
             onImportComplete?.(result.data);
           }
         } else {
-          setError(result.error || 'Failed to import issues');
+          setError(result.error || '导入问题失败');
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');

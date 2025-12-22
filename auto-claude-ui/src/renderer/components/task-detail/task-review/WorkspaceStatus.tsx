@@ -76,7 +76,7 @@ export function WorkspaceStatus({
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-medium text-sm text-foreground flex items-center gap-2">
             <GitBranch className="h-4 w-4 text-purple-400" />
-            Build Ready for Review
+            构建已就绪，等待审核
           </h3>
           <div className="flex items-center gap-1">
             <Button
@@ -86,7 +86,7 @@ export function WorkspaceStatus({
               className="h-7 px-2 text-xs"
             >
               <Eye className="h-3.5 w-3.5 mr-1" />
-              View
+              查看
             </Button>
             {worktreeStatus.worktreePath && (
               <Button
@@ -99,7 +99,7 @@ export function WorkspaceStatus({
                   });
                 }}
                 className="h-7 px-2"
-                title="Open in terminal"
+                title="在终端打开"
               >
                 <Terminal className="h-3.5 w-3.5" />
               </Button>
@@ -111,11 +111,11 @@ export function WorkspaceStatus({
         <div className="flex items-center gap-4 text-xs">
           <span className="flex items-center gap-1.5 text-muted-foreground">
             <FileCode className="h-3.5 w-3.5" />
-            <span className="font-medium text-foreground">{worktreeStatus.filesChanged || 0}</span> files
+            <span className="font-medium text-foreground">{worktreeStatus.filesChanged || 0}</span> 个文件
           </span>
           <span className="flex items-center gap-1.5 text-muted-foreground">
             <GitCommit className="h-3.5 w-3.5" />
-            <span className="font-medium text-foreground">{worktreeStatus.commitCount || 0}</span> commits
+            <span className="font-medium text-foreground">{worktreeStatus.commitCount || 0}</span> 个提交
           </span>
           <span className="flex items-center gap-1 text-success">
             <Plus className="h-3.5 w-3.5" />
@@ -153,10 +153,10 @@ export function WorkspaceStatus({
             <AlertTriangle className="h-4 w-4 text-warning mt-0.5 flex-shrink-0" />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-warning">
-                {uncommittedCount} uncommitted {uncommittedCount === 1 ? 'change' : 'changes'} in main project
+                主项目中有 {uncommittedCount} 个未提交改动
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Commit or stash them before staging to avoid conflicts.
+                暂存前请提交或暂存（stash），以避免冲突。
               </p>
               <Button
                 variant="outline"
@@ -170,7 +170,7 @@ export function WorkspaceStatus({
                 className="text-xs h-6 mt-2"
               >
                 <Terminal className="h-3 w-3 mr-1" />
-                Open Terminal
+                打开终端
               </Button>
             </div>
           </div>
@@ -180,7 +180,7 @@ export function WorkspaceStatus({
         {isLoadingPreview && !mergePreview && (
           <div className="flex items-center gap-2 text-muted-foreground text-sm py-2">
             <Loader2 className="h-4 w-4 animate-spin" />
-            Checking for conflicts...
+            正在检查冲突...
           </div>
         )}
 
@@ -199,23 +199,23 @@ export function WorkspaceStatus({
                 <>
                   <AlertTriangle className="h-4 w-4 text-warning" />
                   <div>
-                    <span className="text-sm font-medium text-warning">Branch Diverged</span>
-                    <span className="text-xs text-muted-foreground ml-2">AI will resolve</span>
+                    <span className="text-sm font-medium text-warning">分支已分叉</span>
+                    <span className="text-xs text-muted-foreground ml-2">AI 将处理</span>
                   </div>
                 </>
               ) : !hasAIConflicts ? (
                 <>
                   <CheckCircle className="h-4 w-4 text-success" />
-                  <span className="text-sm font-medium text-success">Ready to merge</span>
+                  <span className="text-sm font-medium text-success">可直接合并</span>
                   <span className="text-xs text-muted-foreground ml-1">
-                    {mergePreview.summary.totalFiles} files
+                    {mergePreview.summary.totalFiles} 个文件
                   </span>
                 </>
               ) : (
                 <>
                   <AlertTriangle className="h-4 w-4 text-warning" />
                   <span className="text-sm font-medium text-warning">
-                    {mergePreview.conflicts.length} conflict{mergePreview.conflicts.length !== 1 ? 's' : ''}
+                    {mergePreview.conflicts.length} 个冲突
                   </span>
                 </>
               )}
@@ -228,7 +228,7 @@ export function WorkspaceStatus({
                   onClick={() => onShowConflictDialog(true)}
                   className="h-7 text-xs"
                 >
-                  Details
+                  详情
                 </Button>
               )}
               <Button
@@ -237,7 +237,7 @@ export function WorkspaceStatus({
                 onClick={onLoadMergePreview}
                 disabled={isLoadingPreview}
                 className="h-7 px-2"
-                title="Refresh"
+                title="刷新"
               >
                 {isLoadingPreview ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -249,17 +249,17 @@ export function WorkspaceStatus({
           </div>
         )}
 
-        {/* Git Conflicts Details */}
-        {hasGitConflicts && mergePreview?.gitConflicts && (
-          <div className="text-xs text-muted-foreground pl-6">
-            Main branch has {mergePreview.gitConflicts.commitsBehind} new commit{mergePreview.gitConflicts.commitsBehind !== 1 ? 's' : ''}.
-            {mergePreview.gitConflicts.conflictingFiles.length > 0 && (
-              <span className="text-warning">
-                {' '}{mergePreview.gitConflicts.conflictingFiles.length} file{mergePreview.gitConflicts.conflictingFiles.length !== 1 ? 's' : ''} need merging.
-              </span>
-            )}
-          </div>
-        )}
+      {/* Git Conflicts Details */}
+      {hasGitConflicts && mergePreview?.gitConflicts && (
+        <div className="text-xs text-muted-foreground pl-6">
+          主分支新增 {mergePreview.gitConflicts.commitsBehind} 个提交。
+          {mergePreview.gitConflicts.conflictingFiles.length > 0 && (
+            <span className="text-warning">
+              {' '}{mergePreview.gitConflicts.conflictingFiles.length} 个文件需要合并。
+            </span>
+          )}
+        </div>
+      )}
       </div>
 
       {/* Actions Footer */}
@@ -274,7 +274,7 @@ export function WorkspaceStatus({
           <span className={cn(
             "transition-colors",
             stageOnly ? "text-foreground" : "text-muted-foreground"
-          )}>Stage only (review in IDE before committing)</span>
+          )}>仅暂存（提交前在 IDE 中检查）</span>
         </label>
 
         {/* Primary Actions */}
@@ -288,14 +288,14 @@ export function WorkspaceStatus({
             {isMerging ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {hasGitConflicts ? 'Resolving...' : stageOnly ? 'Staging...' : 'Merging...'}
+                {hasGitConflicts ? '处理中...' : stageOnly ? '暂存中...' : '合并中...'}
               </>
             ) : (
               <>
                 <GitMerge className="mr-2 h-4 w-4" />
                 {hasGitConflicts
-                  ? (stageOnly ? 'Stage with AI Merge' : 'Merge with AI')
-                  : (stageOnly ? 'Stage Changes' : 'Merge to Main')}
+                  ? (stageOnly ? 'AI 合并并暂存' : '使用 AI 合并')
+                  : (stageOnly ? '暂存更改' : '合并到主分支')}
               </>
             )}
           </Button>
@@ -305,7 +305,7 @@ export function WorkspaceStatus({
             onClick={() => onShowDiscardDialog(true)}
             disabled={isMerging || isDiscarding}
             className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 hover:border-destructive/30"
-            title="Discard build"
+            title="丢弃构建"
           >
             <FolderX className="h-4 w-4" />
           </Button>

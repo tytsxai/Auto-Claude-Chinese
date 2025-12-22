@@ -73,7 +73,7 @@ export function App() {
   const [initError, setInitError] = useState<string | null>(null);
   const [skippedInitProjectId, setSkippedInitProjectId] = useState<string | null>(null);
 
-  // GitHub 设置状态（Auto Claude 初始化后显示）
+  // GitHub 设置状态（Auto-Claude 初始化后显示）
   const [showGitHubSetup, setShowGitHubSetup] = useState(false);
   const [gitHubSetupProject, setGitHubSetupProject] = useState<Project | null>(null);
 
@@ -170,7 +170,7 @@ export function App() {
     // 尝试为新项目恢复已保存会话
     if (selectedProject?.path) {
       restoreTerminalSessions(selectedProject.path).catch((err) => {
-        console.error('[App] Failed to restore sessions:', err);
+        console.error('[App] 恢复会话失败：', err);
       });
     }
   }, [selectedProjectId, selectedProject?.path, selectedProject?.name]);
@@ -251,7 +251,7 @@ export function App() {
       if (path) {
         const project = await addProject(path);
         if (project && !project.autoBuildPath) {
-          // 项目未初始化 Auto Claude，显示初始化对话框
+          // 项目未初始化 Auto-Claude，显示初始化对话框
           setPendingProject(project);
           setInitError(null); // 清除之前的错误
           setInitSuccess(false); // 重置成功标记
@@ -259,7 +259,7 @@ export function App() {
         }
       }
     } catch (error) {
-      console.error('Failed to add project:', error);
+      console.error('添加项目失败：', error);
     }
   };
 
@@ -297,14 +297,14 @@ export function App() {
       } else {
         // 初始化失败 - 显示错误但保持对话框开启
         console.log('[InitDialog] Initialization failed, showing error');
-        const errorMessage = result?.error || 'Failed to initialize Auto Claude. Please try again.';
+        const errorMessage = result?.error || '初始化 Auto-Claude 失败，请重试。';
         setInitError(errorMessage);
         setIsInitializing(false);
       }
     } catch (error) {
       // 发生了意外错误
       console.error('[InitDialog] Unexpected error during initialization:', error);
-      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+      const errorMessage = error instanceof Error ? error.message : '发生意外错误';
       setInitError(errorMessage);
       setIsInitializing(false);
     }
@@ -339,7 +339,7 @@ export function App() {
       // 刷新项目以获取更新数据
       await loadProjects();
     } catch (error) {
-      console.error('Failed to save GitHub settings:', error);
+      console.error('保存 GitHub 设置失败：', error);
     }
 
     setShowGitHubSetup(false);
@@ -393,7 +393,7 @@ export function App() {
                 <h1 className="font-semibold text-foreground">{selectedProject.name}</h1>
               ) : (
                 <div className="text-muted-foreground">
-                  Select a project to get started
+                  选择一个项目开始使用
                 </div>
               )}
             </div>
@@ -410,7 +410,7 @@ export function App() {
                       <Settings2 className="h-4 w-4" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>Settings</TooltipContent>
+                  <TooltipContent>设置</TooltipContent>
                 </Tooltip>
               </div>
             )}
@@ -464,9 +464,9 @@ export function App() {
                 {activeView === 'agent-tools' && (
                   <div className="flex h-full items-center justify-center">
                     <div className="text-center">
-                      <h2 className="text-lg font-semibold text-foreground">Agent Tools</h2>
+                      <h2 className="text-lg font-semibold text-foreground">智能体工具</h2>
                       <p className="mt-2 text-sm text-muted-foreground">
-                        Configure and manage agent tools - Coming soon
+                        配置与管理智能体工具 - 即将上线
                       </p>
                     </div>
                   </div>
@@ -521,7 +521,7 @@ export function App() {
           }}
         />
 
-        {/* 初始化 Auto Claude 对话框 */}
+        {/* 初始化 Auto-Claude 对话框 */}
         <Dialog open={showInitDialog} onOpenChange={(open) => {
           console.log('[InitDialog] onOpenChange called', { open, pendingProject: !!pendingProject, isInitializing, initSuccess });
           // 仅在用户手动关闭对话框时触发跳过
@@ -534,19 +534,19 @@ export function App() {
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <Download className="h-5 w-5" />
-                Initialize Auto Claude
+                初始化 Auto-Claude
               </DialogTitle>
               <DialogDescription>
-                This project doesn't have Auto Claude initialized. Would you like to set it up now?
+                此项目尚未初始化 Auto-Claude。现在要设置吗？
               </DialogDescription>
             </DialogHeader>
             <div className="py-4">
               <div className="rounded-lg bg-muted p-4 text-sm">
-                <p className="font-medium mb-2">This will:</p>
+                <p className="font-medium mb-2">这将会：</p>
                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                  <li>Create a <code className="text-xs bg-background px-1 py-0.5 rounded">.auto-claude</code> folder in your project</li>
-                  <li>Copy the Auto Claude framework files</li>
-                  <li>Set up the specs directory for your tasks</li>
+                  <li>在你的项目中创建 <code className="text-xs bg-background px-1 py-0.5 rounded">.auto-claude</code> 目录</li>
+                  <li>复制 Auto-Claude 框架文件</li>
+                  <li>为任务设置 specs 目录</li>
                 </ul>
               </div>
               {!settings.autoBuildPath && (
@@ -554,9 +554,9 @@ export function App() {
                   <div className="flex items-start gap-2">
                     <AlertCircle className="h-4 w-4 text-warning mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-warning">Source path not configured</p>
+                      <p className="font-medium text-warning">源码路径未配置</p>
                       <p className="text-muted-foreground mt-1">
-                        Please set the Auto Claude source path in App Settings before initializing.
+                        请先在应用设置中配置 Auto-Claude 源码路径，再进行初始化。
                       </p>
                     </div>
                   </div>
@@ -567,7 +567,7 @@ export function App() {
                   <div className="flex items-start gap-2">
                     <AlertCircle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-destructive">Initialization Failed</p>
+                      <p className="font-medium text-destructive">初始化失败</p>
                       <p className="text-muted-foreground mt-1">
                         {initError}
                       </p>
@@ -578,7 +578,7 @@ export function App() {
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={handleSkipInit} disabled={isInitializing}>
-                Skip
+                跳过
               </Button>
               <Button
                 onClick={handleInitialize}
@@ -587,12 +587,12 @@ export function App() {
                 {isInitializing ? (
                   <>
                     <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                    Initializing...
+                    正在初始化...
                   </>
                 ) : (
                   <>
                     <Download className="mr-2 h-4 w-4" />
-                    Initialize
+                    初始化
                   </>
                 )}
               </Button>
@@ -600,7 +600,7 @@ export function App() {
           </DialogContent>
         </Dialog>
 
-        {/* GitHub 设置弹窗 - Auto Claude 初始化后用于配置 GitHub */}
+        {/* GitHub 设置弹窗 - Auto-Claude 初始化后用于配置 GitHub */}
         {gitHubSetupProject && (
           <GitHubSetupModal
             open={showGitHubSetup}

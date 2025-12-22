@@ -113,7 +113,7 @@ export async function loadProjectContext(projectId: string): Promise<void> {
       store.setMemoryState(result.data.memoryState);
       store.setRecentMemories(result.data.recentMemories || []);
     } else {
-      store.setIndexError(result.error || 'Failed to load project context');
+      store.setIndexError(result.error || '加载项目上下文失败');
     }
   } catch (error) {
     store.setIndexError(error instanceof Error ? error.message : 'Unknown error');
@@ -136,7 +136,7 @@ export async function refreshProjectIndex(projectId: string): Promise<void> {
     if (result.success && result.data) {
       store.setProjectIndex(result.data);
     } else {
-      store.setIndexError(result.error || 'Failed to refresh project index');
+      store.setIndexError(result.error || '刷新项目索引失败');
     }
   } catch (error) {
     store.setIndexError(error instanceof Error ? error.message : 'Unknown error');

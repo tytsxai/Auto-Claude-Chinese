@@ -37,7 +37,7 @@ const WIZARD_STEPS: { id: WizardStepId; label: string }[] = [
 /**
  * Main onboarding wizard component.
  * Provides a full-screen, multi-step wizard experience for new users
- * to configure their Auto Claude environment.
+ * to configure their Auto-Claude environment.
  *
  * Features:
  * - Step progress indicator
@@ -92,7 +92,7 @@ export function OnboardingWizard({
     try {
       const result = await window.electronAPI.saveSettings({ onboardingCompleted: true });
       if (!result?.success) {
-        console.error('Failed to save onboarding completion:', result?.error);
+        console.error('保存引导完成状态失败：', result?.error);
       }
     } catch (err) {
       console.error('Error saving onboarding completion:', err);
@@ -107,7 +107,7 @@ export function OnboardingWizard({
     try {
       const result = await window.electronAPI.saveSettings({ onboardingCompleted: true });
       if (!result?.success) {
-        console.error('Failed to save onboarding completion:', result?.error);
+        console.error('保存引导完成状态失败：', result?.error);
       }
     } catch (err) {
       console.error('Error saving onboarding completion:', err);
@@ -193,7 +193,7 @@ export function OnboardingWizard({
             设置向导
           </FullScreenDialogTitle>
           <FullScreenDialogDescription>
-            通过几步简单设置配置你的 Auto Claude 环境
+            通过几步简单设置配置你的 Auto-Claude 环境
           </FullScreenDialogDescription>
 
           {/* Progress indicator - show for all steps except welcome and completion */}

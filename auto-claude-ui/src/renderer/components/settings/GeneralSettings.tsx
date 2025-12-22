@@ -46,7 +46,7 @@ export function GeneralSettings({ settings, onSettingsChange, section }: General
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="auto-claude">Auto Claude</SelectItem>
+                  <SelectItem value="auto-claude">Auto-Claude</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -166,7 +166,7 @@ export function GeneralSettings({ settings, onSettingsChange, section }: General
           />
         </div>
         <div className="space-y-3">
-          <Label htmlFor="autoBuildPath" className="text-sm font-medium text-foreground">Auto Claude 路径</Label>
+          <Label htmlFor="autoBuildPath" className="text-sm font-medium text-foreground">Auto-Claude 路径</Label>
           <p className="text-sm text-muted-foreground">项目中 auto-claude 目录的相对路径</p>
           <Input
             id="autoBuildPath"

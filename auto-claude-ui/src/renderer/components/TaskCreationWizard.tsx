@@ -189,7 +189,7 @@ export function TaskCreationWizard({
         setBranches(result.data);
       }
     } catch (err) {
-      console.error('Failed to fetch branches:', err);
+      console.error('获取分支失败：', err);
     } finally {
       setIsLoadingBranches(false);
     }
@@ -211,7 +211,7 @@ export function TaskCreationWizard({
         }
       }
     } catch (err) {
-      console.error('Failed to fetch project default branch:', err);
+      console.error('获取项目默认分支失败：', err);
     }
   };
 

@@ -116,11 +116,11 @@ export function GitHubIntegration({
         }
       } else {
         debugLog('fetchBranches: Failed -', result.error || 'No data returned');
-        setBranchesError(result.error || 'Failed to load branches');
+        setBranchesError(result.error || '加载分支失败');
       }
     } catch (err) {
       debugLog('fetchBranches: Exception:', err);
-      setBranchesError(err instanceof Error ? err.message : 'Failed to load branches');
+      setBranchesError(err instanceof Error ? err.message : '加载分支失败');
     } finally {
       setIsLoadingBranches(false);
     }
@@ -139,11 +139,11 @@ export function GitHubIntegration({
         setRepos(result.data.repos);
         debugLog('Loaded repos:', result.data.repos.length);
       } else {
-        setReposError(result.error || 'Failed to load repositories');
+        setReposError(result.error || '加载仓库失败');
       }
     } catch (err) {
       debugLog('Error fetching repos:', err);
-      setReposError(err instanceof Error ? err.message : 'Failed to load repositories');
+      setReposError(err instanceof Error ? err.message : '加载仓库失败');
     } finally {
       setIsLoadingRepos(false);
     }
@@ -277,7 +277,7 @@ export function GitHubIntegration({
                 <p className="text-xs text-muted-foreground">
                   从{' '}
                   <a
-                    href="https://github.com/settings/tokens/new?scopes=repo&description=Auto-Build-UI"
+                    href="https://github.com/settings/tokens/new?scopes=repo&description=Auto-Claude-UI"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-info hover:underline"

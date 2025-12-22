@@ -297,7 +297,7 @@ export async function loadChangelogData(projectId: string): Promise<void> {
       store.setExistingChangelog(changelogResult.data);
     }
   } catch (error) {
-    store.setError(error instanceof Error ? error.message : 'Failed to load changelog data');
+    store.setError(error instanceof Error ? error.message : '加载变更日志数据失败');
   }
 }
 
@@ -310,7 +310,7 @@ export async function loadTaskSpecs(projectId: string, taskIds: string[]): Promi
       store.setLoadedSpecs(result.data);
     }
   } catch (error) {
-    store.setError(error instanceof Error ? error.message : 'Failed to load task specs');
+    store.setError(error instanceof Error ? error.message : '加载任务规格失败');
   }
 }
 
@@ -366,7 +366,7 @@ export async function loadGitData(projectId: string): Promise<void> {
       }
     }
   } catch (error) {
-    store.setError(error instanceof Error ? error.message : 'Failed to load git data');
+    store.setError(error instanceof Error ? error.message : '加载 Git 数据失败');
   } finally {
     store.setIsLoadingGitData(false);
   }
@@ -413,11 +413,11 @@ export async function loadCommitsPreview(projectId: string): Promise<void> {
     if (result.success && result.data) {
       store.setPreviewCommits(result.data);
     } else {
-      store.setError(result.error || 'Failed to load commits');
+      store.setError(result.error || '加载提交记录失败');
       store.setPreviewCommits([]);
     }
   } catch (error) {
-    store.setError(error instanceof Error ? error.message : 'Failed to load commits preview');
+    store.setError(error instanceof Error ? error.message : '加载提交预览失败');
     store.setPreviewCommits([]);
   } finally {
     store.setIsLoadingCommits(false);
@@ -528,11 +528,11 @@ export async function saveChangelog(
     if (result.success) {
       return true;
     } else {
-      store.setError(result.error || 'Failed to save changelog');
+      store.setError(result.error || '保存变更日志失败');
       return false;
     }
   } catch (error) {
-    store.setError(error instanceof Error ? error.message : 'Failed to save changelog');
+    store.setError(error instanceof Error ? error.message : '保存变更日志失败');
     return false;
   }
 }
@@ -549,7 +549,7 @@ export function copyChangelogToClipboard(): boolean {
     navigator.clipboard.writeText(store.generatedChangelog);
     return true;
   } catch (_error) {
-    store.setError('Failed to copy to clipboard');
+    store.setError('复制到剪贴板失败');
     return false;
   }
 }

@@ -45,7 +45,7 @@ export function WelcomeStep({ onGetStarted, onSkip }: WelcomeStepProps) {
     {
       icon: <FileCode className="h-5 w-5" />,
       title: '规格驱动的工作流',
-      description: '通过清晰规格定义任务，让 Auto Claude 负责实现'
+      description: '通过清晰规格定义任务，让 Auto-Claude 负责实现'
     },
     {
       icon: <Brain className="h-5 w-5" />,
@@ -65,7 +65,7 @@ export function WelcomeStep({ onGetStarted, onSkip }: WelcomeStepProps) {
         {/* Hero Section */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-foreground tracking-tight">
-            欢迎使用 Auto Claude
+            欢迎使用 Auto-Claude
           </h1>
           <p className="mt-3 text-muted-foreground text-lg">
             使用 AI 智能体自主构建软件

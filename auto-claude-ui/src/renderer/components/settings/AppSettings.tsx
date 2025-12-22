@@ -60,12 +60,12 @@ const appNavItems: NavItem<AppSection>[] = [
   { id: 'agent', label: '智能体设置', icon: Bot, description: '默认模型与框架' },
   { id: 'paths', label: '路径', icon: FolderOpen, description: 'Python 与框架路径' },
   { id: 'integrations', label: '集成', icon: Key, description: 'API 密钥与 Claude 账户' },
-  { id: 'updates', label: '更新', icon: Package, description: 'Auto Claude 更新' },
+  { id: 'updates', label: '更新', icon: Package, description: 'Auto-Claude 更新' },
   { id: 'notifications', label: '通知', icon: Bell, description: '提醒偏好' }
 ];
 
 const projectNavItems: NavItem<ProjectSettingsSection>[] = [
-  { id: 'general', label: '通用', icon: Settings2, description: 'Auto-Build 与智能体配置' },
+  { id: 'general', label: '通用', icon: Settings2, description: 'Auto-Claude 与智能体配置' },
   { id: 'claude', label: 'Claude 认证', icon: Key, description: 'Claude 认证' },
   { id: 'linear', label: 'Linear', icon: Zap, description: 'Linear 集成' },
   { id: 'github', label: 'GitHub', icon: Github, description: 'GitHub 工单同步' },

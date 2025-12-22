@@ -54,7 +54,7 @@ export function TaskSelector({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-56">
           <div className="px-2 py-1.5 text-xs text-muted-foreground">
-            Current task
+            当前任务
           </div>
           <div className="px-2 py-1 text-sm font-medium truncate">
             {associatedTask.title}
@@ -68,7 +68,7 @@ export function TaskSelector({
           {backlogTasks.length > 0 && (
             <>
               <div className="px-2 py-1.5 text-xs text-muted-foreground">
-                Switch to...
+                切换到...
               </div>
               {backlogTasks.filter(t => t.id !== associatedTask.id).slice(0, 5).map((task) => (
                 <DropdownMenuItem
@@ -88,7 +88,7 @@ export function TaskSelector({
             className="text-xs text-muted-foreground"
           >
             <X className="h-3 w-3 mr-2" />
-            Clear task
+            清除任务
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -103,7 +103,7 @@ export function TaskSelector({
           onClick={(e) => e.stopPropagation()}
         >
           <ListTodo className="h-3 w-3" />
-          <span>Select task...</span>
+          <span>选择任务...</span>
           <ChevronDown className="h-2.5 w-2.5 opacity-60" />
         </button>
       </DropdownMenuTrigger>
@@ -111,7 +111,7 @@ export function TaskSelector({
         {backlogTasks.length > 0 ? (
           <>
             <div className="px-2 py-1.5 text-xs text-muted-foreground">
-              Available tasks
+              可用任务
             </div>
             {backlogTasks.slice(0, 8).map((task) => (
               <DropdownMenuItem
@@ -134,7 +134,7 @@ export function TaskSelector({
                   className="text-xs text-primary"
                 >
                   <Plus className="h-3 w-3 mr-2" />
-                  Add new task
+                  新增任务
                 </DropdownMenuItem>
               </>
             )}
@@ -142,7 +142,7 @@ export function TaskSelector({
         ) : (
           <>
             <div className="px-2 py-1.5 text-xs text-muted-foreground">
-              No tasks available
+              暂无任务
             </div>
             {onNewTaskClick ? (
               <DropdownMenuItem
@@ -153,11 +153,11 @@ export function TaskSelector({
                 className="text-xs text-primary"
               >
                 <Plus className="h-3 w-3 mr-2" />
-                Add new task
+                新增任务
               </DropdownMenuItem>
             ) : (
               <div className="px-2 py-1.5 text-xs text-muted-foreground italic">
-                Create tasks in the Kanban board
+                请在看板中创建任务
               </div>
             )}
           </>

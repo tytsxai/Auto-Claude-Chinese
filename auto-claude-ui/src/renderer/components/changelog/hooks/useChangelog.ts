@@ -223,7 +223,7 @@ export function useChangelog() {
           }
         }
       } catch (error) {
-        console.error('Failed to suggest version:', error);
+        console.error('建议版本失败：', error);
         setVersionReason(null);
       }
     }

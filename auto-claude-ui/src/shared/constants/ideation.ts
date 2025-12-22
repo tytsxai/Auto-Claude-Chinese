@@ -14,18 +14,18 @@ export const IDEATION_TYPE_LABELS: Record<string, string> = {
   code_improvements: '代码改进',
   ui_ux_improvements: 'UI/UX 改进',
   documentation_gaps: '文档',
-  security_hardening: '安全',
-  performance_optimizations: '性能',
+  security_hardening: '安全加固',
+  performance_optimizations: '性能优化',
   code_quality: '代码质量'
 };
 
 export const IDEATION_TYPE_DESCRIPTIONS: Record<string, string> = {
-  code_improvements: 'Code-revealed opportunities from patterns, architecture, and infrastructure analysis',
-  ui_ux_improvements: 'Visual and interaction improvements identified through app analysis',
-  documentation_gaps: 'Missing or outdated documentation that needs attention',
-  security_hardening: 'Security vulnerabilities and hardening opportunities',
-  performance_optimizations: 'Performance bottlenecks and optimization opportunities',
-  code_quality: 'Refactoring opportunities, large files, code smells, and best practice violations'
+  code_improvements: '基于模式、架构与基础设施分析发现的代码机会',
+  ui_ux_improvements: '通过应用分析识别的视觉与交互改进',
+  documentation_gaps: '需要补充或更新的文档缺口',
+  security_hardening: '安全漏洞与加固机会',
+  performance_optimizations: '性能瓶颈与优化机会',
+  code_quality: '重构机会、大文件、代码异味与最佳实践违规'
 };
 
 // 创意类型颜色

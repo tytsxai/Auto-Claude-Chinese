@@ -43,7 +43,7 @@ export function WelcomeScreen({
         {/* 首屏区域 */}
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold text-foreground tracking-tight">
-            欢迎使用 Auto Claude
+            欢迎使用 Auto-Claude
           </h1>
           <p className="mt-3 text-muted-foreground">
             使用 AI 智能体自主构建软件

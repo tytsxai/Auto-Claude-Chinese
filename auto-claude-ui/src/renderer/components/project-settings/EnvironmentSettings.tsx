@@ -61,7 +61,7 @@ export function EnvironmentSettings({
           setActiveProfileId(result.data.activeProfileId);
         }
       } catch (err) {
-        console.error('Failed to load Claude profiles:', err);
+        console.error('加载 Claude 配置文件失败：', err);
       } finally {
         setIsLoadingProfiles(false);
       }
@@ -221,7 +221,7 @@ export function EnvironmentSettings({
                     <Users className="h-8 w-8 text-warning mb-2" />
                     <p className="text-sm font-medium text-foreground">未配置 Claude 账号</p>
                     <p className="text-xs text-muted-foreground mt-1 mb-3">
-                      在全局设置中添加 Claude 账号以使用 Auto-Build。
+                      在全局设置中添加 Claude 账号以使用 Auto-Claude。
                     </p>
                     <Button
                       size="sm"

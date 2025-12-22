@@ -204,9 +204,9 @@ export function AgentProfileSelector({
               <div className="flex items-center gap-2">
                 <Sliders className="h-4 w-4 shrink-0" />
                 <div>
-                  <span className="font-medium">Custom</span>
+                  <span className="font-medium">自定义</span>
                   <span className="ml-2 text-xs text-muted-foreground">
-                    (Choose model & thinking level)
+                    （选择模型和思考级别）
                   </span>
                 </div>
               </div>
@@ -233,11 +233,11 @@ export function AgentProfileSelector({
             disabled={disabled}
           >
             <div className="flex items-center gap-2">
-              <span className="font-medium text-sm text-foreground">Phase Configuration</span>
+              <span className="font-medium text-sm text-foreground">阶段配置</span>
               {!showPhaseDetails && (
                 <span className="flex items-center gap-1 text-xs text-muted-foreground">
                   <Pencil className="h-3 w-3" />
-                  <span>Click to customize</span>
+                  <span>点击自定义</span>
                 </span>
               )}
             </div>
@@ -280,7 +280,7 @@ export function AgentProfileSelector({
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-1">
-                      <Label className="text-[10px] text-muted-foreground">Model</Label>
+                      <Label className="text-[10px] text-muted-foreground">模型</Label>
                       <Select
                         value={currentPhaseModels[phase]}
                         onValueChange={(value) => handlePhaseModelChange(phase, value as ModelType)}
@@ -299,7 +299,7 @@ export function AgentProfileSelector({
                       </Select>
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-[10px] text-muted-foreground">Thinking</Label>
+                      <Label className="text-[10px] text-muted-foreground">思考</Label>
                       <Select
                         value={currentPhaseThinking[phase]}
                         onValueChange={(value) => handlePhaseThinkingChange(phase, value as ThinkingLevel)}
@@ -331,7 +331,7 @@ export function AgentProfileSelector({
           {/* Model Selection */}
           <div className="space-y-2">
             <Label htmlFor="custom-model" className="text-xs font-medium text-muted-foreground">
-              Model
+              模型
             </Label>
             <Select
               value={model}
@@ -339,7 +339,7 @@ export function AgentProfileSelector({
               disabled={disabled}
             >
               <SelectTrigger id="custom-model" className="h-9">
-                <SelectValue placeholder="Select model" />
+                <SelectValue placeholder="选择模型" />
               </SelectTrigger>
               <SelectContent>
                 {AVAILABLE_MODELS.map((m) => (
@@ -354,7 +354,7 @@ export function AgentProfileSelector({
           {/* Thinking Level Selection */}
           <div className="space-y-2">
             <Label htmlFor="custom-thinking" className="text-xs font-medium text-muted-foreground">
-              Thinking Level
+              思考级别
             </Label>
             <Select
               value={thinkingLevel}
@@ -362,7 +362,7 @@ export function AgentProfileSelector({
               disabled={disabled}
             >
               <SelectTrigger id="custom-thinking" className="h-9">
-                <SelectValue placeholder="Select thinking level" />
+                <SelectValue placeholder="选择思考级别" />
               </SelectTrigger>
               <SelectContent>
                 {THINKING_LEVELS.map((level) => (

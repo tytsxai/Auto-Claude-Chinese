@@ -31,7 +31,7 @@ export function useLinearProjects(
         if (result.success && result.data) {
           setProjects(result.data);
         } else {
-          setError(result.error || 'Failed to load projects');
+          setError(result.error || '加载项目失败');
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');

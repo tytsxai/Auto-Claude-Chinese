@@ -46,17 +46,17 @@ export function RateLimitIndicator() {
         <AlertTriangle className="h-4 w-4 text-warning mt-0.5 shrink-0" />
         <div className="flex-1 min-w-0">
           <p className="text-xs font-medium text-warning">
-            Rate Limited
+            已触发速率限制
           </p>
           <p className="text-xs text-muted-foreground mt-0.5 truncate">
             {resetTime ? (
-              <>Resets {resetTime}</>
+              <>将在 {resetTime} 后重置</>
             ) : (
-              <>{sourceLabel} hit usage limit</>
+              <>{sourceLabel} 使用已达上限</>
             )}
           </p>
           <p className="text-xs text-primary mt-1">
-            Click to manage →
+            点击管理 →
           </p>
         </div>
         <Button
@@ -69,7 +69,7 @@ export function RateLimitIndicator() {
           }}
         >
           <X className="h-3 w-3" />
-          <span className="sr-only">Dismiss</span>
+          <span className="sr-only">关闭</span>
         </Button>
       </div>
     </div>
@@ -78,11 +78,11 @@ export function RateLimitIndicator() {
 
 function getSourceLabel(source: string): string {
   switch (source) {
-    case 'changelog': return 'Changelog';
-    case 'task': return 'Task';
-    case 'roadmap': return 'Roadmap';
-    case 'ideation': return 'Ideation';
-    case 'title-generator': return 'Title Generator';
+    case 'changelog': return '变更日志';
+    case 'task': return '任务';
+    case 'roadmap': return '路线图';
+    case 'ideation': return '创意';
+    case 'title-generator': return '标题生成';
     default: return 'Claude';
   }
 }

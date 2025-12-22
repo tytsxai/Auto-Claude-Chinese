@@ -23,7 +23,7 @@ export function useLinearConnection(
           setLinearConnectionStatus(result.data);
         }
       } catch {
-        setLinearConnectionStatus({ connected: false, error: 'Failed to check connection' });
+        setLinearConnectionStatus({ connected: false, error: '检查连接失败' });
       } finally {
         setIsCheckingLinear(false);
       }

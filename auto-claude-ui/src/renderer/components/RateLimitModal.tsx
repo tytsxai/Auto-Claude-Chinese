@@ -62,7 +62,7 @@ export function RateLimitModal() {
         setAutoSwitchEnabled(result.data.autoSwitchOnRateLimit);
       }
     } catch (err) {
-      console.error('Failed to load auto-switch settings:', err);
+      console.error('加载自动切换设置失败：', err);
     }
   };
 
@@ -75,7 +75,7 @@ export function RateLimitModal() {
       });
       setAutoSwitchEnabled(enabled);
     } catch (err) {
-      console.error('Failed to update auto-switch settings:', err);
+      console.error('更新失败 auto-switch settings:', err);
     } finally {
       setIsLoadingSettings(false);
     }
@@ -128,7 +128,7 @@ export function RateLimitModal() {
         }
       }
     } catch (err) {
-      console.error('Failed to add profile:', err);
+      console.error('添加配置文件失败：', err);
       alert('添加账号失败。请重试。');
     } finally {
       setIsAddingProfile(false);

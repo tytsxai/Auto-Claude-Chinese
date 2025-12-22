@@ -32,7 +32,7 @@ export function SearchAndFilterBar({
       <div className="flex-1 relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search tasks..."
+          placeholder="搜索事项..."
           value={searchQuery}
           onChange={e => onSearchChange(e.target.value)}
           className="pl-9"
@@ -45,7 +45,7 @@ export function SearchAndFilterBar({
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All states</SelectItem>
+          <SelectItem value="all">全部状态</SelectItem>
           {uniqueStateTypes.map(type => (
             <SelectItem key={type} value={type}>
               {type.charAt(0).toUpperCase() + type.slice(1)}

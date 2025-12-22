@@ -753,7 +753,7 @@ export function GraphitiStep({ onNext, onBack, onSkip }: GraphitiStepProps) {
                         Graphiti 配置成功
                       </h3>
                       <p className="mt-1 text-sm text-success/80">
-                        记忆功能已启用。Auto Claude 将在不同会话间保持上下文，
+                        记忆功能已启用。Auto-Claude 将在不同会话间保持上下文，
                         以提升代码理解能力。
                       </p>
                     </div>
@@ -819,7 +819,7 @@ export function GraphitiStep({ onNext, onBack, onSkip }: GraphitiStepProps) {
                           什么是 Graphiti？
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          Graphiti 是智能记忆层，帮助 Auto Claude 在不同会话中保留上下文。
+                          Graphiti 是智能记忆层，帮助 Auto-Claude 在不同会话中保留上下文。
                           它使用知识图谱存储代码库中的发现、模式和洞察。
                         </p>
                         <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">

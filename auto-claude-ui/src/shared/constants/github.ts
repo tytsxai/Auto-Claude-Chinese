@@ -8,8 +8,8 @@
 // ============================================
 
 export const GITHUB_ISSUE_STATE_LABELS: Record<string, string> = {
-  open: 'Open',
-  closed: 'Closed'
+  open: '开启',
+  closed: '已关闭'
 };
 
 export const GITHUB_ISSUE_STATE_COLORS: Record<string, string> = {

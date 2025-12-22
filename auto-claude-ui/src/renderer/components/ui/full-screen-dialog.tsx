@@ -59,7 +59,7 @@ const FullScreenDialogContent = React.forwardRef<
         )}
       >
         <X className="h-5 w-5" />
-        <span className="sr-only">Close</span>
+        <span className="sr-only">关闭</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </FullScreenDialogPortal>

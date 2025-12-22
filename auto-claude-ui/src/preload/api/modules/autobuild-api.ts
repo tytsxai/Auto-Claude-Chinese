@@ -7,7 +7,7 @@ import type {
 import { createIpcListener, invokeIpc, sendIpc, IpcListenerCleanup } from './ipc-utils';
 
 /**
- * Auto-Build Source Update API operations
+ * Auto-Claude Source Update API operations
  */
 export interface AutoBuildAPI {
   // Operations
@@ -22,7 +22,7 @@ export interface AutoBuildAPI {
 }
 
 /**
- * Creates the Auto-Build Source Update API implementation
+ * Creates the Auto-Claude Source Update API implementation
  */
 export const createAutoBuildAPI = (): AutoBuildAPI => ({
   // Operations

@@ -74,7 +74,7 @@ export function TaskFileExplorerDrawer({ isOpen, onClose, projectPath }: TaskFil
             <div className="flex items-center justify-between px-3 py-2 border-b border-border bg-card/80 shrink-0">
               <div className="flex items-center gap-2">
                 <FolderTree className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium whitespace-nowrap">Project Files</span>
+                <span className="text-sm font-medium whitespace-nowrap">项目文件</span>
               </div>
               <div className="flex items-center gap-1">
                 <Button
@@ -82,7 +82,7 @@ export function TaskFileExplorerDrawer({ isOpen, onClose, projectPath }: TaskFil
                   size="icon"
                   className="h-6 w-6"
                   onClick={handleRefresh}
-                  title="Refresh"
+                  title="刷新"
                 >
                   <RefreshCw className="h-3.5 w-3.5" />
                 </Button>
@@ -91,7 +91,7 @@ export function TaskFileExplorerDrawer({ isOpen, onClose, projectPath }: TaskFil
                   size="icon"
                   className="h-6 w-6"
                   onClick={onClose}
-                  title="Close"
+                  title="关闭"
                 >
                   <X className="h-3.5 w-3.5" />
                 </Button>
@@ -101,7 +101,7 @@ export function TaskFileExplorerDrawer({ isOpen, onClose, projectPath }: TaskFil
             {/* Drag hint */}
             <div className="px-3 py-2 bg-muted/30 border-b border-border shrink-0">
               <p className="text-[10px] text-muted-foreground whitespace-nowrap">
-                Drag files to add as references
+                拖拽文件以添加为引用
               </p>
             </div>
 

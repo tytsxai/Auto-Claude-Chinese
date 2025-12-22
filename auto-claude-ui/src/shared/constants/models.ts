@@ -37,11 +37,11 @@ export const THINKING_BUDGET_MAP: Record<string, number | null> = {
 
 // Claude 模型的思考级别（预算 token 分配）
 export const THINKING_LEVELS = [
-  { value: 'none', label: 'None', description: 'No extended thinking' },
-  { value: 'low', label: 'Low', description: 'Brief consideration' },
-  { value: 'medium', label: 'Medium', description: 'Moderate analysis' },
-  { value: 'high', label: 'High', description: 'Deep thinking' },
-  { value: 'ultrathink', label: 'Ultra Think', description: 'Maximum reasoning depth' }
+  { value: 'none', label: '无', description: '不启用扩展思考' },
+  { value: 'low', label: '低', description: '简要思考' },
+  { value: 'medium', label: '中', description: '适度分析' },
+  { value: 'high', label: '高', description: '深度思考' },
+  { value: 'ultrathink', label: '超强', description: '最大推理深度' }
 ] as const;
 
 // ============================================
@@ -94,8 +94,8 @@ export const FEATURE_LABELS: Record<keyof FeatureModelConfig, { label: string; d
 export const DEFAULT_AGENT_PROFILES: AgentProfile[] = [
   {
     id: 'auto',
-    name: 'Auto (Optimized)',
-    description: 'Uses Opus across all phases with optimized thinking levels',
+    name: 'Auto（优化）',
+    description: '各阶段使用 Opus，并优化思考级别',
     model: 'opus',  // 回退/默认模型
     thinkingLevel: 'high',
     icon: 'Sparkles',
@@ -105,24 +105,24 @@ export const DEFAULT_AGENT_PROFILES: AgentProfile[] = [
   },
   {
     id: 'complex',
-    name: 'Complex Tasks',
-    description: 'For intricate, multi-step implementations requiring deep analysis',
+    name: '复杂任务',
+    description: '适用于需要深度分析的多步骤实现',
     model: 'opus',
     thinkingLevel: 'ultrathink',
     icon: 'Brain'
   },
   {
     id: 'balanced',
-    name: 'Balanced',
-    description: 'Good balance of speed and quality for most tasks',
+    name: '均衡',
+    description: '多数任务的速度与质量平衡方案',
     model: 'sonnet',
     thinkingLevel: 'medium',
     icon: 'Scale'
   },
   {
     id: 'quick',
-    name: 'Quick Edits',
-    description: 'Fast iterations for simple changes and quick fixes',
+    name: '快速修改',
+    description: '适合简单改动与快速修复的快速迭代',
     model: 'haiku',
     thinkingLevel: 'low',
     icon: 'Zap'
@@ -134,6 +134,6 @@ export const DEFAULT_AGENT_PROFILES: AgentProfile[] = [
 // ============================================
 
 export const MEMORY_BACKENDS = [
-  { value: 'file', label: 'File-based (default)' },
-  { value: 'graphiti', label: 'Graphiti (FalkorDB)' }
+  { value: 'file', label: '基于文件（默认）' },
+  { value: 'graphiti', label: 'Graphiti（FalkorDB）' }
 ] as const;

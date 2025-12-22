@@ -168,7 +168,7 @@ describe('OAuthStep Profile Management Logic', () => {
     it('should handle saveClaudeProfile failure', async () => {
       mockSaveClaudeProfile.mockResolvedValue({
         success: false,
-        error: 'Failed to save profile'
+        error: '保存配置文件失败'
       });
 
       const result = await window.electronAPI.saveClaudeProfile({
@@ -179,7 +179,7 @@ describe('OAuthStep Profile Management Logic', () => {
       });
 
       expect(result.success).toBe(false);
-      expect(result.error).toBe('Failed to save profile');
+      expect(result.error).toBe('保存配置文件失败');
     });
   });
 

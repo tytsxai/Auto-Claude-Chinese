@@ -36,14 +36,14 @@ export function TeamProjectSelector({
   return (
     <div className="flex gap-4 shrink-0">
       <div className="flex-1 space-y-2">
-        <Label className="text-sm font-medium text-foreground">Team</Label>
+        <Label className="text-sm font-medium text-foreground">团队</Label>
         <Select
           value={selectedTeamId}
           onValueChange={onTeamChange}
           disabled={isLoadingTeams}
         >
           <SelectTrigger>
-            <SelectValue placeholder={isLoadingTeams ? 'Loading...' : 'Select a team'} />
+            <SelectValue placeholder={isLoadingTeams ? '加载中...' : '选择团队'} />
           </SelectTrigger>
           <SelectContent>
             {teams.map(team => (
@@ -56,17 +56,17 @@ export function TeamProjectSelector({
       </div>
 
       <div className="flex-1 space-y-2">
-        <Label className="text-sm font-medium text-foreground">Project (Optional)</Label>
+        <Label className="text-sm font-medium text-foreground">项目（可选）</Label>
         <Select
           value={selectedProjectId}
           onValueChange={onProjectChange}
           disabled={isLoadingProjects || !selectedTeamId}
         >
           <SelectTrigger>
-            <SelectValue placeholder={isLoadingProjects ? 'Loading...' : 'All projects'} />
+            <SelectValue placeholder={isLoadingProjects ? '加载中...' : '所有项目'} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All projects</SelectItem>
+            <SelectItem value="">所有项目</SelectItem>
             {projects.map(project => (
               <SelectItem key={project.id} value={project.id}>
                 {project.name}

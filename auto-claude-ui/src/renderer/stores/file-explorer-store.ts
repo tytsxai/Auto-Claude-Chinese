@@ -95,7 +95,7 @@ export const useFileExplorerStore = create<FileExplorerState>((set, get) => ({
       const result = await window.electronAPI.listDirectory(dirPath);
 
       if (!result.success || !result.data) {
-        throw new Error(result.error || 'Failed to load directory');
+        throw new Error(result.error || '加载目录失败');
       }
 
       // Cache the result

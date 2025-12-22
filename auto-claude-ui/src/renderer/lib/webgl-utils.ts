@@ -136,7 +136,7 @@ export function testWebGLContext(): {
     if (!gl) {
       return {
         success: false,
-        error: 'Failed to create WebGL context',
+        error: '创建 WebGL 上下文失败',
       };
     }
 

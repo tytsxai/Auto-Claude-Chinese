@@ -42,8 +42,8 @@ export function ExistingCompetitorAnalysisDialog({
   };
 
   const formatDate = (date?: Date) => {
-    if (!date) return 'recently';
-    return new Intl.DateTimeFormat('en-US', {
+    if (!date) return '最近';
+    return new Intl.DateTimeFormat('zh-CN', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -56,10 +56,10 @@ export function ExistingCompetitorAnalysisDialog({
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2 text-foreground">
             <TrendingUp className="h-5 w-5 text-primary" />
-            Competitor Analysis Options
+            竞品分析选项
           </AlertDialogTitle>
           <AlertDialogDescription className="text-muted-foreground">
-            This project has an existing competitor analysis from {formatDate(analysisDate)}
+            此项目已有 {formatDate(analysisDate)} 的竞品分析结果
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -73,11 +73,11 @@ export function ExistingCompetitorAnalysisDialog({
               <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <h4 className="text-sm font-medium text-foreground flex items-center gap-2">
-                  Use existing analysis
-                  <span className="text-xs text-primary font-normal">(Recommended)</span>
+                  使用已有分析
+                  <span className="text-xs text-primary font-normal">（推荐）</span>
                 </h4>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Reuse the competitor insights you already have. Faster and no additional web searches.
+                  复用现有的竞品洞察，更快且无需额外网络搜索。
                 </p>
               </div>
             </div>
@@ -92,10 +92,10 @@ export function ExistingCompetitorAnalysisDialog({
               <RefreshCw className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <h4 className="text-sm font-medium text-foreground">
-                  Run new analysis
+                  重新分析
                 </h4>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Perform fresh web searches to get updated competitor information. Takes longer.
+                  进行新的网络搜索以获取最新竞品信息，耗时更长。
                 </p>
               </div>
             </div>
@@ -110,10 +110,10 @@ export function ExistingCompetitorAnalysisDialog({
               <Globe className="h-5 w-5 text-muted-foreground/60 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <h4 className="text-sm font-medium text-muted-foreground">
-                  Skip competitor analysis
+                  跳过竞品分析
                 </h4>
                 <p className="text-xs text-muted-foreground/80 mt-1">
-                  Generate roadmap without any competitor insights.
+                  不使用竞品洞察直接生成路线图。
                 </p>
               </div>
             </div>
@@ -122,7 +122,7 @@ export function ExistingCompetitorAnalysisDialog({
 
         <AlertDialogFooter className="sm:justify-start">
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Cancel
+            取消
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

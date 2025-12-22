@@ -69,7 +69,7 @@ export const createAgentAPI = (): AgentAPI => {
     // GitHub Integration API
     ...githubAPI,
 
-    // Auto-Build Source Update API
+    // Auto-Claude Source Update API
     ...autobuildAPI,
 
     // Shell Operations API

@@ -23,7 +23,7 @@ export function ConnectionStatus({
         <div>
           <p className="text-sm font-medium text-foreground">{title}</p>
           <p className="text-xs text-muted-foreground">
-            {isChecking ? 'Checking...' : isConnected ? successMessage : errorMessage}
+            {isChecking ? '检查中...' : isConnected ? successMessage : errorMessage}
           </p>
           {additionalInfo && (
             <p className="text-xs text-muted-foreground mt-1 italic">

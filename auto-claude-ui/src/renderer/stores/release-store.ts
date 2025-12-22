@@ -106,10 +106,10 @@ export async function loadReleaseableVersions(projectId: string): Promise<void> 
         }
       }
     } else {
-      store.setError(result.error || 'Failed to load versions');
+      store.setError(result.error || '加载版本失败');
     }
   } catch (error) {
-    store.setError(error instanceof Error ? error.message : 'Failed to load versions');
+    store.setError(error instanceof Error ? error.message : '加载版本失败');
   } finally {
     store.setIsLoadingVersions(false);
   }
@@ -135,10 +135,10 @@ export async function runPreflightCheck(projectId: string): Promise<void> {
     if (result.success && result.data) {
       store.setPreflightStatus(result.data);
     } else {
-      store.setError(result.error || 'Failed to run pre-flight checks');
+      store.setError(result.error || '运行预检失败');
     }
   } catch (error) {
-    store.setError(error instanceof Error ? error.message : 'Failed to run pre-flight checks');
+    store.setError(error instanceof Error ? error.message : '运行预检失败');
   } finally {
     store.setIsRunningPreflight(false);
   }

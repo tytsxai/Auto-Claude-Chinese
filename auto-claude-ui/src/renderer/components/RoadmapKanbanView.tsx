@@ -136,16 +136,16 @@ function DroppableStatusColumn({
                       <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center mb-2">
                         <Plus className="h-4 w-4 text-primary" />
                       </div>
-                      <span className="text-sm font-medium text-primary">Drop here</span>
+                      <span className="text-sm font-medium text-primary">拖到这里</span>
                     </>
                   ) : (
                     <>
                       <Inbox className="h-6 w-6 text-muted-foreground/50" />
                       <span className="mt-2 text-sm font-medium text-muted-foreground/70">
-                        No features
+                        暂无功能
                       </span>
                       <span className="mt-0.5 text-xs text-muted-foreground/50">
-                        Drag features here
+                        将功能拖拽到此处
                       </span>
                     </>
                   )}
@@ -278,7 +278,7 @@ export function RoadmapKanbanView({
   // Get status label for a feature (for display in drag overlay)
   const getStatusLabelForFeature = (feature: RoadmapFeature) => {
     const statusColumn = ROADMAP_STATUS_COLUMNS.find((c) => c.id === feature.status);
-    return statusColumn?.label || 'Unknown Status';
+    return statusColumn?.label || '未知状态';
   };
 
   return (

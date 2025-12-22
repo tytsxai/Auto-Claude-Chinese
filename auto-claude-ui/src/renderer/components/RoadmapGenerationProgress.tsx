@@ -56,36 +56,36 @@ const PHASE_CONFIG: Record<
   }
 > = {
   analyzing: {
-    label: 'Analyzing',
-    description: 'Analyzing project structure and codebase...',
+    label: '分析中',
+    description: '正在分析项目结构与代码库...',
     icon: Search,
     color: 'bg-amber-500',
     bgColor: 'bg-amber-500/20',
   },
   discovering: {
-    label: 'Discovering',
-    description: 'Discovering target audience and user needs...',
+    label: '探索中',
+    description: '正在探索目标用户与需求...',
     icon: Users,
     color: 'bg-info',
     bgColor: 'bg-info/20',
   },
   generating: {
-    label: 'Generating',
-    description: 'Generating feature roadmap...',
+    label: '生成中',
+    description: '正在生成功能路线图...',
     icon: Sparkles,
     color: 'bg-primary',
     bgColor: 'bg-primary/20',
   },
   complete: {
-    label: 'Complete',
-    description: 'Roadmap generation complete!',
+    label: '完成',
+    description: '路线图生成完成！',
     icon: CheckCircle2,
     color: 'bg-success',
     bgColor: 'bg-success/20',
   },
   error: {
-    label: 'Error',
-    description: 'Generation failed',
+    label: '错误',
+    description: '生成失败',
     icon: AlertCircle,
     color: 'bg-destructive',
     bgColor: 'bg-destructive/20',
@@ -94,9 +94,9 @@ const PHASE_CONFIG: Record<
 
 // Phases shown in the step indicator (excluding complete and error)
 const STEP_PHASES: { key: GenerationPhase; label: string }[] = [
-  { key: 'analyzing', label: 'Analyze' },
-  { key: 'discovering', label: 'Discover' },
-  { key: 'generating', label: 'Generate' },
+  { key: 'analyzing', label: '分析' },
+  { key: 'discovering', label: '探索' },
+  { key: 'generating', label: '生成' },
 ];
 
 /**
@@ -209,7 +209,7 @@ export function RoadmapGenerationProgress({
     try {
       await onStop();
     } catch (err) {
-      console.error('Failed to stop generation:', err);
+      console.error('停止生成失败：', err);
     } finally {
       setIsStopping(false);
     }
@@ -281,10 +281,10 @@ export function RoadmapGenerationProgress({
                 disabled={isStopping}
               >
                 <Square className="h-4 w-4 mr-1" />
-                {isStopping ? 'Stopping...' : 'Stop'}
+                {isStopping ? '正在停止...' : '停止'}
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Stop generation</TooltipContent>
+            <TooltipContent>停止生成</TooltipContent>
           </Tooltip>
         </div>
       )}
@@ -333,7 +333,7 @@ export function RoadmapGenerationProgress({
       {isActivePhase && (
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Progress</span>
+            <span className="text-xs text-muted-foreground">进度</span>
             <span className="text-xs font-medium">{progress}%</span>
           </div>
           <div className="relative h-2 w-full overflow-hidden rounded-full bg-border">

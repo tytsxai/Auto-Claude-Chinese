@@ -71,7 +71,7 @@ interface AdvancedSettingsProps {
  * 更新与通知的高级设置
  */
 export function AdvancedSettings({ settings, onSettingsChange, section, version }: AdvancedSettingsProps) {
-  // Auto Claude 源码更新状态
+  // Auto-Claude 源码更新状态
   const [sourceUpdateCheck, setSourceUpdateCheck] = useState<AutoBuildSourceUpdateCheck | null>(null);
   const [isCheckingSourceUpdate, setIsCheckingSourceUpdate] = useState(false);
   const [isDownloadingUpdate, setIsDownloadingUpdate] = useState(false);
@@ -154,7 +154,7 @@ export function AdvancedSettings({ settings, onSettingsChange, section, version 
         setAppUpdateInfo(null);
       }
     } catch (err) {
-      console.error('Failed to check for app updates:', err);
+      console.error('检查应用更新失败：', err);
     } finally {
       setIsCheckingAppUpdate(false);
     }
@@ -165,7 +165,7 @@ export function AdvancedSettings({ settings, onSettingsChange, section, version 
     try {
       await window.electronAPI.downloadAppUpdate();
     } catch (err) {
-      console.error('Failed to download app update:', err);
+      console.error('下载应用更新失败：', err);
       setIsDownloadingAppUpdate(false);
     }
   };
@@ -204,7 +204,7 @@ export function AdvancedSettings({ settings, onSettingsChange, section, version 
     return (
       <SettingsSection
         title="更新"
-        description="管理 Auto Claude 更新"
+        description="管理 Auto-Claude 更新"
       >
         <div className="space-y-6">
           {/* Electron 应用更新分区 */}
@@ -409,7 +409,7 @@ export function AdvancedSettings({ settings, onSettingsChange, section, version 
             <div className="space-y-1">
               <Label className="font-medium text-foreground">自动更新项目</Label>
               <p className="text-sm text-muted-foreground">
-                当有新版本时自动更新项目中的 Auto Claude
+                当有新版本时自动更新项目中的 Auto-Claude
               </p>
             </div>
             <Switch

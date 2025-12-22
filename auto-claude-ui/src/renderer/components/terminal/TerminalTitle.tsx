@@ -83,7 +83,7 @@ export function TerminalTitle({ title, associatedTask, onTitleChange }: Terminal
           </TooltipTrigger>
           <TooltipContent side="bottom" className="max-w-xs">
             <p className="text-sm">{associatedTask.description}</p>
-            <p className="text-xs text-muted-foreground mt-1">Double-click to rename</p>
+            <p className="text-xs text-muted-foreground mt-1">双击重命名</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -105,7 +105,7 @@ export function TerminalTitle({ title, associatedTask, onTitleChange }: Terminal
           </span>
         </TooltipTrigger>
         <TooltipContent side="bottom">
-          <p className="text-xs">Double-click to rename</p>
+          <p className="text-xs">双击重命名</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

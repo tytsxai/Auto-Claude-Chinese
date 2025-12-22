@@ -159,7 +159,7 @@ export function AddFeatureDialog({
         // 从路线图获取项目 ID
         const result = await window.electronAPI.saveRoadmap(roadmap.projectId, roadmap);
         if (!result.success) {
-          throw new Error(result.error || 'Failed to save roadmap');
+          throw new Error(result.error || '保存路线图失败');
         }
       }
 

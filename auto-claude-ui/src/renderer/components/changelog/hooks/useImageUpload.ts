@@ -56,10 +56,10 @@ export function useImageUpload({ projectId, content, onContentChange }: UseImage
         const imageMarkdown = `\n![${filename}](${result.data.relativePath})\n`;
         insertImageAtCursor(imageMarkdown);
       } else {
-        setImageError(result.error || 'Failed to save image');
+        setImageError(result.error || '保存图片失败');
       }
     } catch (_err) {
-      setImageError('Failed to process image');
+      setImageError('处理图片失败');
     }
   }, [projectId, insertImageAtCursor]);
 

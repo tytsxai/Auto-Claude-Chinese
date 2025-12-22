@@ -56,7 +56,7 @@ export function AgentProfileSettings() {
     const success = await saveSettings({ selectedAgentProfile: profileId });
     if (!success) {
       // 记录错误便于调试，后续可展示用户提示
-      console.error('Failed to save agent profile selection');
+      console.error('保存智能体配置选择失败');
       return;
     }
     // 选择 Auto 配置时自动展开阶段配置
@@ -202,7 +202,7 @@ export function AgentProfileSettings() {
               className="flex w-full items-center justify-between p-4 text-left hover:bg-muted/50 transition-colors rounded-t-lg"
             >
               <div>
-                <h4 className="font-medium text-sm text-foreground">Phase Configuration</h4>
+                <h4 className="font-medium text-sm text-foreground">阶段配置</h4>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   为每个阶段自定义模型与思考等级
                 </p>

@@ -82,7 +82,7 @@ export function FileTree({ rootPath }: FileTreeProps) {
     return (
       <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
         <FolderOpen className="h-6 w-6 text-muted-foreground mb-2" />
-        <p className="text-xs text-muted-foreground">No files found</p>
+        <p className="text-xs text-muted-foreground">未找到文件</p>
       </div>
     );
   }

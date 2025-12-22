@@ -42,17 +42,17 @@ export function MergePreviewSummary({
           {hasGitConflicts ? (
             <>
               <AlertTriangle className="h-4 w-4 text-warning" />
-              Branch Diverged - AI Will Resolve
+              分支已分叉 - AI 将处理
             </>
           ) : !hasAIConflicts ? (
             <>
               <CheckCircle className="h-4 w-4 text-success" />
-              No Conflicts Detected
+              未检测到冲突
             </>
           ) : (
             <>
               <AlertTriangle className="h-4 w-4 text-warning" />
-              {mergePreview.conflicts.length} Conflict{mergePreview.conflicts.length !== 1 ? 's' : ''} Found
+              发现 {mergePreview.conflicts.length} 个冲突
             </>
           )}
         </span>
@@ -63,17 +63,17 @@ export function MergePreviewSummary({
             onClick={() => onShowConflictDialog(true)}
             className="h-7 text-xs"
           >
-            View Details
+            查看详情
           </Button>
         )}
       </div>
 
       {hasGitConflicts && mergePreview.gitConflicts && (
         <div className="mb-3 p-2 bg-warning/10 rounded text-xs border border-warning/30">
-          <p className="font-medium text-warning mb-1">Branch has diverged - AI will resolve</p>
+          <p className="font-medium text-warning mb-1">分支已分叉 - AI 将处理</p>
           <p className="text-muted-foreground mb-2">
-            The main branch has {mergePreview.gitConflicts.commitsBehind} new commit{mergePreview.gitConflicts.commitsBehind !== 1 ? 's' : ''} since this worktree was created.
-            {mergePreview.gitConflicts.conflictingFiles.length} file{mergePreview.gitConflicts.conflictingFiles.length !== 1 ? 's' : ''} will need intelligent merging:
+            自该工作树创建以来，主分支新增 {mergePreview.gitConflicts.commitsBehind} 个提交。
+            {mergePreview.gitConflicts.conflictingFiles.length} 个文件需要智能合并：
           </p>
           <ul className="list-disc list-inside text-muted-foreground">
             {mergePreview.gitConflicts.conflictingFiles.map((file, idx) => (
@@ -81,27 +81,27 @@ export function MergePreviewSummary({
             ))}
           </ul>
           <p className="mt-2 text-muted-foreground">
-            AI will automatically merge these conflicts when you click Stage Changes.
+            点击“暂存更改”后，AI 将自动合并这些冲突。
           </p>
         </div>
       )}
 
       <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
-        <div>Files to merge: {mergePreview.summary.totalFiles}</div>
+        <div>待合并文件：{mergePreview.summary.totalFiles}</div>
         {hasGitConflicts ? (
-          <div className="text-warning">AI will resolve conflicts</div>
+          <div className="text-warning">AI 将处理冲突</div>
         ) : hasAIConflicts ? (
           <>
-            <div>Auto-mergeable: {mergePreview.summary.autoMergeable}</div>
+            <div>可自动合并：{mergePreview.summary.autoMergeable}</div>
             {mergePreview.summary.aiResolved !== undefined && (
-              <div>AI resolved: {mergePreview.summary.aiResolved}</div>
+              <div>AI 已处理：{mergePreview.summary.aiResolved}</div>
             )}
             {mergePreview.summary.humanRequired !== undefined && mergePreview.summary.humanRequired > 0 && (
-              <div className="text-warning">Manual review: {mergePreview.summary.humanRequired}</div>
+              <div className="text-warning">需要人工复查：{mergePreview.summary.humanRequired}</div>
             )}
           </>
         ) : (
-          <div className="text-success">Ready to merge</div>
+          <div className="text-success">可直接合并</div>
         )}
       </div>
     </div>

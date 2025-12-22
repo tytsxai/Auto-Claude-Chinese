@@ -94,7 +94,7 @@ export function IntegrationSettings({ settings, onSettingsChange, isOpen }: Inte
         await loadGlobalClaudeProfiles();
       }
     } catch (err) {
-      console.error('Failed to load Claude profiles:', err);
+      console.error('加载 Claude 配置文件失败：', err);
     } finally {
       setIsLoadingProfiles(false);
     }
@@ -135,7 +135,7 @@ export function IntegrationSettings({ settings, onSettingsChange, isOpen }: Inte
         }
       }
     } catch (err) {
-      console.error('Failed to add profile:', err);
+      console.error('添加配置文件失败：', err);
       alert('添加配置失败。请重试。');
     } finally {
       setIsAddingProfile(false);
@@ -150,7 +150,7 @@ export function IntegrationSettings({ settings, onSettingsChange, isOpen }: Inte
         await loadClaudeProfiles();
       }
     } catch (err) {
-      console.error('Failed to delete profile:', err);
+      console.error('删除配置文件失败：', err);
     } finally {
       setDeletingProfileId(null);
     }
@@ -175,7 +175,7 @@ export function IntegrationSettings({ settings, onSettingsChange, isOpen }: Inte
         await loadClaudeProfiles();
       }
     } catch (err) {
-      console.error('Failed to rename profile:', err);
+      console.error('重命名配置文件失败：', err);
     } finally {
       setEditingProfileId(null);
       setEditingProfileName('');
@@ -190,7 +190,7 @@ export function IntegrationSettings({ settings, onSettingsChange, isOpen }: Inte
         await loadGlobalClaudeProfiles();
       }
     } catch (err) {
-      console.error('Failed to set active profile:', err);
+      console.error('设置当前配置文件失败：', err);
     }
   };
 
@@ -208,7 +208,7 @@ export function IntegrationSettings({ settings, onSettingsChange, isOpen }: Inte
         alert(`无法开始认证：${initResult.error || '请重试。'}`);
       }
     } catch (err) {
-      console.error('Failed to authenticate profile:', err);
+      console.error('认证配置文件失败：', err);
       alert('无法开始认证。请重试。');
     } finally {
       setAuthenticatingProfileId(null);
@@ -249,7 +249,7 @@ export function IntegrationSettings({ settings, onSettingsChange, isOpen }: Inte
         alert(`保存令牌失败：${result.error || '请重试。'}`);
       }
     } catch (err) {
-      console.error('Failed to save token:', err);
+      console.error('保存令牌失败：', err);
       alert('保存令牌失败。请重试。');
     } finally {
       setSavingTokenProfileId(null);
@@ -265,7 +265,7 @@ export function IntegrationSettings({ settings, onSettingsChange, isOpen }: Inte
         setAutoSwitchSettings(result.data);
       }
     } catch (err) {
-      console.error('Failed to load auto-switch settings:', err);
+      console.error('加载自动切换设置失败：', err);
     } finally {
       setIsLoadingAutoSwitch(false);
     }
@@ -282,7 +282,7 @@ export function IntegrationSettings({ settings, onSettingsChange, isOpen }: Inte
         alert(`更新设置失败：${result.error || '请重试。'}`);
       }
     } catch (err) {
-      console.error('Failed to update auto-switch settings:', err);
+      console.error('更新失败 auto-switch settings:', err);
       alert('更新设置失败。请重试。');
     } finally {
       setIsLoadingAutoSwitch(false);

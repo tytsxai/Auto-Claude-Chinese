@@ -17,6 +17,21 @@ interface DocumentationGapDetailsProps {
   idea: DocumentationGapIdea;
 }
 
+const IDEATION_EFFORT_LABELS_ZH: Record<string, string> = {
+  trivial: '极小',
+  small: '小',
+  medium: '中',
+  large: '大',
+  complex: '复杂'
+};
+
+const IDEATION_IMPACT_LABELS_ZH: Record<string, string> = {
+  low: '低',
+  medium: '中',
+  high: '高',
+  critical: '关键'
+};
+
 export function DocumentationGapDetails({ idea }: DocumentationGapDetailsProps) {
   return (
     <>
@@ -26,13 +41,13 @@ export function DocumentationGapDetails({ idea }: DocumentationGapDetailsProps) 
           <div className="text-lg font-semibold">
             {DOCUMENTATION_CATEGORY_LABELS[idea.category]}
           </div>
-          <div className="text-xs text-muted-foreground">Category</div>
+          <div className="text-xs text-muted-foreground">分类</div>
         </Card>
         <Card className="p-3 text-center">
           <div className={`text-lg font-semibold ${IDEATION_EFFORT_COLORS[idea.estimatedEffort]}`}>
-            {idea.estimatedEffort}
+            {IDEATION_EFFORT_LABELS_ZH[idea.estimatedEffort] ?? idea.estimatedEffort}
           </div>
-          <div className="text-xs text-muted-foreground">Effort</div>
+          <div className="text-xs text-muted-foreground">工作量</div>
         </Card>
       </div>
 
@@ -40,7 +55,7 @@ export function DocumentationGapDetails({ idea }: DocumentationGapDetailsProps) 
       <div>
         <h3 className="text-sm font-medium mb-2 flex items-center gap-2">
           <Users className="h-4 w-4" />
-          Target Audience
+          目标读者
         </h3>
         <Badge variant="outline" className="capitalize">
           {idea.targetAudience}
@@ -52,7 +67,7 @@ export function DocumentationGapDetails({ idea }: DocumentationGapDetailsProps) 
         <div>
           <h3 className="text-sm font-medium mb-2 flex items-center gap-2">
             <AlertCircle className="h-4 w-4" />
-            Current Documentation
+            当前文档
           </h3>
           <p className="text-sm text-muted-foreground">{idea.currentDocumentation}</p>
         </div>
@@ -62,7 +77,7 @@ export function DocumentationGapDetails({ idea }: DocumentationGapDetailsProps) 
       <div>
         <h3 className="text-sm font-medium mb-2 flex items-center gap-2">
           <CheckCircle2 className="h-4 w-4" />
-          Proposed Content
+          建议补充内容
         </h3>
         <p className="text-sm text-muted-foreground">{idea.proposedContent}</p>
       </div>
@@ -72,7 +87,7 @@ export function DocumentationGapDetails({ idea }: DocumentationGapDetailsProps) 
         <div>
           <h3 className="text-sm font-medium mb-2 flex items-center gap-2">
             <FileCode className="h-4 w-4" />
-            Affected Areas
+            涉及范围
           </h3>
           <ul className="space-y-1">
             {idea.affectedAreas.map((area, i) => (
@@ -86,9 +101,9 @@ export function DocumentationGapDetails({ idea }: DocumentationGapDetailsProps) 
 
       {/* Priority */}
       <div>
-        <h3 className="text-sm font-medium mb-2">Priority</h3>
+        <h3 className="text-sm font-medium mb-2">优先级</h3>
         <Badge variant="outline" className={IDEATION_IMPACT_COLORS[idea.priority]}>
-          {idea.priority}
+          {IDEATION_IMPACT_LABELS_ZH[idea.priority] ?? idea.priority}
         </Badge>
       </div>
     </>

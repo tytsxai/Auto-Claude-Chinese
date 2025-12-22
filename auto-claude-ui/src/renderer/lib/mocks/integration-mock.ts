@@ -19,7 +19,7 @@ export const integrationMock = {
     success: true
   }),
 
-  // Auto-Build Source Environment Operations
+  // Auto-Claude Source Environment Operations
   getSourceEnv: async () => ({
     success: true,
     data: {
