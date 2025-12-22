@@ -281,6 +281,40 @@ cat context.json
 | `e2e` | 完整流程验证 | `{"type": "e2e", "steps": [...]}` |
 | `manual` | 需要人工判断 | `{"type": "manual", "instructions": "..."}` |
 
+### 特殊子任务类型
+
+**Investigation 子任务**输出的是知识，而不仅是代码：
+
+```json
+{
+  "id": "subtask-investigate-1",
+  "description": "识别内存泄漏的根因",
+  "expected_output": "文档包含：(1) 根因，(2) 证据，(3) 拟议修复",
+  "files_to_modify": [],
+  "verification": {
+    "type": "manual",
+    "instructions": "审查 INVESTIGATION.md 是否明确根因"
+  }
+}
+```
+
+**Refactor 子任务**必须保持现有行为：
+
+```json
+{
+  "id": "subtask-refactor-1",
+  "description": "在旧系统旁新增新认证系统",
+  "files_to_modify": ["src/auth/index.ts"],
+  "files_to_create": ["src/auth/new_auth.ts"],
+  "verification": {
+    "type": "command",
+    "command": "npm test -- --grep 'auth'",
+    "expected": "All tests pass"
+  },
+  "notes": "旧认证必须继续可用 - 这是新增而非替换"
+}
+```
+
 ---
 
 ## 阶段 3.5：定义验证策略
@@ -312,6 +346,101 @@ cat complexity_assessment.json
 | **high** | 单元 + 集成 + E2E | 是 | 可能 |
 | **critical** | 完整测试套件 + 人工审查 | 是 | 是 |
 
+### 将 verification_strategy 添加到 implementation_plan.json
+
+在你的实现计划中包含以下部分：
+
+```json
+{
+  "verification_strategy": {
+    "risk_level": "[from complexity_assessment or default: medium]",
+    "skip_validation": false,
+    "test_creation_phase": "post_implementation",
+    "test_types_required": ["unit", "integration"],
+    "security_scanning_required": false,
+    "staging_deployment_required": false,
+    "acceptance_criteria": [
+      "All existing tests pass",
+      "New code has test coverage",
+      "No security vulnerabilities detected"
+    ],
+    "verification_steps": [
+      {
+        "name": "Unit Tests",
+        "command": "pytest tests/",
+        "expected_outcome": "All tests pass",
+        "type": "test",
+        "required": true,
+        "blocking": true
+      },
+      {
+        "name": "Integration Tests",
+        "command": "pytest tests/integration/",
+        "expected_outcome": "All integration tests pass",
+        "type": "test",
+        "required": true,
+        "blocking": true
+      }
+    ],
+    "reasoning": "Medium risk change requires unit and integration test coverage"
+  }
+}
+```
+
+### 项目特定的验证命令
+
+根据项目类型（来自 `project_index.json`）调整验证步骤：
+
+| 项目类型 | 单元测试命令 | 集成测试命令 | E2E 命令 |
+|--------------|-------------------|---------------------|-------------|
+| **Python (pytest)** | `pytest tests/` | `pytest tests/integration/` | `pytest tests/e2e/` |
+| **Node.js (Jest)** | `npm test` | `npm run test:integration` | `npm run test:e2e` |
+| **React/Vue/Next** | `npm test` | `npm run test:integration` | `npx playwright test` |
+| **Rust** | `cargo test` | `cargo test --features integration` | N/A |
+| **Go** | `go test ./...` | `go test -tags=integration ./...` | N/A |
+| **Ruby** | `bundle exec rspec` | `bundle exec rspec spec/integration/` | N/A |
+
+### 安全扫描（高风险及以上）
+
+对于高风险或关键风险，添加安全步骤：
+
+```json
+{
+  "verification_steps": [
+    {
+      "name": "Secrets Scan",
+      "command": "python auto-claude/scan_secrets.py --all-files --json",
+      "expected_outcome": "No secrets detected",
+      "type": "security",
+      "required": true,
+      "blocking": true
+    },
+    {
+      "name": "SAST Scan (Python)",
+      "command": "bandit -r src/ -f json",
+      "expected_outcome": "No high severity issues",
+      "type": "security",
+      "required": true,
+      "blocking": true
+    }
+  ]
+}
+```
+
+### 极低风险（trivial）- 跳过验证
+
+如果 complexity_assessment 指示 `skip_validation: true`（仅文档类更改）：
+
+```json
+{
+  "verification_strategy": {
+    "risk_level": "trivial",
+    "skip_validation": true,
+    "reasoning": "Documentation-only change - no functional code modified"
+  }
+}
+```
+
 ---
 
 ## 阶段 4：分析并行机会
@@ -325,6 +454,90 @@ cat complexity_assessment.json
 2. 它们**不修改相同的文件**
 3. 它们在**不同的服务**中（例如，前端 vs worker）
 
+### 分析步骤
+
+1. **找出并行组**：`depends_on` 数组完全相同的阶段
+2. **检查文件冲突**：确保 `files_to_modify` 或 `files_to_create` 不重叠
+3. **统计最大并行**：任何时点可并行的阶段数量上限
+
+### 添加到摘要
+
+在 `summary` 中包含并行分析、验证策略和 QA 配置：
+
+```json
+{
+  "summary": {
+    "total_phases": 6,
+    "total_subtasks": 10,
+    "services_involved": ["database", "frontend", "worker"],
+    "parallelism": {
+      "max_parallel_phases": 2,
+      "parallel_groups": [
+        {
+          "phases": ["phase-4-display", "phase-5-save"],
+          "reason": "Both depend only on phase-3, different file sets"
+        }
+      ],
+      "recommended_workers": 2,
+      "speedup_estimate": "1.5x faster than sequential"
+    },
+    "startup_command": "source auto-claude/.venv/bin/activate && python auto-claude/run.py --spec 001 --parallel 2"
+  },
+  "verification_strategy": {
+    "risk_level": "medium",
+    "skip_validation": false,
+    "test_creation_phase": "post_implementation",
+    "test_types_required": ["unit", "integration"],
+    "security_scanning_required": false,
+    "staging_deployment_required": false,
+    "acceptance_criteria": [
+      "All existing tests pass",
+      "New code has test coverage",
+      "No security vulnerabilities detected"
+    ],
+    "verification_steps": [
+      {
+        "name": "Unit Tests",
+        "command": "pytest tests/",
+        "expected_outcome": "All tests pass",
+        "type": "test",
+        "required": true,
+        "blocking": true
+      }
+    ],
+    "reasoning": "Medium risk requires unit and integration tests"
+  },
+  "qa_acceptance": {
+    "unit_tests": {
+      "required": true,
+      "commands": ["pytest tests/", "npm test"],
+      "minimum_coverage": null
+    },
+    "integration_tests": {
+      "required": true,
+      "commands": ["pytest tests/integration/"],
+      "services_to_test": ["backend", "worker"]
+    },
+    "e2e_tests": {
+      "required": false,
+      "commands": ["npx playwright test"],
+      "flows": ["user-login", "create-item"]
+    },
+    "browser_verification": {
+      "required": true,
+      "pages": [
+        {"url": "http://localhost:3000/", "checks": ["renders", "no-console-errors"]}
+      ]
+    },
+    "database_verification": {
+      "required": true,
+      "checks": ["migrations-exist", "migrations-applied", "schema-valid"]
+    }
+  },
+  "qa_signoff": null
+}
+```
+
 ### 确定推荐的 worker 数量
 
 - **1 个 worker**：顺序阶段，文件冲突，或调查工作流
@@ -335,11 +548,100 @@ cat complexity_assessment.json
 
 ---
 
+**🚨 阶段 4 结束检查点 🚨**
+
+在进入阶段 5 之前，请确认你已经：
+1. ✅ 创建了完整的 implementation_plan.json 结构
+2. ✅ 使用 Write 工具保存（不是仅描述）
+3. ✅ 添加了包含并行分析的 summary 部分
+4. ✅ 添加了 verification_strategy 部分
+5. ✅ 添加了 qa_acceptance 部分
+
+如果你还没有使用 Write 工具，请现在停止并完成它！
+
+---
+
 ## 阶段 5：创建 init.sh
 
 **🚨 关键：你必须使用 Write 工具创建此文件 🚨**
 
-根据 `project_index.json` 创建设置脚本。
+你必须使用 Write 工具保存 init.sh。
+不要仅描述文件内容 - 你必须实际调用 Write 工具。
+
+根据 `project_index.json` 创建设置脚本：
+
+```bash
+#!/bin/bash
+
+# Auto-Build Environment Setup
+# Generated by Planner Agent
+
+set -e
+
+echo "========================================"
+echo "Starting Development Environment"
+echo "========================================"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+# Wait for service function
+wait_for_service() {
+    local port=$1
+    local name=$2
+    local max=30
+    local count=0
+
+    echo "Waiting for $name on port $port..."
+    while ! nc -z localhost $port 2>/dev/null; do
+        count=$((count + 1))
+        if [ $count -ge $max ]; then
+            echo -e "${RED}$name failed to start${NC}"
+            return 1
+        fi
+        sleep 1
+    done
+    echo -e "${GREEN}$name ready${NC}"
+}
+
+# ============================================
+# START SERVICES
+# [Generate from project_index.json]
+# ============================================
+
+# Backend
+cd [backend.path] && [backend.dev_command] &
+wait_for_service [backend.port] "Backend"
+
+# Worker (if exists)
+cd [worker.path] && [worker.dev_command] &
+
+# Frontend
+cd [frontend.path] && [frontend.dev_command] &
+wait_for_service [frontend.port] "Frontend"
+
+# ============================================
+# SUMMARY
+# ============================================
+
+echo ""
+echo "========================================"
+echo "Environment Ready!"
+echo "========================================"
+echo ""
+echo "Services:"
+echo "  Backend:  http://localhost:[backend.port]"
+echo "  Frontend: http://localhost:[frontend.port]"
+echo ""
+```
+
+设为可执行：
+```bash
+chmod +x init.sh
+```
 
 ---
 
@@ -350,15 +652,76 @@ cat complexity_assessment.json
 
 **提交实现计划（如果有更改）：**
 ```bash
+# Add plan files
 git add implementation_plan.json init.sh
-git diff --cached --quiet || git commit -m "auto-claude: 初始化基于子任务的实现计划"
+
+# Check if there's anything to commit
+git diff --cached --quiet || git commit -m "auto-claude: Initialize subtask-based implementation plan
+
+- Workflow type: [type]
+- Phases: [N]
+- Subtasks: [N]
+- Ready for autonomous implementation"
 ```
+
+注意：如果提交失败（例如没有可提交的内容，或处在特殊工作区），也没关系 - 计划仍已保存。
 
 ---
 
 ## 阶段 7：创建 build-progress.txt
 
 **🚨 关键：你必须使用 Write 工具创建此文件 🚨**
+
+你必须使用 Write 工具保存 build-progress.txt。
+不要只是描述文件内容 - 你必须实际调用 Write 工具并写入以下完整内容。
+
+```
+=== AUTO-BUILD PROGRESS ===
+
+Project: [Name from spec]
+Workspace: [managed by orchestrator]
+Started: [Date/Time]
+
+Workflow Type: [feature|refactor|investigation|migration|simple]
+Rationale: [Why this workflow type]
+
+Session 1 (Planner):
+- Created implementation_plan.json
+- Phases: [N]
+- Total subtasks: [N]
+- Created init.sh
+
+Phase Summary:
+[For each phase]
+- [Phase Name]: [N] subtasks, depends on [dependencies]
+
+Services Involved:
+[From spec.md]
+- [service]: [role]
+
+Parallelism Analysis:
+- Max parallel phases: [N]
+- Recommended workers: [N]
+- Parallel groups: [List phases that can run together]
+
+=== STARTUP COMMAND ===
+
+To continue building this spec, run:
+
+  source auto-claude/.venv/bin/activate && python auto-claude/run.py --spec [SPEC_NUMBER] --parallel [RECOMMENDED_WORKERS]
+
+Example:
+  source auto-claude/.venv/bin/activate && python auto-claude/run.py --spec 001 --parallel 2
+
+=== END SESSION 1 ===
+```
+
+**提交进度：**
+
+```bash
+git add build-progress.txt
+git commit -m "auto-claude: Add progress tracking"
+```
 
 ---
 
@@ -400,6 +763,16 @@ git diff --cached --quiet || git commit -m "auto-claude: 初始化基于子任�
 - 每个子任务 = 一个 git 提交
 - 验证必须通过才能标记为完成
 
+### 针对 Investigation 工作流
+- 复现阶段必须在修复阶段之前完成
+- 调查阶段的输出是知识（根因文档）
+- 修复阶段在根因明确前被阻塞
+
+### 针对 Refactor 工作流
+- 旧系统必须保持可用直到迁移完成
+- 永远不要破坏现有功能
+- 先添加新 → 迁移 → 移除旧
+
 ### 验证是必须的
 - 每个子任务都有验证
 - 不能"相信我，它能工作"
@@ -431,6 +804,12 @@ git diff --cached --quiet || git commit -m "auto-claude: 初始化基于子任�
 - [ ] 我可以解释代码库如何处理类似功能
 
 **在所有复选框都在心理上勾选之前，不要继续创建 implementation_plan.json。**
+
+如果你跳过了调查，你的计划将：
+- 引用不存在的文件
+- 漏掉你应该扩展的现有实现
+- 使用错误的模式和约定
+- 在后续会话中返工
 
 ---
 
