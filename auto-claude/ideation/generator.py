@@ -76,11 +76,22 @@ class IdeationGenerator:
         """Run an agent with the given prompt."""
         prompt_path = self.prompts_dir / prompt_file
 
-        if not prompt_path.exists():
-            return False, f"Prompt not found: {prompt_path}"
+        # Load prompt with language support
+        try:
+            from prompts_pkg.prompt_loader import get_prompt_path
 
-        # Load prompt
-        prompt = prompt_path.read_text()
+            prompt_name = (
+                prompt_file[:-3] if prompt_file.endswith(".md") else prompt_file
+            )
+            prompt_path = get_prompt_path(
+                prompt_name, base_dir=self.prompts_dir.parent
+            )
+            prompt = prompt_path.read_text(encoding="utf-8")
+        except (ImportError, FileNotFoundError):
+            # Fallback to direct path
+            if not prompt_path.exists():
+                return False, f"Prompt not found: {prompt_path}"
+            prompt = prompt_path.read_text(encoding="utf-8")
 
         # Add context
         prompt += f"\n\n---\n\n**Output Directory**: {self.output_dir}\n"

@@ -273,11 +273,16 @@ def _get_attempt_history(recovery_manager: Any, subtask_id: str) -> list[dict]:
 
 def _build_extraction_prompt(inputs: dict) -> str:
     """Build the prompt for insight extraction."""
-    prompt_file = Path(__file__).parent / "prompts" / "insight_extractor.md"
-
-    if prompt_file.exists():
-        base_prompt = prompt_file.read_text()
-    else:
+    try:
+        # Try to load from analysis/prompts/ subdirectory
+        prompt_file = Path(__file__).parent / "prompts" / "insight_extractor.md"
+        if prompt_file.exists():
+            base_prompt = prompt_file.read_text(encoding="utf-8")
+        else:
+            # Fallback if prompt file missing
+            base_prompt = """Extract structured insights from this coding session.
+Output ONLY valid JSON with: file_insights, patterns_discovered, gotchas_discovered, approach_outcome, recommendations"""
+    except Exception:
         # Fallback if prompt file missing
         base_prompt = """Extract structured insights from this coding session.
 Output ONLY valid JSON with: file_insights, patterns_discovered, gotchas_discovered, approach_outcome, recommendations"""

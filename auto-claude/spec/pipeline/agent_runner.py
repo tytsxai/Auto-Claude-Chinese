@@ -74,14 +74,17 @@ class AgentRunner:
             interactive=interactive,
         )
 
-        prompt_path = Path(__file__).parent.parent.parent / "prompts" / prompt_file
-
-        if not prompt_path.exists():
-            debug_error("agent_runner", f"Prompt file not found: {prompt_path}")
-            return False, f"Prompt not found: {prompt_path}"
-
-        # Load prompt
-        prompt = prompt_path.read_text()
+        try:
+            from prompts_pkg.prompt_loader import get_prompt_path
+            # Remove .md extension if present
+            prompt_name = (
+                prompt_file[:-3] if prompt_file.endswith(".md") else prompt_file
+            )
+            prompt_path = get_prompt_path(prompt_name)
+            prompt = prompt_path.read_text(encoding="utf-8")
+        except FileNotFoundError as e:
+            debug_error("agent_runner", f"Prompt file not found: {e}")
+            return False, f"Prompt not found: {e}"
         debug_detailed(
             "agent_runner",
             "Loaded prompt file",

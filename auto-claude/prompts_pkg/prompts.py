@@ -15,10 +15,7 @@ from .project_context import (
     get_mcp_tools_for_project,
     load_project_index,
 )
-
-# Directory containing prompt files
-# prompts/ is a sibling directory of prompts_pkg/, so go up one level first
-PROMPTS_DIR = Path(__file__).parent.parent / "prompts"
+from .prompt_loader import load_prompt
 
 
 def get_planner_prompt(spec_dir: Path) -> str:
@@ -32,15 +29,13 @@ def get_planner_prompt(spec_dir: Path) -> str:
     Returns:
         The planner prompt content with spec path
     """
-    prompt_file = PROMPTS_DIR / "planner.md"
-
-    if not prompt_file.exists():
+    try:
+        prompt = load_prompt("planner")
+    except FileNotFoundError as e:
         raise FileNotFoundError(
-            f"Planner prompt not found at {prompt_file}\n"
+            f"Planner prompt not found: {e}\n"
             "Make sure the auto-claude/prompts/planner.md file exists."
         )
-
-    prompt = prompt_file.read_text()
 
     # Inject spec directory information at the beginning
     spec_context = f"""## SPEC LOCATION
@@ -75,15 +70,13 @@ def get_coding_prompt(spec_dir: Path) -> str:
     Returns:
         The coding agent prompt content with spec path
     """
-    prompt_file = PROMPTS_DIR / "coder.md"
-
-    if not prompt_file.exists():
+    try:
+        prompt = load_prompt("coder")
+    except FileNotFoundError as e:
         raise FileNotFoundError(
-            f"Coding prompt not found at {prompt_file}\n"
+            f"Coding prompt not found: {e}\n"
             "Make sure the auto-claude/prompts/coder.md file exists."
         )
-
-    prompt = prompt_file.read_text()
 
     spec_context = f"""## SPEC LOCATION
 
@@ -203,15 +196,13 @@ def get_followup_planner_prompt(spec_dir: Path) -> str:
     Returns:
         The follow-up planner prompt content with paths injected
     """
-    prompt_file = PROMPTS_DIR / "followup_planner.md"
-
-    if not prompt_file.exists():
+    try:
+        prompt = load_prompt("followup_planner")
+    except FileNotFoundError as e:
         raise FileNotFoundError(
-            f"Follow-up planner prompt not found at {prompt_file}\n"
+            f"Follow-up planner prompt not found: {e}\n"
             "Make sure the auto-claude/prompts/followup_planner.md file exists."
         )
-
-    prompt = prompt_file.read_text()
 
     # Inject spec directory information at the beginning
     spec_context = f"""## SPEC LOCATION (FOLLOW-UP MODE)
@@ -290,10 +281,10 @@ def _load_prompt_file(filename: str) -> str:
     Raises:
         FileNotFoundError: If prompt file doesn't exist
     """
-    prompt_file = PROMPTS_DIR / filename
-    if not prompt_file.exists():
-        raise FileNotFoundError(f"Prompt file not found: {prompt_file}")
-    return prompt_file.read_text()
+    # Remove .md extension if present (load_prompt adds it)
+    if filename.endswith(".md"):
+        filename = filename[:-3]
+    return load_prompt(filename)
 
 
 def get_qa_reviewer_prompt(spec_dir: Path, project_dir: Path) -> str:

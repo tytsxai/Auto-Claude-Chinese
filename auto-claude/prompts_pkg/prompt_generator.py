@@ -248,16 +248,20 @@ def generate_planner_prompt(spec_dir: Path, project_dir: Path | None = None) -> 
     Returns:
         Planner prompt string
     """
-    # Load the full planner prompt from file
-    prompts_dir = Path(__file__).parent / "prompts"
-    planner_file = prompts_dir / "planner.md"
-
-    if planner_file.exists():
-        prompt = planner_file.read_text()
-    else:
-        prompt = (
-            "Read spec.md and create implementation_plan.json with phases and subtasks."
-        )
+    # Load the full planner prompt from file with language support
+    try:
+        from .prompt_loader import load_prompt
+        prompt = load_prompt("planner")
+    except (ImportError, FileNotFoundError):
+        # Fallback
+        prompts_dir = Path(__file__).parent.parent / "prompts"
+        planner_file = prompts_dir / "planner.md"
+        if planner_file.exists():
+            prompt = planner_file.read_text(encoding="utf-8")
+        else:
+            prompt = (
+                "Read spec.md and create implementation_plan.json with phases and subtasks."
+            )
 
     # Use project_dir for relative paths, or infer from spec_dir
     if project_dir is None:
