@@ -158,7 +158,7 @@ def validate_environment(spec_dir: Path) -> bool:
 
 
 def print_banner() -> None:
-    """Print the Auto-Build banner."""
+    """Print the Auto-Claude banner."""
     content = [
         bold(f"{icon(Icons.LIGHTNING)} AUTO-BUILD FRAMEWORK"),
         "",

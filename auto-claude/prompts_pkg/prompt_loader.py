@@ -45,7 +45,8 @@ def get_prompt_path(prompt_name: str, base_dir: Optional[Path] = None) -> Path:
     else:
         base_dir = Path(base_dir) / "prompts"
 
-    # Get language from environment
+    # Auto-Claude-Chinese defaults to zh-CN; keep prompts/zh-CN synced with upstream English.
+    # See scripts/i18n/README.md for the maintenance workflow.
     language = os.environ.get("PROMPT_LANGUAGE", "zh-CN")
 
     # Ensure .md extension

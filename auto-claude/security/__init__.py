@@ -1,5 +1,5 @@
 """
-Security Module for Auto-Build Framework
+Security Module for Auto-Claude Framework
 =========================================
 
 Provides security validation for bash commands using dynamic allowlists

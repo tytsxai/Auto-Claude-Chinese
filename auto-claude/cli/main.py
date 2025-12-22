@@ -251,7 +251,7 @@ def main() -> None:
     # Import debug functions after environment setup
     from debug import debug, debug_error, debug_section, debug_success
 
-    debug_section("run.py", "Starting Auto-Build Framework")
+    debug_section("run.py", "Starting Auto-Claude Framework")
     debug("run.py", "Arguments parsed", args=vars(args))
 
     # Determine project directory

@@ -3,7 +3,7 @@
 Pytest Configuration and Shared Fixtures
 =========================================
 
-Provides common test fixtures for the Auto-Build Framework test suite.
+Provides common test fixtures for the Auto-Claude Framework test suite.
 """
 
 import json

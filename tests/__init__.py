@@ -1,5 +1,5 @@
 """
-Auto-Build Framework Test Suite
+Auto-Claude Framework Test Suite
 ===============================
 
 Comprehensive tests for the autonomous coding assistant framework.

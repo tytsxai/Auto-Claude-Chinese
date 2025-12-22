@@ -1,5 +1,5 @@
 """
-Security Hooks for Auto-Build Framework
+Security Hooks for Auto-Claude Framework
 =======================================
 
 BACKWARD COMPATIBILITY FACADE
