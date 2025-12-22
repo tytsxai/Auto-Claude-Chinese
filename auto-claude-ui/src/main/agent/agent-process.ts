@@ -42,8 +42,23 @@ export class AgentProcessManager {
 
   /**
    * Get the configured Python path
+   * Prefers venv Python if available, falls back to system Python
    */
   getPythonPath(): string {
+    // Try to use venv Python from auto-claude source
+    const autoBuildSource = this.getAutoBuildSourcePath();
+    if (autoBuildSource) {
+      const isWindows = process.platform === 'win32';
+      const venvPython = isWindows
+        ? path.join(autoBuildSource, '.venv', 'Scripts', 'python.exe')
+        : path.join(autoBuildSource, '.venv', 'bin', 'python');
+
+      if (existsSync(venvPython)) {
+        return venvPython;
+      }
+    }
+
+    // Fall back to configured or system Python
     return this.pythonPath;
   }
 
@@ -58,6 +73,8 @@ export class AgentProcessManager {
 
     // Auto-detect from app location
     const possiblePaths = [
+      // Packaged app: use resourcesPath (highest priority for production)
+      path.join(process.resourcesPath, 'auto-claude'),
       // Dev mode: from dist/main -> ../../auto-claude (sibling to auto-claude-ui)
       path.resolve(__dirname, '..', '..', '..', 'auto-claude'),
       // Alternative: from app root
@@ -164,7 +181,7 @@ export class AgentProcessManager {
     const profileEnv = getProfileEnv();
 
     // Parse Python command to handle space-separated commands like "py -3"
-    const [pythonCommand, pythonBaseArgs] = parsePythonCommand(this.pythonPath);
+    const [pythonCommand, pythonBaseArgs] = parsePythonCommand(this.getPythonPath());
     const childProcess = spawn(pythonCommand, [...pythonBaseArgs, ...args], {
       cwd,
       env: {
