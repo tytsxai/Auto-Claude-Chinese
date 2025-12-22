@@ -4,7 +4,7 @@
 set -e
 shopt -s nullglob
 
-echo "=== Auto Claude 中文化 - 应用翻译脚本 ==="
+echo "=== Auto-Claude 中文化 - 应用翻译脚本 ==="
 echo ""
 
 # 检查是否在正确的目录
@@ -68,4 +68,4 @@ echo ""
 echo "提示:"
 echo "  - 如果有缺少的翻译文件，请手动翻译或使用 AI 辅助翻译"
 echo "  - 确保 .env 文件中设置了 PROMPT_LANGUAGE=zh-CN"
-echo "  - 重启 Auto Claude 以使用中文提示词"
+echo "  - 重启 Auto-Claude 以使用中文提示词"

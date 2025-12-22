@@ -1,6 +1,6 @@
-# Auto Claude 中文化维护指南
+# Auto-Claude 中文化维护指南
 
-本目录包含用于维护 Auto Claude 中文版本的脚本和文档。
+本目录包含用于维护 Auto-Claude 中文版本的脚本和文档。
 
 ## 目录结构
 
@@ -16,6 +16,13 @@ auto-claude/prompts/
 └── zh-CN/
     └── *.md              # 中文翻译提示词
 ```
+
+## 仓库定位与汉化原则
+
+- 本仓库定位为 Auto-Claude-Chinese，中文优先（提示词与 UI 均以中文为主）
+- 不引入 i18n 框架，直接在 UI 文本与提示词文件中做翻译与校对
+- 合并上游更新时先拉取代码，再补齐中文提示词与 UI 文本，确保新增功能的中文覆盖
+- 命令、文件路径、代码片段、变量名与占位符保持英文原样，避免破坏原有含义
 
 ## 使用方法
 
@@ -138,7 +145,7 @@ PROMPT_LANGUAGE=zh-CN
 
 6. **测试验证**
    - 设置 `PROMPT_LANGUAGE=zh-CN`
-   - 运行 Auto Claude 测试功能
+   - 运行 Auto-Claude 测试功能
 
 7. **提交更改**
    ```bash
@@ -154,7 +161,7 @@ PROMPT_LANGUAGE=zh-CN
 **解决方案：**
 1. 检查 `.env` 文件中 `PROMPT_LANGUAGE=zh-CN` 是否正确设置
 2. 确认中文提示词文件存在于 `auto-claude/prompts/zh-CN/`
-3. 重启 Auto Claude 应用
+3. 重启 Auto-Claude 应用
 
 ### 问题：合并冲突
 

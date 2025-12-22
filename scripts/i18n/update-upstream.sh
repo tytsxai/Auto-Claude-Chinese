@@ -3,7 +3,7 @@
 
 set -e
 
-echo "=== Auto Claude 中文化 - 上游更新脚本 ==="
+echo "=== Auto-Claude 中文化 - 上游更新脚本 ==="
 echo ""
 
 # 检查是否在正确的目录

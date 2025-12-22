@@ -1,6 +1,6 @@
 # Auto-Claude-Chinese
 
-Auto Claude 中文增强版 — 默认使用中文提示词（`PROMPT_LANGUAGE=zh-CN`），缺失时自动回退英文。
+Auto-Claude 中文增强版 — 默认使用中文提示词（`PROMPT_LANGUAGE=zh-CN`），缺失时自动回退英文。
 
 Your AI coding companion. Build features, fix bugs, and ship faster — with autonomous agents that plan, code, and validate for you.
 
@@ -12,6 +12,8 @@ Your AI coding companion. Build features, fix bugs, and ship faster — with aut
 
 - 本仓库为 Auto-Claude-Chinese，面向中文使用场景做了提示词与流程优化
 - 默认使用中文提示词，需英文时在 `auto-claude/.env` 中设置 `PROMPT_LANGUAGE=en`
+- 不引入 i18n 框架，直接翻译 UI 文本与提示词内容，保留命令/路径/变量为英文
+- 上游更新后先合并代码，再补齐中文提示词与 UI 文本，确保新功能中文覆盖
 - 中文维护脚本与说明见 `scripts/i18n/README.md`
 
 ## What It Does ✨
