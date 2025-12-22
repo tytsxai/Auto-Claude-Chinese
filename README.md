@@ -1,10 +1,18 @@
-# Auto Claude
+# Auto-Claude-Chinese
+
+Auto Claude 中文增强版 — 默认使用中文提示词（`PROMPT_LANGUAGE=zh-CN`），缺失时自动回退英文。
 
 Your AI coding companion. Build features, fix bugs, and ship faster — with autonomous agents that plan, code, and validate for you.
 
 ![Auto Claude Kanban Board](.github/assets/Auto-Claude-Kanban.png)
 
 [![Discord](https://img.shields.io/badge/Discord-Join%20Community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/KCXaPBr4Dj)
+
+## 中文优先版本说明
+
+- 本仓库为 Auto-Claude-Chinese，面向中文使用场景做了提示词与流程优化
+- 默认使用中文提示词，需英文时在 `auto-claude/.env` 中设置 `PROMPT_LANGUAGE=en`
+- 中文维护脚本与说明见 `scripts/i18n/README.md`
 
 ## What It Does ✨
 
