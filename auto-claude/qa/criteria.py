@@ -8,6 +8,8 @@ Manages acceptance criteria validation and status tracking.
 import json
 from pathlib import Path
 
+from core.file_io import atomic_write_json
+
 from progress import is_build_complete
 
 # =============================================================================
@@ -31,8 +33,7 @@ def save_implementation_plan(spec_dir: Path, plan: dict) -> bool:
     """Save the implementation plan JSON."""
     plan_file = spec_dir / "implementation_plan.json"
     try:
-        with open(plan_file, "w") as f:
-            json.dump(plan, f, indent=2)
+        atomic_write_json(plan_file, plan, indent=2, ensure_ascii=False)
         return True
     except OSError:
         return False

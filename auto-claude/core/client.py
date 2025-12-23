@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path
 
+from core.file_io import atomic_write_json
 from auto_claude_tools import (
     create_auto_claude_mcp_server,
     is_tools_available,
@@ -259,8 +260,7 @@ def create_client(
 
     # Write settings to a file in the project directory
     settings_file = project_dir / ".claude_settings.json"
-    with open(settings_file, "w") as f:
-        json.dump(security_settings, f, indent=2)
+    atomic_write_json(settings_file, security_settings, indent=2)
 
     print(f"Security settings: {settings_file}")
     print("   - Sandbox enabled (OS-level bash isolation)")

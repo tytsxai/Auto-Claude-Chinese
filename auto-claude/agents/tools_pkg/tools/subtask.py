@@ -10,6 +10,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from core.file_io import atomic_write_json
+
 try:
     from claude_agent_sdk import tool
 
@@ -102,8 +104,7 @@ def create_subtask_tools(spec_dir: Path, project_dir: Path) -> list:
             # Update plan metadata
             plan["last_updated"] = datetime.now(timezone.utc).isoformat()
 
-            with open(plan_file, "w") as f:
-                json.dump(plan, f, indent=2)
+            atomic_write_json(plan_file, plan, indent=2, ensure_ascii=False)
 
             return {
                 "content": [

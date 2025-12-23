@@ -12,6 +12,8 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 
+from core.file_io import atomic_write_json
+
 from .enums import PhaseType, SubtaskStatus, WorkflowType
 from .phase import Phase
 from .subtask import Subtask
@@ -107,9 +109,7 @@ class ImplementationPlan:
         # Auto-update status based on subtask completion
         self.update_status_from_subtasks()
 
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(self.to_dict(), f, indent=2, ensure_ascii=False)
+        atomic_write_json(path, self.to_dict(), indent=2, ensure_ascii=False)
 
     def update_status_from_subtasks(self):
         """Update overall status and planStatus based on subtask completion state.

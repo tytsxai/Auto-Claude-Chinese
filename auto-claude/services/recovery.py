@@ -20,6 +20,7 @@ from datetime import datetime
 from enum import Enum
 from pathlib import Path
 
+from core.file_io import atomic_write_json
 
 class FailureType(Enum):
     """Types of failures that can occur during autonomous builds."""
@@ -86,8 +87,7 @@ class RecoveryManager:
                 "last_updated": datetime.now().isoformat(),
             },
         }
-        with open(self.attempt_history_file, "w") as f:
-            json.dump(initial_data, f, indent=2)
+        atomic_write_json(self.attempt_history_file, initial_data, indent=2)
 
     def _init_build_commits(self) -> None:
         """Initialize the build commits tracking file."""
@@ -99,8 +99,7 @@ class RecoveryManager:
                 "last_updated": datetime.now().isoformat(),
             },
         }
-        with open(self.build_commits_file, "w") as f:
-            json.dump(initial_data, f, indent=2)
+        atomic_write_json(self.build_commits_file, initial_data, indent=2)
 
     def _load_attempt_history(self) -> dict:
         """Load attempt history from JSON file."""
@@ -115,8 +114,7 @@ class RecoveryManager:
     def _save_attempt_history(self, data: dict) -> None:
         """Save attempt history to JSON file."""
         data["metadata"]["last_updated"] = datetime.now().isoformat()
-        with open(self.attempt_history_file, "w") as f:
-            json.dump(data, f, indent=2)
+        atomic_write_json(self.attempt_history_file, data, indent=2)
 
     def _load_build_commits(self) -> dict:
         """Load build commits from JSON file."""
@@ -131,8 +129,7 @@ class RecoveryManager:
     def _save_build_commits(self, data: dict) -> None:
         """Save build commits to JSON file."""
         data["metadata"]["last_updated"] = datetime.now().isoformat()
-        with open(self.build_commits_file, "w") as f:
-            json.dump(data, f, indent=2)
+        atomic_write_json(self.build_commits_file, data, indent=2)
 
     def classify_failure(self, error: str, subtask_id: str) -> FailureType:
         """

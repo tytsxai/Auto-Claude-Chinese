@@ -11,6 +11,8 @@ from datetime import datetime
 from enum import Enum
 from pathlib import Path
 
+from core.file_io import atomic_write_json
+
 from .colors import warning
 
 
@@ -129,8 +131,7 @@ class StatusManager:
         self._status.last_update = datetime.now().isoformat()
 
         try:
-            with open(self.status_file, "w") as f:
-                json.dump(self._status.to_dict(), f, indent=2)
+            atomic_write_json(self.status_file, self._status.to_dict(), indent=2)
         except OSError as e:
             print(warning(f"Could not write status file: {e}"))
 

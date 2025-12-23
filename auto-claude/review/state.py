@@ -12,6 +12,8 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 
+from core.file_io import atomic_write_json
+
 # State file name
 REVIEW_STATE_FILE = "review_state.json"
 
@@ -85,8 +87,7 @@ class ReviewState:
     def save(self, spec_dir: Path) -> None:
         """Save state to the spec directory."""
         state_file = Path(spec_dir) / REVIEW_STATE_FILE
-        with open(state_file, "w") as f:
-            json.dump(self.to_dict(), f, indent=2)
+        atomic_write_json(state_file, self.to_dict(), indent=2)
 
     @classmethod
     def load(cls, spec_dir: Path) -> "ReviewState":
