@@ -28,6 +28,9 @@ jobs:
       - name: Run ruff format check
         run: ruff format auto-claude/ --check --diff
 
+      - name: Scan for secrets
+        run: python auto-claude/security/scan_secrets.py --all-files
+
   # TypeScript/React linting
   frontend:
     runs-on: ubuntu-latest
