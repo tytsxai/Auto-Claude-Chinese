@@ -15,7 +15,6 @@ import {
   setupIdeationListeners
 } from '../../../stores/ideation-store';
 import { loadTasks } from '../../../stores/task-store';
-import { useClaudeTokenCheck } from '../../EnvConfigModal';
 import type { Idea, IdeationType } from '../../../../shared/types';
 import { ALL_IDEATION_TYPES } from '../constants';
 
@@ -46,7 +45,9 @@ export function useIdeation(projectId: string, options: UseIdeationOptions = {})
   const [showAddMoreDialog, setShowAddMoreDialog] = useState(false);
   const [typesToAdd, setTypesToAdd] = useState<IdeationType[]>([]);
 
-  const { hasToken, isLoading: isCheckingToken, checkToken } = useClaudeTokenCheck();
+  // 跳过前端 token 检查，直接使用后端配置的认证
+  const hasToken = true;
+  const isCheckingToken = false;
 
   // Set up IPC listeners and load ideation on mount
   useEffect(() => {
@@ -56,20 +57,12 @@ export function useIdeation(projectId: string, options: UseIdeationOptions = {})
   }, [projectId]);
 
   const handleGenerate = async () => {
-    if (hasToken === false) {
-      setPendingAction('generate');
-      setShowEnvConfigModal(true);
-      return;
-    }
+    // 直接生成，不检查 token（后端已配置认证）
     generateIdeation(projectId);
   };
 
   const handleRefresh = async () => {
-    if (hasToken === false) {
-      setPendingAction('refresh');
-      setShowEnvConfigModal(true);
-      return;
-    }
+    // 直接刷新，不检查 token（后端已配置认证）
     refreshIdeation(projectId);
   };
 
@@ -82,7 +75,7 @@ export function useIdeation(projectId: string, options: UseIdeationOptions = {})
   };
 
   const handleEnvConfigured = () => {
-    checkToken();
+    // 不再需要 checkToken，直接执行待处理的操作
     if (pendingAction === 'generate') {
       generateIdeation(projectId);
     } else if (pendingAction === 'refresh') {
@@ -103,12 +96,7 @@ export function useIdeation(projectId: string, options: UseIdeationOptions = {})
   const handleAddMoreIdeas = () => {
     if (typesToAdd.length === 0) return;
 
-    if (hasToken === false) {
-      setPendingAction('append');
-      setShowEnvConfigModal(true);
-      return;
-    }
-
+    // 直接添加，不检查 token（后端已配置认证）
     appendIdeation(projectId, typesToAdd);
     setTypesToAdd([]);
     setShowAddMoreDialog(false);
