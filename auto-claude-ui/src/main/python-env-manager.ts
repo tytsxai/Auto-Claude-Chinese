@@ -20,6 +20,8 @@ export class PythonEnvManager extends EventEmitter {
   private pythonPath: string | null = null;
   private isInitializing = false;
   private isReady = false;
+  private initStartTime = 0;
+  private readonly initTimeoutMs = 5 * 60 * 1000;
 
   /**
    * Get the path to the venv Python executable
@@ -77,49 +79,45 @@ export class PythonEnvManager extends EventEmitter {
   private findSystemPython(): string | null {
     const isWindows = process.platform === 'win32';
 
-    // Windows candidates - py launcher is handled specially
-    // Unix candidates - try python3 first, then python
     const candidates = isWindows
-      ? ['python', 'python3']
-      : ['python3', 'python'];
-
-    // On Windows, try the py launcher first (most reliable)
-    if (isWindows) {
-      try {
-        // py -3 runs Python 3, verify it works
-        const version = execSync('py -3 --version', {
-          stdio: 'pipe',
-          timeout: 5000
-        }).toString();
-        if (version.includes('Python 3')) {
-          // Get the actual executable path
-          const pythonPath = execSync('py -3 -c "import sys; print(sys.executable)"', {
-            stdio: 'pipe',
-            timeout: 5000
-          }).toString().trim();
-          return pythonPath;
-        }
-      } catch {
-        // py launcher not available, continue with other candidates
-      }
-    }
+      ? [
+          'py -3.14',
+          'py -3.13',
+          'py -3.12',
+          'py -3.11',
+          'py -3.10',
+          'py -3',
+          'python3',
+          'python'
+        ]
+      : [
+          'python3.14',
+          'python3.13',
+          'python3.12',
+          'python3.11',
+          'python3.10',
+          'python3',
+          'python'
+        ];
 
     for (const cmd of candidates) {
       try {
-        const version = execSync(`${cmd} --version`, {
+        const versionOutput = execSync(`${cmd} --version`, {
           stdio: 'pipe',
-          timeout: 5000
-        }).toString();
-        if (version.includes('Python 3')) {
-          // Get the actual path
-          // On Windows, use Python itself to get the path
-          // On Unix, use 'which'
-          const pathCmd = isWindows
-            ? `${cmd} -c "import sys; print(sys.executable)"`
-            : `which ${cmd}`;
-          const pythonPath = execSync(pathCmd, { stdio: 'pipe', timeout: 5000 })
-            .toString()
-            .trim();
+          timeout: 5000,
+          windowsHide: true
+        }).toString().trim();
+        const match = versionOutput.match(/Python (\d+)\.(\d+)\.(\d+)/);
+        if (!match) {
+          continue;
+        }
+        const major = parseInt(match[1], 10);
+        const minor = parseInt(match[2], 10);
+        if (major === 3 && minor >= 10) {
+          const pythonPath = execSync(
+            `${cmd} -c "import sys; print(sys.executable)"`,
+            { stdio: 'pipe', timeout: 5000, windowsHide: true }
+          ).toString().trim();
           return pythonPath;
         }
       } catch {
@@ -137,7 +135,7 @@ export class PythonEnvManager extends EventEmitter {
 
     const systemPython = this.findSystemPython();
     if (!systemPython) {
-      this.emit('error', 'Python 3 not found. Please install Python 3.9+');
+      this.emit('error', 'Python 3.10+ not found. Please install Python 3.10 or newer.');
       return false;
     }
 
@@ -289,16 +287,24 @@ export class PythonEnvManager extends EventEmitter {
    */
   async initialize(autoBuildSourcePath: string): Promise<PythonEnvStatus> {
     if (this.isInitializing) {
-      return {
-        ready: false,
-        pythonPath: null,
-        venvExists: false,
-        depsInstalled: false,
-        error: 'Already initializing'
-      };
+      const elapsed = Date.now() - this.initStartTime;
+      if (elapsed > this.initTimeoutMs) {
+        console.warn('[PythonEnvManager] Initialization timed out, resetting state');
+        this.isInitializing = false;
+        this.initStartTime = 0;
+      } else {
+        return {
+          ready: false,
+          pythonPath: null,
+          venvExists: false,
+          depsInstalled: false,
+          error: `Already initializing (${Math.floor(elapsed / 1000)}s elapsed)`
+        };
+      }
     }
 
     this.isInitializing = true;
+    this.initStartTime = Date.now();
     this.autoBuildSourcePath = autoBuildSourcePath;
 
     console.warn('[PythonEnvManager] Initializing with path:', autoBuildSourcePath);
@@ -309,7 +315,7 @@ export class PythonEnvManager extends EventEmitter {
         console.warn('[PythonEnvManager] Venv not found, creating...');
         const created = await this.createVenv();
         if (!created) {
-          this.isInitializing = false;
+          this.isReady = false;
           return {
             ready: false,
             pythonPath: null,
@@ -328,7 +334,7 @@ export class PythonEnvManager extends EventEmitter {
         console.warn('[PythonEnvManager] Dependencies not installed, installing...');
         const installed = await this.installDeps();
         if (!installed) {
-          this.isInitializing = false;
+          this.isReady = false;
           return {
             ready: false,
             pythonPath: this.getVenvPythonPath(),
@@ -343,7 +349,6 @@ export class PythonEnvManager extends EventEmitter {
 
       this.pythonPath = this.getVenvPythonPath();
       this.isReady = true;
-      this.isInitializing = false;
 
       this.emit('ready', this.pythonPath);
       console.warn('[PythonEnvManager] Ready with Python path:', this.pythonPath);
@@ -355,7 +360,7 @@ export class PythonEnvManager extends EventEmitter {
         depsInstalled: true
       };
     } catch (error) {
-      this.isInitializing = false;
+      this.isReady = false;
       const message = error instanceof Error ? error.message : String(error);
       return {
         ready: false,
@@ -364,6 +369,9 @@ export class PythonEnvManager extends EventEmitter {
         depsInstalled: false,
         error: message
       };
+    } finally {
+      this.isInitializing = false;
+      this.initStartTime = 0;
     }
   }
 
