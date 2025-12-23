@@ -389,11 +389,12 @@ export class ProjectStore {
   ): { status: TaskStatus; reviewReason?: ReviewReason } {
     // Handle both 'subtasks' and 'chunks' naming conventions, filter out undefined
     const allSubtasks = plan?.phases?.flatMap((p) => p.subtasks || (p as { chunks?: PlanSubtask[] }).chunks || []).filter(Boolean) || [];
+    const hasSubtasks = allSubtasks.length > 0;
 
     let calculatedStatus: TaskStatus = 'backlog';
     let reviewReason: ReviewReason | undefined;
 
-    if (allSubtasks.length > 0) {
+    if (hasSubtasks) {
       const completed = allSubtasks.filter((s) => s.status === 'completed').length;
       const inProgress = allSubtasks.filter((s) => s.status === 'in_progress').length;
       const failed = allSubtasks.filter((s) => s.status === 'failed').length;
@@ -436,6 +437,11 @@ export class ProjectStore {
         'backlog': 'backlog'
       };
       const storedStatus = statusMap[plan.status];
+      const isReviewStatus = storedStatus === 'human_review' || storedStatus === 'ai_review';
+
+      if (!hasSubtasks && isReviewStatus) {
+        return { status: calculatedStatus, reviewReason: undefined };
+      }
 
       // If user explicitly marked as 'done', always respect that
       if (storedStatus === 'done') {

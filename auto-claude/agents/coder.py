@@ -340,6 +340,22 @@ async def run_autonomous_agent(
                 client, prompt, spec_dir, verbose, phase=current_log_phase
             )
 
+        if is_planning_phase:
+            _, total = count_subtasks(spec_dir)
+            if total == 0:
+                print_status(
+                    "Planner did not create any subtasks. Check spec.md and rerun planning.",
+                    "error",
+                )
+                if task_logger:
+                    task_logger.end_phase(
+                        LogPhase.PLANNING,
+                        success=False,
+                        message="Planner did not create any subtasks",
+                    )
+                status_manager.update(state=BuildState.ERROR)
+                raise RuntimeError("Planner did not create any subtasks")
+
         # === POST-SESSION PROCESSING (100% reliable) ===
         if subtask_id and not first_run:
             linear_is_enabled = (

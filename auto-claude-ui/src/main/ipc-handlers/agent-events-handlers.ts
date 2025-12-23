@@ -112,6 +112,15 @@ export function registerAgenteventsHandlers(
           if (existsSync(planPath)) {
             const planContent = readFileSync(planPath, 'utf-8');
             const plan = JSON.parse(planContent);
+            const planHasSubtasks = Array.isArray(plan.phases) && plan.phases.some(
+              (phase: { subtasks?: unknown[]; chunks?: unknown[] }) => {
+                const subtasks = phase.subtasks || phase.chunks || [];
+                return Array.isArray(subtasks) && subtasks.length > 0;
+              }
+            );
+            if (!planHasSubtasks) {
+              newStatus = 'backlog';
+            }
 
             // Only update if not already set to a "further along" status
             // (e.g., don't override 'done' with 'human_review')
@@ -123,11 +132,17 @@ export function registerAgenteventsHandlers(
               currentStatus === 'pending';
 
             if (shouldUpdate) {
-              plan.status = newStatus;
-              plan.planStatus = 'review';
-              plan.updated_at = new Date().toISOString();
-              writeFileSync(planPath, JSON.stringify(plan, null, 2));
-              console.warn(`[Task ${taskId}] Persisted status '${newStatus}' to implementation_plan.json`);
+              if (!planHasSubtasks) {
+                console.warn(
+                  `[Task ${taskId}] Implementation plan has no subtasks. Skipping status update to '${newStatus}'.`
+                );
+              } else {
+                plan.status = newStatus;
+                plan.planStatus = 'review';
+                plan.updated_at = new Date().toISOString();
+                writeFileSync(planPath, JSON.stringify(plan, null, 2));
+                console.warn(`[Task ${taskId}] Persisted status '${newStatus}' to implementation_plan.json`);
+              }
             }
           }
         }

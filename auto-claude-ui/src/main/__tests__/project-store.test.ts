@@ -363,6 +363,34 @@ describe('ProjectStore', () => {
       expect(tasks[0].status).toBe('backlog');
     });
 
+    it('should ignore review status when plan has no subtasks', async () => {
+      const specsDir = path.join(TEST_PROJECT_PATH, '.auto-claude', 'specs', '002-empty-plan');
+      mkdirSync(specsDir, { recursive: true });
+
+      const plan = {
+        feature: 'Empty Plan Feature',
+        status: 'human_review',
+        planStatus: 'review',
+        phases: [],
+        created_at: '2024-01-01T00:00:00Z',
+        updated_at: '2024-01-01T00:00:00Z',
+        spec_file: 'spec.md'
+      };
+
+      writeFileSync(
+        path.join(specsDir, 'implementation_plan.json'),
+        JSON.stringify(plan)
+      );
+
+      const { ProjectStore } = await import('../project-store');
+      const store = new ProjectStore();
+
+      const project = store.addProject(TEST_PROJECT_PATH);
+      const tasks = store.getTasks(project.id);
+
+      expect(tasks[0].status).toBe('backlog');
+    });
+
     it('should determine status as ai_review when all subtasks completed', async () => {
       const specsDir = path.join(TEST_PROJECT_PATH, '.auto-claude', 'specs', '003-complete');
       mkdirSync(specsDir, { recursive: true });
