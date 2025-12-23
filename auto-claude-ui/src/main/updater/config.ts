@@ -6,8 +6,8 @@
  * GitHub repository configuration
  */
 export const GITHUB_CONFIG = {
-  owner: 'AndyMik90',
-  repo: 'Auto-Claude',
+  owner: 'tytsxai',
+  repo: 'Auto-Claude-Chinese',
   autoBuildPath: 'auto-claude', // Path within repo where auto-claude lives
   /**
    * Optional GitHub proxy for users无法直连 GitHub 时使用

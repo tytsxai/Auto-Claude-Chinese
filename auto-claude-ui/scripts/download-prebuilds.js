@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const GITHUB_REPO = 'AndyMik90/Auto-Claude';
+const GITHUB_REPO = 'tytsxai/Auto-Claude-Chinese';
 const GITHUB_API = 'https://api.github.com';
 
 /**

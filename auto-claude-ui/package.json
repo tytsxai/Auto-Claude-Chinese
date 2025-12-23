@@ -121,8 +121,8 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "AndyMik90",
-        "repo": "Auto-Claude"
+        "owner": "tytsxai",
+        "repo": "Auto-Claude-Chinese"
       }
     ],
     "directories": {

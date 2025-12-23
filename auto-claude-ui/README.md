@@ -6,8 +6,8 @@
 
 ```bash
 # 1. 克隆仓库（如果尚未克隆）
-git clone https://github.com/AndyMik90/Auto-Claude.git
-cd Auto-Claude/auto-claude-ui
+git clone https://github.com/tytsxai/Auto-Claude-Chinese.git
+cd Auto-Claude-Chinese/auto-claude-ui
 
 # 2. 安装依赖
 npm install

@@ -54,7 +54,7 @@ We provide an automated script that handles version bumping, git commits, and ta
 
 4. **Create GitHub Release:**
 
-   - Go to [GitHub Releases](https://github.com/AndyMik90/Auto-Claude/releases)
+   - Go to [GitHub Releases](https://github.com/tytsxai/Auto-Claude-Chinese/releases)
    - Click "Draft a new release"
    - Select the tag you just pushed (e.g., `v2.5.6`)
    - Add release notes (describe what changed)

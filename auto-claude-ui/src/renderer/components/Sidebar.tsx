@@ -421,7 +421,7 @@ export function Sidebar({
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => window.open('https://github.com/AndyMik90/Auto-Claude/issues', '_blank')}
+                  onClick={() => window.open('https://github.com/tytsxai/Auto-Claude-Chinese/issues', '_blank')}
                 >
                   <HelpCircle className="h-4 w-4" />
                 </Button>
