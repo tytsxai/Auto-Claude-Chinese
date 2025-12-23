@@ -6,6 +6,7 @@ Runs QA validation sessions to review implementation against
 acceptance criteria.
 """
 
+import json
 from pathlib import Path
 
 from claude_agent_sdk import ClaudeSDKClient
@@ -333,6 +334,32 @@ This is attempt {previous_error.get("consecutive_errors", 1) + 1}. If you fail t
             error_msg = "QA agent did not update implementation_plan.json"
             if error_details:
                 error_msg += f" ({'; '.join(error_details)})"
+
+            settings_file = project_dir / ".claude_settings.json"
+            if settings_file.exists():
+                try:
+                    with open(settings_file) as f:
+                        settings = json.load(f)
+                    allow = settings.get("permissions", {}).get("allow", [])
+                    if isinstance(allow, list):
+                        missing_tools = [
+                            "mcp__auto-claude__update_qa_status",
+                            "mcp__auto-claude__get_build_progress",
+                            "mcp__auto-claude__get_session_context",
+                        ]
+                        missing_tools = [
+                            tool for tool in missing_tools if tool not in allow
+                        ]
+                        if missing_tools:
+                            error_msg += (
+                                "\nMissing required MCP tool permissions: "
+                                + ", ".join(missing_tools)
+                                + "\nCheck .claude_settings.json permissions."
+                            )
+                except (OSError, json.JSONDecodeError):
+                    error_msg += (
+                        "\nUnable to read .claude_settings.json to verify MCP tool permissions."
+                    )
 
             return "error", error_msg
 

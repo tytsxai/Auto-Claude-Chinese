@@ -6,6 +6,7 @@ Main QA loop that coordinates reviewer and fixer sessions until
 approval or max iterations.
 """
 
+import json
 import time as time_module
 from pathlib import Path
 
@@ -46,6 +47,28 @@ from .reviewer import run_qa_agent_session
 # Configuration
 MAX_QA_ITERATIONS = 50
 MAX_CONSECUTIVE_ERRORS = 3  # Stop after 3 consecutive errors without progress
+QA_REQUIRED_MCP_TOOLS = [
+    "mcp__auto-claude__update_qa_status",
+    "mcp__auto-claude__get_build_progress",
+    "mcp__auto-claude__get_session_context",
+]
+
+
+def _get_missing_qa_tools(project_dir: Path) -> list[str] | None:
+    settings_file = project_dir / ".claude_settings.json"
+    if not settings_file.exists():
+        return None
+
+    try:
+        with open(settings_file) as f:
+            settings = json.load(f)
+        allow = settings.get("permissions", {}).get("allow", [])
+        if not isinstance(allow, list):
+            return None
+    except (OSError, json.JSONDecodeError):
+        return None
+
+    return [tool for tool in QA_REQUIRED_MCP_TOOLS if tool not in allow]
 
 
 # =============================================================================
@@ -219,6 +242,29 @@ async def run_qa_validation_loop(
             agent_type="qa_reviewer",
             max_thinking_tokens=qa_thinking_budget,
         )
+        missing_tools = _get_missing_qa_tools(project_dir)
+        if missing_tools is None:
+            debug_error(
+                "qa_loop",
+                "Unable to verify QA MCP tool permissions",
+                settings_file=str(project_dir / ".claude_settings.json"),
+            )
+            print(
+                "\nERROR: Unable to verify QA MCP tool permissions. "
+                "Check .claude_settings.json."
+            )
+            return False
+        if missing_tools:
+            debug_error(
+                "qa_loop",
+                "Missing required QA MCP tools",
+                missing_tools=missing_tools,
+            )
+            print("\nERROR: Missing required QA MCP tools:")
+            for tool in missing_tools:
+                print(f"  - {tool}")
+            print("QA cannot proceed without these permissions.")
+            return False
 
         async with client:
             debug("qa_loop", "Running QA reviewer agent session...")
