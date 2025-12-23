@@ -6,6 +6,8 @@ Shared utility functions for the Auto Claude CLI.
 """
 
 import os
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -87,14 +89,55 @@ def find_spec(
     return None
 
 
-def validate_environment(spec_dir: Path) -> bool:
+def _has_command(command: str) -> bool:
+    """Check if a command is available on PATH."""
+    return shutil.which(command) is not None
+
+
+def _is_git_repo(project_dir: Path) -> bool:
+    """Check if a directory is inside a git work tree."""
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--is-inside-work-tree"],
+            cwd=project_dir,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        return result.returncode == 0 and result.stdout.strip() == "true"
+    except OSError:
+        return False
+
+
+def validate_environment(spec_dir: Path, project_dir: Path | None = None) -> bool:
     """
     Validate that the environment is set up correctly.
+
+    Args:
+        spec_dir: Spec directory path
+        project_dir: Project root directory (for git checks)
 
     Returns:
         True if valid, False otherwise (with error messages printed)
     """
     valid = True
+
+    # Check for required CLI tools
+    if not _has_command("git"):
+        print("Error: git is not installed or not on PATH.")
+        print("Install Git: https://git-scm.com/downloads")
+        valid = False
+    elif project_dir and not _is_git_repo(project_dir):
+        print("Error: project directory is not a git repository.")
+        print(f"Path: {project_dir}")
+        print("Initialize git:")
+        print("  git init")
+        valid = False
+
+    if not _has_command("claude"):
+        print("Error: Claude Code CLI ('claude') not found on PATH.")
+        print("Install: npm install -g @anthropic-ai/claude-code")
+        valid = False
 
     # Check for OAuth token (API keys are not supported)
     if not get_auth_token():

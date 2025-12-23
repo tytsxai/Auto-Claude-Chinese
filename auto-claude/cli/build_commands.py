@@ -118,7 +118,7 @@ def handle_build_command(
     print()
 
     # Validate environment
-    if not validate_environment(spec_dir):
+    if not validate_environment(spec_dir, project_dir):
         sys.exit(1)
 
     # Check human review approval
@@ -308,6 +308,12 @@ def handle_build_command(
         )
     except Exception as e:
         print(f"\nFatal error: {e}")
+        status_manager = StatusManager(project_dir)
+        status_manager.update(
+            active=True,
+            state=BuildState.ERROR,
+            spec=spec_dir.name,
+        )
         if verbose:
             import traceback
 

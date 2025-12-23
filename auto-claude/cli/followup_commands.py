@@ -325,7 +325,7 @@ def handle_followup_command(
     # Now run the follow-up planner to add new subtasks
     print()
 
-    if not validate_environment(spec_dir):
+    if not validate_environment(spec_dir, project_dir):
         sys.exit(1)
 
     try:
