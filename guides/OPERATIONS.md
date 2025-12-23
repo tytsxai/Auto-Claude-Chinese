@@ -24,6 +24,9 @@ for long-term use without changing its architecture.
   - `AUTO_CLAUDE_LOG_LEVEL=INFO`
   - `AUTO_CLAUDE_LOG_MAX_BYTES=5242880`
   - `AUTO_CLAUDE_LOG_BACKUPS=3`
+- Optional GitHub proxy for updater/source downloads (when direct GitHub access is blocked):
+  - `AUTO_CLAUDE_GITHUB_PROXY=https://mirror.ghproxy.com`
+  - Set `AUTO_CLAUDE_DISABLE_PROXY_FALLBACK=true` to disable built-in fallback.
 - Debug-only logging (use sparingly in production):
   - `DEBUG=true`
   - `DEBUG_LEVEL=1|2|3`
