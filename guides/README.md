@@ -8,6 +8,7 @@ Detailed documentation for Auto Claude setup and usage.
 |-------|-------------|
 | **[CLI-USAGE.md](CLI-USAGE.md)** | Terminal-only usage for power users, headless servers, and CI/CD |
 | **[DOCKER-SETUP.md](DOCKER-SETUP.md)** | Docker Desktop installation, FalkorDB setup, and troubleshooting |
+| **[OPERATIONS.md](OPERATIONS.md)** | Production readiness, logging, backups, and rollback runbook |
 
 ## Quick Links
 

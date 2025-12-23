@@ -20,6 +20,8 @@ from ui import (
     icon,
 )
 
+from core.logging_setup import configure_logging
+
 from .build_commands import handle_build_command
 from .followup_commands import handle_followup_command
 from .qa_commands import (
@@ -256,6 +258,7 @@ def main() -> None:
 
     # Determine project directory
     project_dir = get_project_dir(args.project_dir)
+    configure_logging(project_dir)
     debug("run.py", f"Using project directory: {project_dir}")
 
     # Get model (with env var fallback)
