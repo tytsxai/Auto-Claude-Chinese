@@ -48,12 +48,19 @@ export function getDefaultPythonCommand(): string {
 
 /**
  * Parse a Python command string into command and base arguments.
- * Handles space-separated commands like "py -3".
+ * Handles space-separated commands like "py -3", but preserves paths with spaces.
  *
- * @param pythonPath - The Python command string (e.g., "python3", "py -3")
+ * @param pythonPath - The Python command string (e.g., "python3", "py -3", "/path/with spaces/python")
  * @returns Tuple of [command, baseArgs] ready for use with spawn()
  */
 export function parsePythonCommand(pythonPath: string): [string, string[]] {
+  // If the path looks like an absolute path (starts with / or drive letter),
+  // don't split it - it's a full path that may contain spaces
+  if (pythonPath.startsWith('/') || /^[a-zA-Z]:/.test(pythonPath)) {
+    return [pythonPath, []];
+  }
+
+  // For simple commands like "py -3", split by space
   const parts = pythonPath.split(' ');
   const command = parts[0];
   const baseArgs = parts.slice(1);

@@ -123,10 +123,15 @@ class PtyDaemonClient {
 
     try {
       // Spawn detached process that survives parent
+      // Note: process.execPath may contain spaces (e.g., "/Applications/Auto Claude.app/...")
+      // spawn() handles this correctly when the command is passed as the first argument
+      // (not through shell), so no additional quoting is needed here.
       this.daemonProcess = spawn(process.execPath, [daemonPath], {
         detached: true,
         stdio: 'ignore', // Don't pipe stdout/stderr
         env: { ...process.env },
+        // Explicitly disable shell to ensure proper handling of paths with spaces
+        shell: false,
       });
 
       // Unref so parent can exit independently
