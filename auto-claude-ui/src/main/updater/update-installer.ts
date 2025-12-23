@@ -6,7 +6,7 @@ import { existsSync, mkdirSync, writeFileSync, rmSync, readdirSync } from 'fs';
 import path from 'path';
 import { app } from 'electron';
 import { GITHUB_CONFIG, PRESERVE_FILES } from './config';
-import { downloadFile, fetchJson } from './http-client';
+import { downloadFileWithFallback, fetchJsonWithFallback } from './http-client';
 import { parseVersionFromTag } from './version-manager';
 import { getUpdateCachePath, getUpdateTargetPath } from './path-resolver';
 import { extractTarball, copyDirectoryRecursive, preserveFiles, restoreFiles, cleanTargetDirectory } from './file-operations';
@@ -46,7 +46,7 @@ export async function downloadAndApplyUpdate(
     if (!release) {
       const releaseUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/releases/latest`;
       debugLog('[Update] Fetching release info from:', releaseUrl);
-      release = await fetchJson<GitHubRelease>(releaseUrl);
+      release = await fetchJsonWithFallback<GitHubRelease>(releaseUrl, GITHUB_CONFIG.proxyBase);
       setCachedRelease(release);
     } else {
       debugLog('[Update] Using cached release info');
@@ -77,13 +77,13 @@ export async function downloadAndApplyUpdate(
     debugLog('[Update] Starting download to:', tarballPath);
 
     // Download the tarball
-    await downloadFile(tarballUrl, tarballPath, (percent) => {
+    await downloadFileWithFallback(tarballUrl, tarballPath, (percent) => {
       onProgress?.({
         stage: 'downloading',
         percent,
         message: `Downloading... ${percent}%`
       });
-    });
+    }, GITHUB_CONFIG.proxyBase);
 
     debugLog('[Update] Download complete');
 

@@ -3,7 +3,7 @@
  */
 
 import { GITHUB_CONFIG } from './config';
-import { fetchJson } from './http-client';
+import { fetchJsonWithFallback } from './http-client';
 import { getEffectiveVersion, parseVersionFromTag, compareVersions } from './version-manager';
 import { GitHubRelease, AutoBuildUpdateCheck } from './types';
 import { debugLog } from '../../shared/utils/debug-logger';
@@ -43,7 +43,7 @@ export async function checkForUpdates(): Promise<AutoBuildUpdateCheck> {
   try {
     // Fetch latest release from GitHub Releases API
     const releaseUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/releases/latest`;
-    const release = await fetchJson<GitHubRelease>(releaseUrl);
+    const release = await fetchJsonWithFallback<GitHubRelease>(releaseUrl, GITHUB_CONFIG.proxyBase);
 
     // Cache for download function
     setCachedRelease(release);

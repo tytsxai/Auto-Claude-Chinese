@@ -4,7 +4,27 @@
 
 import https from 'https';
 import { createWriteStream } from 'fs';
-import { TIMEOUTS } from './config';
+import { DEFAULT_GITHUB_PROXY, ENABLE_PROXY_FALLBACK, TIMEOUTS } from './config';
+
+/**
+ * Normalize proxy base URL (remove trailing slash)
+ */
+const normalizeProxyBase = (proxyBase?: string | null) =>
+  proxyBase?.replace(/\/+$/, '') || null;
+
+/**
+ * Build a proxied URL (auto-fallback to default proxy if enabled)
+ */
+export function buildProxiedUrl(url: string, proxyBase?: string | null): string | null {
+  const base = normalizeProxyBase(proxyBase) || (ENABLE_PROXY_FALLBACK ? DEFAULT_GITHUB_PROXY : null);
+  if (!base) return null;
+  // Avoid double-prefixing if caller already passed a proxied URL
+  if (url.startsWith(base)) return url;
+  return `${base}/${url}`;
+}
+
+const formatError = (error: unknown) =>
+  error instanceof Error ? error.message : String(error);
 
 /**
  * Fetch JSON from a URL using https
@@ -61,6 +81,27 @@ export function fetchJson<T>(url: string): Promise<T> {
       reject(new Error('Request timeout'));
     });
   });
+}
+
+/**
+ * Fetch JSON with a proxy fallback for environments无法直连 GitHub
+ */
+export async function fetchJsonWithFallback<T>(url: string, proxyBase?: string | null): Promise<T> {
+  try {
+    return await fetchJson<T>(url);
+  } catch (primaryError) {
+    const proxiedUrl = buildProxiedUrl(url, proxyBase);
+    if (!proxiedUrl) throw primaryError;
+
+    try {
+      return await fetchJson<T>(proxiedUrl);
+    } catch (proxyError) {
+      throw new Error(
+        `检查更新失败：直连 ${formatError(primaryError)}；代理 ${formatError(proxyError)}。` +
+        '请检查网络或配置 AUTO_CLAUDE_GITHUB_PROXY 后重试。'
+      );
+    }
+  }
 }
 
 /**
@@ -144,4 +185,32 @@ export function downloadFile(
       reject(new Error('Download timeout'));
     });
   });
+}
+
+/**
+ * Download with proxy fallback for GitHub资源
+ */
+export async function downloadFileWithFallback(
+  url: string,
+  destPath: string,
+  onProgress?: (percent: number) => void,
+  proxyBase?: string | null
+): Promise<void> {
+  try {
+    await downloadFile(url, destPath, onProgress);
+    return;
+  } catch (primaryError) {
+    const proxiedUrl = buildProxiedUrl(url, proxyBase);
+    if (!proxiedUrl) throw primaryError;
+
+    try {
+      await downloadFile(proxiedUrl, destPath, onProgress);
+      return;
+    } catch (proxyError) {
+      throw new Error(
+        `下载更新失败：直连 ${formatError(primaryError)}；代理 ${formatError(proxyError)}。` +
+        '请检查网络或配置 AUTO_CLAUDE_GITHUB_PROXY 后重试。'
+      );
+    }
+  }
 }
