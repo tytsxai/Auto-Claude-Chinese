@@ -310,10 +310,10 @@ export function Sidebar({
             value={selectedProjectId || ''}
             onValueChange={handleProjectChange}
           >
-            <SelectTrigger className="w-full [&_span]:truncate">
-              <div className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
+            <SelectTrigger className="w-full">
+              <div className="flex items-center gap-2 min-w-0 flex-1">
                 <FolderOpen className="h-4 w-4 shrink-0 text-muted-foreground" />
-                <SelectValue placeholder="选择项目..." className="truncate min-w-0 flex-1" />
+                <SelectValue placeholder="选择项目..." />
               </div>
             </SelectTrigger>
             <SelectContent className="min-w-(--radix-select-trigger-width) max-w-(--radix-select-trigger-width)">

@@ -251,7 +251,7 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
 
         {/* 描述 - 清理以处理 Markdown 内容 */}
         {task.description && (
-          <p className="mt-2 text-xs text-muted-foreground line-clamp-2">
+          <p className="mt-2 text-xs text-muted-foreground line-clamp-2 break-all overflow-wrap-anywhere">
             {sanitizeMarkdownForDisplay(task.description, 150)}
           </p>
         )}
