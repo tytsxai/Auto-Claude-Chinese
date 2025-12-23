@@ -217,6 +217,15 @@ def create_client(
             # Only add Puppeteer for non-Electron web frontends
             browser_tools_permissions = PUPPETEER_TOOLS
 
+    # Build auto-claude MCP tool permissions
+    auto_claude_tools_permissions = []
+    if auto_claude_tools_enabled:
+        # Get agent-specific auto-claude tools from allowed_tools_list
+        auto_claude_tools_permissions = [
+            tool for tool in allowed_tools_list
+            if tool.startswith("mcp__auto-claude__")
+        ]
+
     # Create comprehensive security settings
     # Note: Using relative paths ("./**") restricts access to project directory
     # since cwd is set to project_dir
@@ -242,6 +251,8 @@ def create_client(
                 *(GRAPHITI_MCP_TOOLS if graphiti_mcp_enabled else []),
                 # Allow browser automation tools based on project type
                 *browser_tools_permissions,
+                # Allow auto-claude MCP tools for agent-specific operations
+                *auto_claude_tools_permissions,
             ],
         },
     }
