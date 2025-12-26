@@ -9,6 +9,9 @@ about a codebase. It can also suggest tasks based on the conversation.
 import argparse
 import asyncio
 import json
+import os
+import platform
+import shutil
 import sys
 from pathlib import Path
 
@@ -39,6 +42,34 @@ from debug import (
     debug_section,
     debug_success,
 )
+
+
+def detect_claude_path() -> str:
+    """Detect the full path to the claude CLI."""
+    home = Path.home()
+
+    if platform.system() == "Windows":
+        paths = [
+            home / "AppData" / "Local" / "Programs" / "claude" / "claude.exe",
+            home / "AppData" / "Roaming" / "npm" / "claude.cmd",
+            home / ".local" / "bin" / "claude.exe",
+            Path("C:/Program Files/Claude/claude.exe"),
+        ]
+    else:
+        paths = [
+            Path("/usr/local/bin/claude"),
+            Path("/opt/homebrew/bin/claude"),
+            home / ".local" / "bin" / "claude",
+            home / "bin" / "claude",
+        ]
+
+    for p in paths:
+        if p.exists():
+            return str(p)
+
+    # Fallback to PATH lookup
+    found = shutil.which("claude")
+    return found if found else "claude"
 
 
 def load_project_context(project_dir: str) -> str:
@@ -295,8 +326,9 @@ Assistant:"""
 
     try:
         # Try to use claude CLI with --print for simple output
+        claude_path = detect_claude_path()
         result = subprocess.run(
-            ["claude", "--print", "-p", full_prompt],
+            [claude_path, "--print", "-p", full_prompt],
             capture_output=True,
             text=True,
             cwd=project_dir,

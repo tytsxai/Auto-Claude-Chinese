@@ -3,11 +3,45 @@ import type { BrowserWindow } from 'electron';
 import { IPC_CHANNELS, DEFAULT_APP_SETTINGS } from '../../shared/constants';
 import type { IPCResult, ProjectEnvConfig, ClaudeAuthResult, AppSettings } from '../../shared/types';
 import path from 'path';
+import os from 'os';
 import { app } from 'electron';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { spawn } from 'child_process';
 import { projectStore } from '../project-store';
 import { parseEnvFile } from './utils';
+
+/**
+ * Detect the full path to the claude CLI
+ * Electron apps don't inherit shell PATH, so we need to find it explicitly
+ */
+function detectClaudePath(): string {
+  const homeDir = os.homedir();
+
+  const possiblePaths = process.platform === 'win32'
+    ? [
+        path.join(homeDir, 'AppData', 'Local', 'Programs', 'claude', 'claude.exe'),
+        path.join(homeDir, 'AppData', 'Roaming', 'npm', 'claude.cmd'),
+        path.join(homeDir, '.local', 'bin', 'claude.exe'),
+        'C:\\Program Files\\Claude\\claude.exe',
+        'C:\\Program Files (x86)\\Claude\\claude.exe',
+        'claude'
+      ]
+    : [
+        '/usr/local/bin/claude',
+        '/opt/homebrew/bin/claude',
+        path.join(homeDir, '.local/bin/claude'),
+        path.join(homeDir, 'bin/claude'),
+        'claude'
+      ];
+
+  for (const claudePath of possiblePaths) {
+    if (claudePath === 'claude' || existsSync(claudePath)) {
+      return claudePath;
+    }
+  }
+
+  return 'claude';
+}
 
 
 /**
@@ -423,8 +457,9 @@ ${existingVars['GRAPHITI_DATABASE'] ? `GRAPHITI_DATABASE=${existingVars['GRAPHIT
 
       try {
         // Check if Claude CLI is available and authenticated
+        const claudePath = detectClaudePath();
         const result = await new Promise<ClaudeAuthResult>((resolve) => {
-          const proc = spawn('claude', ['--version'], {
+          const proc = spawn(claudePath, ['--version'], {
             cwd: project.path,
             env: { ...process.env },
             shell: true
@@ -445,7 +480,7 @@ ${existingVars['GRAPHITI_DATABASE'] ? `GRAPHITI_DATABASE=${existingVars['GRAPHIT
             if (code === 0) {
               // Claude CLI is available, check if authenticated
               // Run a simple command that requires auth
-              const authCheck = spawn('claude', ['api', '--help'], {
+              const authCheck = spawn(claudePath, ['api', '--help'], {
                 cwd: project.path,
                 env: { ...process.env },
                 shell: true
@@ -503,8 +538,9 @@ ${existingVars['GRAPHITI_DATABASE'] ? `GRAPHITI_DATABASE=${existingVars['GRAPHIT
 
       try {
         // Run claude setup-token which will open browser for OAuth
+        const claudePath = detectClaudePath();
         const result = await new Promise<ClaudeAuthResult>((resolve) => {
-          const proc = spawn('claude', ['setup-token'], {
+          const proc = spawn(claudePath, ['setup-token'], {
             cwd: project.path,
             env: { ...process.env },
             shell: true,
