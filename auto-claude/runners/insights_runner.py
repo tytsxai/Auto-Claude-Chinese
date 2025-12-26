@@ -34,7 +34,7 @@ except ImportError:
     ClaudeAgentOptions = None
     ClaudeSDKClient = None
 
-from core.auth import ensure_claude_code_oauth_token, get_auth_token
+from core.auth import ensure_claude_code_oauth_token, get_auth_token, get_sdk_env_vars
 from debug import (
     debug,
     debug_detailed,
@@ -325,6 +325,12 @@ User: {message}
 Assistant:"""
 
     try:
+        # Ensure auth is loaded from settings.json
+        ensure_claude_code_oauth_token()
+
+        # Get SDK env vars (includes third-party auth)
+        sdk_env = {**os.environ, **get_sdk_env_vars()}
+
         # Try to use claude CLI with --print for simple output
         claude_path = detect_claude_path()
         result = subprocess.run(
@@ -333,6 +339,7 @@ Assistant:"""
             text=True,
             cwd=project_dir,
             timeout=120,
+            env=sdk_env,
         )
 
         if result.returncode == 0:
