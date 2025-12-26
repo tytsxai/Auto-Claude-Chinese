@@ -146,12 +146,19 @@
         "from": "../auto-claude",
         "to": "auto-claude",
         "filter": [
-          "!**/.git",
+          "**/*",
+          "!.git",
+          "!.git/**",
+          "!.venv",
+          "!.venv/**",
+          "!__pycache__",
           "!**/__pycache__",
           "!**/*.pyc",
-          "!**/specs",
-          "!**/.venv",
-          "!**/.env"
+          "!specs",
+          "!specs/**",
+          "!.env",
+          "!.auto-claude",
+          "!.auto-claude/**"
         ]
       }
     ],
