@@ -86,4 +86,6 @@ dev/
 _bmad
 _bmad-output
 
-.claude
+# Claude local settings (but keep commands)
+.claude/*
+!.claude/commands/
