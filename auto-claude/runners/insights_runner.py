@@ -34,7 +34,11 @@ except ImportError:
     ClaudeAgentOptions = None
     ClaudeSDKClient = None
 
-from core.auth import ensure_claude_code_oauth_token, get_auth_token, get_sdk_env_vars
+from core.auth import (
+    ensure_claude_code_oauth_token,
+    get_auth_token,
+    get_sdk_env_vars,
+)
 from debug import (
     debug,
     debug_detailed,
@@ -59,6 +63,7 @@ def detect_claude_path() -> str:
         paths = [
             Path("/usr/local/bin/claude"),
             Path("/opt/homebrew/bin/claude"),
+            home / ".claude" / "local" / "claude",
             home / ".local" / "bin" / "claude",
             home / "bin" / "claude",
         ]
@@ -163,7 +168,7 @@ async def run_with_sdk(
     project_dir: str,
     message: str,
     history: list,
-    model: str = "claude-sonnet-4-5-20250929",
+    model: str = "claude-opus-4-5-20251101",
     thinking_level: str = "medium",
 ) -> None:
     """Run the chat using Claude SDK with streaming."""
@@ -173,10 +178,7 @@ async def run_with_sdk(
         return
 
     if not get_auth_token():
-        print(
-            "No authentication token found, falling back to simple mode",
-            file=sys.stderr,
-        )
+        print("No auth token found, falling back to simple mode", file=sys.stderr)
         run_simple(project_dir, message, history)
         return
 
@@ -324,6 +326,19 @@ Previous conversation:
 User: {message}
 Assistant:"""
 
+    def _redact(text: str) -> str:
+        if not text:
+            return text
+        redactions = [
+            ("ANTHROPIC_AUTH_TOKEN", os.environ.get("ANTHROPIC_AUTH_TOKEN")),
+            ("CLAUDE_CODE_OAUTH_TOKEN", os.environ.get("CLAUDE_CODE_OAUTH_TOKEN")),
+        ]
+        out = text
+        for _, token in redactions:
+            if token and token in out:
+                out = out.replace(token, "***")
+        return out
+
     try:
         # Ensure auth is loaded from settings.json
         ensure_claude_code_oauth_token()
@@ -334,35 +349,45 @@ Assistant:"""
         # Try to use claude CLI with --print for simple output
         claude_path = detect_claude_path()
         result = subprocess.run(
-            [claude_path, "--print", "-p", full_prompt],
+            [claude_path, "--print", full_prompt],
             capture_output=True,
             text=True,
             cwd=project_dir,
-            timeout=120,
+            timeout=60,
             env=sdk_env,
         )
 
         if result.returncode == 0:
-            print(result.stdout)
-        else:
-            # Fallback response if claude CLI fails
-            print(
-                f"I apologize, but I encountered an issue processing your request. "
-                f"Please ensure Claude CLI is properly configured.\n\n"
-                f"Your question was: {message}\n\n"
-                f"Based on the project context available, I can help you with:\n"
-                f"- Understanding the codebase structure\n"
-                f"- Suggesting improvements\n"
-                f"- Planning new features\n\n"
-                f"Please try again or check your Claude CLI configuration."
-            )
+            print(result.stdout, end="", flush=True)
+            return
+
+        stderr = _redact((result.stderr or "").strip())
+        stdout = _redact((result.stdout or "").strip())
+        detail = stderr or stdout
+        if detail:
+            print(detail, file=sys.stderr)
+        print(
+            f"Claude CLI failed (exit code {result.returncode}). "
+            "If you see a login error, run `claude /login` in Terminal.",
+            file=sys.stderr,
+        )
+        raise SystemExit(result.returncode or 1)
 
     except subprocess.TimeoutExpired:
-        print("Request timed out. Please try a shorter query.")
+        print(
+            "Claude request timed out (60s). Please try a shorter query.",
+            file=sys.stderr,
+        )
+        raise SystemExit(124)
     except FileNotFoundError:
-        print("Claude CLI not found. Please ensure it is installed and in your PATH.")
+        print(
+            "Claude CLI not found. Please install Claude Code CLI and ensure it's discoverable.",
+            file=sys.stderr,
+        )
+        raise SystemExit(127)
     except Exception as e:
-        print(f"Error: {e}")
+        print(_redact(f"Error running Claude CLI: {e}"), file=sys.stderr)
+        raise SystemExit(1)
 
 
 def main():
@@ -375,8 +400,8 @@ def main():
     )
     parser.add_argument(
         "--model",
-        default="claude-sonnet-4-5-20250929",
-        help="Claude model ID (default: claude-sonnet-4-5-20250929)",
+        default="claude-opus-4-5-20251101",
+        help="Claude model ID (default: claude-opus-4-5-20251101)",
     )
     parser.add_argument(
         "--thinking-level",

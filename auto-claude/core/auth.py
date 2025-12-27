@@ -127,6 +127,25 @@ def get_auth_token() -> str | None:
     return get_token_from_keychain()
 
 
+def get_oauth_token() -> str | None:
+    """Get the Claude Code OAuth token (not ANTHROPIC_AUTH_TOKEN)."""
+    token = os.environ.get("CLAUDE_CODE_OAUTH_TOKEN")
+    if token:
+        return token
+
+    return get_token_from_keychain()
+
+
+def get_anthropic_auth_token() -> str | None:
+    """Get the ANTHROPIC_AUTH_TOKEN from env or settings.json."""
+    token = os.environ.get("ANTHROPIC_AUTH_TOKEN")
+    if token:
+        return token
+
+    settings_token, _ = get_token_from_settings()
+    return settings_token
+
+
 def get_auth_token_source() -> str | None:
     """Get the name of the source that provided the auth token."""
     # Check environment variables first
@@ -208,11 +227,15 @@ def ensure_claude_code_oauth_token() -> None:
     if not os.environ.get("ANTHROPIC_BASE_URL") and settings_base_url:
         os.environ["ANTHROPIC_BASE_URL"] = settings_base_url
 
-    # Also set CLAUDE_CODE_OAUTH_TOKEN for SDK compatibility
-    if not os.environ.get("CLAUDE_CODE_OAUTH_TOKEN"):
-        token = get_auth_token()
-        if token:
-            os.environ["CLAUDE_CODE_OAUTH_TOKEN"] = token
+    # Also set CLAUDE_CODE_OAUTH_TOKEN for SDK compatibility.
+    # IMPORTANT: if third-party auth is present, do NOT auto-populate OAuth,
+    # otherwise downstream code/CLI may prefer OAuth and fail.
+    if not os.environ.get("CLAUDE_CODE_OAUTH_TOKEN") and not os.environ.get(
+        "ANTHROPIC_AUTH_TOKEN"
+    ):
+        oauth_token = get_oauth_token()
+        if oauth_token:
+            os.environ["CLAUDE_CODE_OAUTH_TOKEN"] = oauth_token
 
 
 def diagnose_auth() -> str:
