@@ -7,6 +7,7 @@ import { ipcMain, shell } from 'electron';
 import { execSync, execFileSync, spawn } from 'child_process';
 import { IPC_CHANNELS } from '../../../shared/constants';
 import type { IPCResult } from '../../../shared/types';
+import { isSafeExternalUrl } from '../utils';
 
 // Debug logging helper
 const DEBUG = process.env.DEBUG === 'true' || process.env.NODE_ENV === 'development';
@@ -46,6 +47,14 @@ const DEVICE_URL_PATTERN = /https:\/\/github\.com\/login\/device/i;
 
 // Default GitHub device flow URL
 const GITHUB_DEVICE_URL = 'https://github.com/login/device';
+
+function redactSensitiveOutput(text: string): string {
+  return text
+    .replace(/\b[A-Z0-9]{4}[-\s][A-Z0-9]{4}\b/g, '****-****')
+    .replace(/\bghp_[A-Za-z0-9]{20,}\b/g, 'ghp_***')
+    .replace(/\bsk-[A-Za-z0-9]{20,}\b/g, 'sk-***')
+    .replace(/\blin_api_[A-Za-z0-9]{10,}\b/g, 'lin_api_***');
+}
 
 /**
  * Parse device code from gh CLI stdout output
@@ -242,9 +251,14 @@ export function registerStartGhAuth(): void {
               // Open browser using Electron's shell.openExternal
               // This bypasses macOS child process restrictions that block gh CLI's browser launch
               try {
-                await shell.openExternal(extractedAuthUrl);
-                browserOpenedSuccessfully = true;
-                debugLog('Browser opened successfully via shell.openExternal');
+                if (isSafeExternalUrl(extractedAuthUrl) && DEVICE_URL_PATTERN.test(extractedAuthUrl)) {
+                  await shell.openExternal(extractedAuthUrl);
+                  browserOpenedSuccessfully = true;
+                  debugLog('Browser opened successfully via shell.openExternal');
+                } else {
+                  browserOpenedSuccessfully = false;
+                  debugLog('Blocked unsafe auth URL:', extractedAuthUrl);
+                }
               } catch (browserError) {
                 debugLog('Failed to open browser:', browserError instanceof Error ? browserError.message : browserError);
                 browserOpenedSuccessfully = false;
@@ -263,7 +277,7 @@ export function registerStartGhAuth(): void {
           ghProcess.stdout?.on('data', (data) => {
             const chunk = data.toString();
             output += chunk;
-            debugLog('gh stdout:', chunk);
+            debugLog('gh stdout:', redactSensitiveOutput(chunk));
             // Try to extract device code as data comes in
             // Use void to explicitly ignore promise
             void tryExtractAndOpenBrowser();
@@ -272,15 +286,15 @@ export function registerStartGhAuth(): void {
           ghProcess.stderr?.on('data', (data) => {
             const chunk = data.toString();
             errorOutput += chunk;
-            debugLog('gh stderr:', chunk);
+            debugLog('gh stderr:', redactSensitiveOutput(chunk));
             // gh often outputs to stderr, so check there too
             void tryExtractAndOpenBrowser();
           });
 
           ghProcess.on('close', (code) => {
             debugLog('gh process exited with code:', code);
-            debugLog('Full stdout:', output);
-            debugLog('Full stderr:', errorOutput);
+            debugLog('Full stdout:', redactSensitiveOutput(output));
+            debugLog('Full stderr:', redactSensitiveOutput(errorOutput));
 
             if (code === 0) {
               // Success case - include fallbackUrl if browser failed to open

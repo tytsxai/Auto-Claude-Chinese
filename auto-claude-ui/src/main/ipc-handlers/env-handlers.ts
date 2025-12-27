@@ -43,6 +43,12 @@ function detectClaudePath(): string {
   return 'claude';
 }
 
+function shouldUseShellForCommand(commandPath: string): boolean {
+  if (process.platform !== 'win32') return false;
+  const lower = commandPath.toLowerCase();
+  return commandPath === 'claude' || lower.endsWith('.cmd') || lower.endsWith('.bat');
+}
+
 
 /**
  * Register all env-related IPC handlers
@@ -458,11 +464,12 @@ ${existingVars['GRAPHITI_DATABASE'] ? `GRAPHITI_DATABASE=${existingVars['GRAPHIT
       try {
         // Check if Claude CLI is available and authenticated
         const claudePath = detectClaudePath();
+        const useShell = shouldUseShellForCommand(claudePath);
         const result = await new Promise<ClaudeAuthResult>((resolve) => {
           const proc = spawn(claudePath, ['--version'], {
             cwd: project.path,
             env: { ...process.env },
-            shell: true
+            shell: useShell
           });
 
           let _stdout = '';
@@ -483,7 +490,7 @@ ${existingVars['GRAPHITI_DATABASE'] ? `GRAPHITI_DATABASE=${existingVars['GRAPHIT
               const authCheck = spawn(claudePath, ['api', '--help'], {
                 cwd: project.path,
                 env: { ...process.env },
-                shell: true
+                shell: useShell
               });
 
               authCheck.on('close', (authCode: number | null) => {
@@ -539,11 +546,12 @@ ${existingVars['GRAPHITI_DATABASE'] ? `GRAPHITI_DATABASE=${existingVars['GRAPHIT
       try {
         // Run claude setup-token which will open browser for OAuth
         const claudePath = detectClaudePath();
+        const useShell = shouldUseShellForCommand(claudePath);
         const result = await new Promise<ClaudeAuthResult>((resolve) => {
           const proc = spawn(claudePath, ['setup-token'], {
             cwd: project.path,
             env: { ...process.env },
-            shell: true,
+            shell: useShell,
             stdio: 'inherit' // This allows the terminal to handle the interactive auth
           });
 

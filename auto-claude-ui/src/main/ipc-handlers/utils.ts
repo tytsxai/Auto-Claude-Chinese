@@ -3,6 +3,19 @@
  */
 
 /**
+ * Validate URLs before passing to shell.openExternal.
+ * Blocks dangerous protocols like file:, javascript:, data:.
+ */
+export function isSafeExternalUrl(rawUrl: string): boolean {
+  try {
+    const url = new URL(rawUrl);
+    return url.protocol === 'https:' || url.protocol === 'http:';
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Parse .env file into key-value object
  */
 export function parseEnvFile(content: string): Record<string, string> {

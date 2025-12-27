@@ -11,6 +11,7 @@ import type {
 import { AgentManager } from '../agent';
 import type { BrowserWindow } from 'electron';
 import { getEffectiveVersion } from '../auto-claude-updater';
+import { isSafeExternalUrl } from './utils';
 
 const settingsPath = path.join(app.getPath('userData'), 'settings.json');
 
@@ -301,6 +302,11 @@ export function registerSettingsHandlers(
   ipcMain.handle(
     IPC_CHANNELS.SHELL_OPEN_EXTERNAL,
     async (_, url: string): Promise<void> => {
+      if (!isSafeExternalUrl(url)) {
+        console.warn('[settings-handlers] Blocked openExternal for unsafe URL:', url);
+        return;
+      }
+
       await shell.openExternal(url);
     }
   );

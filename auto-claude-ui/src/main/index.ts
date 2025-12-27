@@ -8,6 +8,7 @@ import { pythonEnvManager } from './python-env-manager';
 import { getUsageMonitor } from './claude-profile/usage-monitor';
 import { initializeUsageMonitorForwarding } from './ipc-handlers/terminal-handlers';
 import { initializeAppUpdater } from './app-updater';
+import { isSafeExternalUrl } from './ipc-handlers/utils';
 
 // Get icon path based on platform
 function getIconPath(): string {
@@ -64,7 +65,11 @@ function createWindow(): void {
 
   // Handle external links
   mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url);
+    if (isSafeExternalUrl(details.url)) {
+      shell.openExternal(details.url);
+    } else {
+      console.warn('[main] Blocked window.open for unsafe URL:', details.url);
+    }
     return { action: 'deny' };
   });
 
