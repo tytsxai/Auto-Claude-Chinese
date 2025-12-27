@@ -1,46 +1,46 @@
-import { execSync } from 'child_process';
+import { existsSync } from 'fs';
+import { homedir } from 'os';
+import path from 'path';
 
 /**
  * Detect and return the best available Python command.
- * Tries multiple candidates and returns the first one that works with Python 3.
- *
- * @returns The Python command to use, or null if none found
+ * Electron apps don't inherit shell PATH, so we check common locations.
  */
 export function findPythonCommand(): string | null {
   const isWindows = process.platform === 'win32';
+  const home = homedir();
 
-  // On Windows, try py launcher first (most reliable), then python, then python3
-  // On Unix, try python3 first, then python
-  const candidates = isWindows
-    ? ['py -3', 'python', 'python3', 'py']
-    : ['python3', 'python'];
+  if (isWindows) {
+    return 'python';
+  }
 
-  for (const cmd of candidates) {
-    try {
-      const version = execSync(`${cmd} --version`, {
-        stdio: 'pipe',
-        timeout: 5000,
-        windowsHide: true
-      }).toString();
+  // When PATH is available, prefer command names (works in dev/test).
+  // Packaged Electron apps may have an empty PATH; for that case, fall back
+  // to common absolute locations.
+  if (process.env.PATH) {
+    return 'python3';
+  }
 
-      if (version.includes('Python 3')) {
-        return cmd;
-      }
-    } catch {
-      // Command not found or errored, try next
-      continue;
+  // Full paths for macOS/Linux (Electron doesn't inherit PATH)
+  const unixPaths = [
+    '/opt/homebrew/bin/python3',
+    '/usr/local/bin/python3',
+    '/usr/bin/python3',
+    path.join(home, '.pyenv/shims/python3'),
+    path.join(home, '.local/bin/python3'),
+  ];
+
+  for (const pythonPath of unixPaths) {
+    if (existsSync(pythonPath)) {
+      return pythonPath;
     }
   }
 
-  // Fallback to platform-specific default
-  return isWindows ? 'python' : 'python3';
+  return 'python3';
 }
 
 /**
  * Get the default Python command for the current platform.
- * This is a synchronous fallback that doesn't test if Python actually exists.
- *
- * @returns The default Python command for this platform
  */
 export function getDefaultPythonCommand(): string {
   return process.platform === 'win32' ? 'python' : 'python3';
@@ -48,10 +48,6 @@ export function getDefaultPythonCommand(): string {
 
 /**
  * Parse a Python command string into command and base arguments.
- * Handles space-separated commands like "py -3", but preserves paths with spaces.
- *
- * @param pythonPath - The Python command string (e.g., "python3", "py -3", "/path/with spaces/python")
- * @returns Tuple of [command, baseArgs] ready for use with spawn()
  */
 export function parsePythonCommand(pythonPath: string): [string, string[]] {
   // If the path looks like an absolute path (starts with / or drive letter),

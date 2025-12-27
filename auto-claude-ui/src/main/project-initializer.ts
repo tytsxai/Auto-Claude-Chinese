@@ -294,10 +294,12 @@ export function initializeProject(projectPath: string): InitializationResult {
 
   if (existsSync(dotAutoBuildPath)) {
     debug('Already initialized - .auto-claude exists');
-    return {
-      success: false,
-      error: 'Project already has auto-claude initialized (.auto-claude exists)'
-    };
+    const ensured = ensureDataDirectories(projectPath);
+    if (ensured.success) {
+      ensureGitignoreEntries(projectPath, GITIGNORE_ENTRIES);
+      return { success: true };
+    }
+    return ensured;
   }
 
   try {

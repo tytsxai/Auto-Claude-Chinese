@@ -5,7 +5,8 @@
  * organized by domain into separate handler modules.
  */
 
-import type { BrowserWindow } from 'electron';
+import { ipcMain, type BrowserWindow } from 'electron';
+import { IPC_CHANNELS } from '../../shared/constants';
 import { AgentManager } from '../agent';
 import { TerminalManager } from '../terminal-manager';
 import { PythonEnvManager } from '../python-env-manager';
@@ -44,6 +45,16 @@ export function setupIpcHandlers(
   getMainWindow: () => BrowserWindow | null,
   pythonEnvManager: PythonEnvManager
 ): void {
+  // Make setup idempotent (tests/dev can call setup multiple times)
+  for (const channel of Object.values(IPC_CHANNELS)) {
+    ipcMain.removeAllListeners(channel);
+    try {
+      ipcMain.removeHandler(channel);
+    } catch {
+      // ignore
+    }
+  }
+
   // Initialize notification service
   notificationService.initialize(getMainWindow);
 

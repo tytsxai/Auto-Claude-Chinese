@@ -228,16 +228,19 @@ export class AgentQueueManager {
       PYTHONUTF8: '1'
     };
 
-    // Debug: Show OAuth token source
-    const tokenSource = profileEnv['CLAUDE_CODE_OAUTH_TOKEN']
-      ? 'Electron app profile'
-      : (combinedEnv['CLAUDE_CODE_OAUTH_TOKEN'] ? 'auto-claude/.env' : 'not found');
+    // Debug: Show auth token source (supports both OAuth and third-party auth)
+    const anthropicToken = (finalEnv as Record<string, string | undefined>)['ANTHROPIC_AUTH_TOKEN'];
     const oauthToken = (finalEnv as Record<string, string | undefined>)['CLAUDE_CODE_OAUTH_TOKEN'];
-    const hasToken = !!oauthToken;
-    debugLog('[Agent Queue] OAuth token status:', {
-      source: tokenSource,
-      hasToken,
-      tokenPreview: hasToken ? oauthToken?.substring(0, 20) + '...' : 'none'
+    const baseUrl = (finalEnv as Record<string, string | undefined>)['ANTHROPIC_BASE_URL'];
+    const authSource = anthropicToken
+      ? 'third-party (ANTHROPIC_AUTH_TOKEN)'
+      : (oauthToken ? 'OAuth (CLAUDE_CODE_OAUTH_TOKEN)' : 'not found');
+    debugLog('[Agent Queue] Auth status:', {
+      source: authSource,
+      hasAnthropicToken: !!anthropicToken,
+      hasOAuthToken: !!oauthToken,
+      baseUrl: baseUrl || 'default',
+      tokenLength: anthropicToken?.length || oauthToken?.length || 0
     });
 
     // Parse Python command to handle space-separated commands like "py -3"
@@ -474,16 +477,19 @@ export class AgentQueueManager {
       PYTHONUTF8: '1'
     };
 
-    // Debug: Show OAuth token source
-    const tokenSource = profileEnv['CLAUDE_CODE_OAUTH_TOKEN']
-      ? 'Electron app profile'
-      : (combinedEnv['CLAUDE_CODE_OAUTH_TOKEN'] ? 'auto-claude/.env' : 'not found');
+    // Debug: Show auth token source (supports both OAuth and third-party auth)
+    const anthropicToken = (finalEnv as Record<string, string | undefined>)['ANTHROPIC_AUTH_TOKEN'];
     const oauthToken = (finalEnv as Record<string, string | undefined>)['CLAUDE_CODE_OAUTH_TOKEN'];
-    const hasToken = !!oauthToken;
-    debugLog('[Agent Queue] OAuth token status:', {
-      source: tokenSource,
-      hasToken,
-      tokenPreview: hasToken ? oauthToken?.substring(0, 20) + '...' : 'none'
+    const baseUrl = (finalEnv as Record<string, string | undefined>)['ANTHROPIC_BASE_URL'];
+    const authSource = anthropicToken
+      ? 'third-party (ANTHROPIC_AUTH_TOKEN)'
+      : (oauthToken ? 'OAuth (CLAUDE_CODE_OAUTH_TOKEN)' : 'not found');
+    debugLog('[Agent Queue] Auth status:', {
+      source: authSource,
+      hasAnthropicToken: !!anthropicToken,
+      hasOAuthToken: !!oauthToken,
+      baseUrl: baseUrl || 'default',
+      tokenLength: anthropicToken?.length || oauthToken?.length || 0
     });
 
     // Parse Python command to handle space-separated commands like "py -3"

@@ -27,8 +27,26 @@ export class InsightsConfig {
 
   /**
    * Get configured Python path
+   * Prefers venv Python in auto-claude-source if available
    */
   getPythonPath(): string {
+    // Try venv Python first
+    const autoBuildSource = this.getAutoBuildSourcePath();
+    if (autoBuildSource) {
+      const isWindows = process.platform === 'win32';
+      const candidates = isWindows
+        ? [path.join(autoBuildSource, '.venv', 'Scripts', 'python.exe')]
+        : [
+          path.join(autoBuildSource, '.venv', 'bin', 'python'),
+          path.join(autoBuildSource, '.venv', 'bin', 'python3')
+        ];
+
+      for (const candidate of candidates) {
+        if (existsSync(candidate)) {
+          return candidate;
+        }
+      }
+    }
     return this.pythonPath;
   }
 
@@ -41,8 +59,12 @@ export class InsightsConfig {
     }
 
     const possiblePaths = [
+      // Preferred: userData copy (writable; can contain a venv)
+      path.join(app.getPath('userData'), 'auto-claude-source'),
       path.resolve(__dirname, '..', '..', '..', 'auto-claude'),
       path.resolve(app.getAppPath(), '..', 'auto-claude'),
+      // For packaged app: app.asar is a file, use dirname to get Resources dir
+      path.join(path.dirname(app.getAppPath()), 'auto-claude'),
       path.resolve(process.cwd(), 'auto-claude')
     ];
 
